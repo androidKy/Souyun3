@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.task.cn">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application>
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="cc7e215ed1a46944c96861d8c03f4ddd" />
+
+        <service android:name="com.amap.api.location.APSService" />
+    </application>
+</manifest>

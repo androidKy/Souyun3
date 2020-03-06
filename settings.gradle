@@ -1,0 +1,2 @@
+include ':app', ':utils_library', ':task_lib', ':saf-log'
+rootProject.name='SouyunApp3'
