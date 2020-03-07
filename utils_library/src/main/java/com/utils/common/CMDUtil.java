@@ -1,5 +1,7 @@
 package com.utils.common;
 
+import android.util.Log;
+
 import java.io.*;
 
 /**

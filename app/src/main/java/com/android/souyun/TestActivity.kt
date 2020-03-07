@@ -10,6 +10,8 @@ import com.safframework.log.L
 import com.task.cn.ProxyConstant
 import com.task.cn.Result
 import com.task.cn.StatusTask
+import com.task.cn.device.DeviceInfoController
+import com.task.cn.jbean.DeviceInfoBean
 import com.task.cn.jbean.IpInfoBean
 import com.task.cn.jbean.VerifyIpBean
 import com.task.cn.manager.LocationListener
@@ -20,9 +22,11 @@ import com.task.cn.proxy.PingManager
 import com.task.cn.proxy.ProxyManager
 import com.task.cn.proxy.ProxyRequestListener
 import com.task.cn.task.ITaskControllerView
+import com.utils.common.CMDUtil
 import com.utils.common.DevicesUtil
 import com.utils.common.ToastUtils
 import kotlinx.android.synthetic.main.activity_test.*
+import kotlin.concurrent.thread
 
 class TestActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -62,6 +66,12 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                     tv_tip.text = "代理请求失败"
                 }
             })
+
+        Thread(Runnable {
+            CMDUtil().execCmd("cd /data/")
+        }).start()
+
+       // DeviceInfoController().addDeviceInfo("com.tencent.mm", DeviceInfoBean())
     }
 
 
@@ -86,7 +96,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
     private fun getCurrentIp() {
         PingManager.getNetIP(object : IpListener {
             override fun onIpResult(result: Boolean, verifyIpBean: VerifyIpBean?) {
-                if(!result)
+                if (!result)
                     tv_tip.text = "查询IP失败"
                 verifyIpBean?.apply {
                     tv_ip.text = this.cip
@@ -129,7 +139,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             .setLastTaskStatus(StatusTask.TASK_FINISHED)
             .setAccountSwitch(false)
             .setDeviceSwitch(false)
-            .setIpSwitch(true)
+            .setIpSwitch(false)
             .setTaskInfoSwitch(true)
             .setCityName(cityName)
             .setTaskControllerView(object : ITaskControllerView {

@@ -28,7 +28,6 @@ class LocationController private constructor() : ILocationController {
         AMapLocationClient(Utils.getApp()).run {
             
             mLocationClient = this
-
             setLocationListener(this@LocationController.mLocationListener)
             startLocation()
         }

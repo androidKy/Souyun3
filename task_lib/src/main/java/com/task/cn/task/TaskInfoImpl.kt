@@ -5,6 +5,8 @@ import com.safframework.log.L
 import com.task.cn.Result
 import com.task.cn.StatusCode
 import com.task.cn.StatusMsg
+import com.task.cn.device.DeviceInfoController
+import com.task.cn.device.DeviceInfoListener
 import com.task.cn.jbean.AccountInfoBean
 import com.task.cn.jbean.DeviceInfoBean
 import com.task.cn.jbean.IpInfoBean
@@ -79,6 +81,11 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
 
     override fun getLocationByIP(ip: String) {
         L.d("current ip: $ip")
+        /* if(ip.isEmpty())
+         {
+             taskInfoView.onResponIPAddress("", "")
+             return
+         }*/
         LocationManager()
             .setLocationListener(object : LocationListener {
                 override fun onLocationResult(latitude: String, longitude: String) {
@@ -86,15 +93,24 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
                 }
             })
             .startLocation(ip)
-
     }
 
     override fun changeDeviceInfo(taskBean: TaskBean) {
         Result(StatusCode.FAILED, false, StatusMsg.DEFAULT.msg).run {
             val deviceInfoBean = taskBean.device_info
-            //todo 修改设备信息并把设备信息文件移到相应的位置
-            
-            taskInfoView.onChangeDeviceInfo(this)
+            DeviceInfoController()
+                .setDeviceInfoListener(object : DeviceInfoListener {
+                    override fun onChangeResult(result: Boolean) {
+                        if (result) {
+                            this@run.code = StatusCode.SUCCEED
+                            this@run.msg = StatusMsg.SUCCEED.msg
+                            this@run.r = true
+                        } else this@run.msg = "修改设备信息失败"
+
+                        taskInfoView.onChangeDeviceInfo(this@run)
+                    }
+                })
+                .addDeviceInfo(taskBean.backup_info.pkg_name, deviceInfoBean)
         }
     }
 

@@ -24,15 +24,15 @@
         "id":1002,
         "account_id":10001,
         "device_id":1004,
-        "pkg_name":"com.tencent.mm",
+        "pkg_name":"com.android.souyun",
         "is_backuped":false,
         "backup_data_url":"https://www.baidu.com",
         "last_backup_date":"2020-3-3 17:53"
     },
     "ip_info":{
         "id":1003,
-        "ip":"192.168.2.111",
-        "city":"广州",
+        "ip":"",
+        "city":"",
         "city_code":55500
     },
     "device_info":{

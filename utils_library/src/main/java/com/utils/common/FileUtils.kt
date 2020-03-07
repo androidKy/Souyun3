@@ -33,6 +33,10 @@ class FileUtils {
             return null
         }
 
+        fun writeString2File(str: String, file: File) {
+
+        }
+
         private fun closeStream(closeable: Closeable?) {
             try {
                 closeable?.close()
@@ -49,7 +53,7 @@ class FileUtils {
                 bitmap = BitmapFactory.decodeStream(fileInputStream)
             } catch (e: Exception) {
                 e.printStackTrace()
-                L.e(e.message,e)
+                L.e(e.message, e)
             }
 
             return bitmap

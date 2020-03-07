@@ -44,7 +44,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
 
     private val mHandler: Handler = Handler(Looper.getMainLooper()) {
         if (it.what == MSG_TASK_COUNT) {
-            if (mTaskStartCount == 0) { //已开始的任务完成
+            if (mTaskStartCount <= 0 && !mTaskFinished) { //已开始的任务完成
                 dealTask()
             } else {
                 sendTaskMsg(500)
@@ -56,14 +56,12 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
 
     @Synchronized
     private fun dealTask() {
-        if (mTaskFinished)
-            return
         val jsonTaskBean = Gson().toJson(mTaskBean, TaskBean::class.java)
         L.d("task finished: $jsonTaskBean")
         updateTaskToRealm(mTaskBean)
         if (mTaskErrorCount == 0) {
             mTaskFinished = true
-            mTaskExecutor?.getLocationByIP(mTaskBean.ip_info.ip)
+            mTaskExecutor?.getLocationByIP("")
         } else {
             mTaskFinished = true
             val errorMsg = mErrorStringBuilder.toString()
@@ -152,13 +150,11 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
 
     override fun onResponIPAddress(latitude: String, longitude: String) {
         L.d("根据IP获取的经纬度: latitude=$latitude longitude=$longitude")
-
         if (latitude.isEmpty() || longitude.isEmpty()) {
             dealError("获取经纬度失败")
             taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, false, "获取经纬度失败"))
             return
         }
-
         mTaskBean.device_info.latitude = latitude
         mTaskBean.device_info.longitude = longitude
 

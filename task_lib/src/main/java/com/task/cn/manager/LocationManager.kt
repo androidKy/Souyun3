@@ -36,7 +36,7 @@ class LocationManager : ILocationController {
                             mLocationListener?.onLocationResult("0", "0")
                         }
                     }
-
+                    stopLocation()
                 })
                 .startLocation(ip)
         }

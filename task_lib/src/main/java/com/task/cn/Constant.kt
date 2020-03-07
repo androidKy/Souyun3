@@ -24,6 +24,41 @@ class URL {
     }
 }
 
+class DeviceConstant{
+    companion object{
+        const val BLUETOOTH_MACADDRESS_KEY = "android.bluetooth.BluetoothAdapter.MacAddress"
+        const val BLUETOOTH_NAME_KEY = "android.bluetooth.BluetoothAdapter.name"
+        const val DISPLAY_DPI = "android.content.res.display.dpi"
+        const val LANGUAGE = "android.content.res.language"
+        const val LATITUDE_KEY = "android.location.Location.getLatitude"
+        const val LONGITUDE_KEY = "android.location.Location.getLongitude"
+        const val NETWORK_TYPE_KEY = "android.net.NetworkInfo.getType"
+        const val NETIP_ADDR_KEY = "android.net.wifi.WifiInfo.NetIpAddr"
+        const val BSSID_KEY = "android.net.wifi.WifiInfo.getBSSID"
+        const val WIFI_MACADDRESS_KEY = "android.net.wifi.WifiInfo.getMacAddress"
+        const val WIFI_SSID_KEY = "android.net.wifi.WifiInfo.getSSID"
+        const val BUILD_ID_KEY = "android.os.Build.ID"
+        const val VERSION_RELEASE_KEY = "android.os.Build.VERSION.RELEASE"
+        const val VERSION_SDK_KEY = "android.os.Build.VERSION.SDK"
+        const val DESCRIPTION_KEY = "android.os.Build.description"
+        const val FINGERPRINT_KEY = "android.os.Build.fingerprint"
+        const val MANUFACTURER_KEY = "android.os.Build.ro.product.manufacturer"
+        const val MODEL_KEY = "android.os.Build.ro.product.model"
+        const val SERIALNO_KEY = "android.os.Build.ro.serialno"
+        const val ANDROID_ID_KEY = "android.os.SystemProperties.android_id"
+        const val DEVICEID_KEY = "android.telephony.TelephonyManager.getDeviceId"
+        const val LINE1NUMBER_KEY = "android.telephony.TelephonyManager.getLine1Number"
+        const val SIMCOUNTRYISO_KEY = "android.telephony.TelephonyManager.getSimCountryIso"
+        const val SIMOPERATOR_KEY = "android.telephony.TelephonyManager.getSimOperator"
+        const val SIMOPERATORNAME_KEY = "android.telephony.TelephonyManager.getSimOperatorName"
+        const val SIMSERIALNUMBER_KEY = "android.telephony.TelephonyManager.getSimSerialNumber"
+        const val /**/SIMSTATE_KEY = "android.telephony.TelephonyManager.getSimState"
+        const val SUBSCRIBERID_KEY = "android.telephony.TelephonyManager.getSubscriberId"
+        const val USERAGENT_KEY = "android.webview.WebSettings.setUserAgentString"
+    }
+}
+
+
 class ProxyConstant {
     companion object {
         /**
@@ -32,6 +67,7 @@ class ProxyConstant {
         const val IP_URL = "http://192.168.38.1:8096/open?api=acheqcie&close_time=300&area="  //440000
         const val CITY_CODE_URL = "http://ip.25ios.com:8089/6796324d5300e5978673d71c50780067.php"
         const val PING_URL = "http://pv.sohu.com/cityjson?ie=utf-8"    //https://2020.ip138.com/
+        const val BAIDU_LOCATION_URL = "http://api.map.baidu.com/geocoder/v2/?ak=134db1b9cf1f1f2b4427210932b34dcb&location=23.125535,113.37&output=json"
 
         const val DATA_TYPE = "multipart/form-data"
         const val POST_PARAM_METHOD = "method"
