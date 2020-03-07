@@ -1,9 +1,9 @@
 package com.task.cn.manager
 
 import com.task.cn.StatusTask
+import com.task.cn.jbean.TaskBean
 import com.task.cn.task.ITaskControllerView
 import com.task.cn.task.TaskControllerImpl
-import com.utils.common.ToastUtils
 
 /**
  * Description:任务管理
@@ -34,6 +34,17 @@ class TaskManager private constructor(private val taskBuilder: TaskBuilder) {
             private var mITaskControllerVIew: ITaskControllerView? = null
 
             private var mCityName: String = ""
+
+            private var mTaskBean: TaskBean? = null
+
+            fun setTaskBean(taskBean: TaskBean): TaskBuilder {
+                this.mTaskBean = taskBean
+                return this
+            }
+
+            fun getTaskBean(): TaskBean? {
+                return mTaskBean
+            }
 
             fun setCityName(cityName: String): TaskBuilder {
                 this.mCityName = cityName

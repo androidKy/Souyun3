@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.safframework.log.L
 import com.task.cn.Result
 import com.task.cn.StatusCode
+import com.task.cn.StatusMsg
 import com.task.cn.StatusTask
 import com.task.cn.database.RealmHelper
 import com.task.cn.jbean.AccountInfoBean
@@ -66,7 +67,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
             mTaskFinished = true
             val errorMsg = mErrorStringBuilder.toString()
             L.d("任务出现错误: $errorMsg")
-            taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, false, errorMsg))
+            taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, mTaskBean, errorMsg))
         }
     }
 
@@ -77,7 +78,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         if (taskBuilder.getLastTaskStatus() == StatusTask.TASK_RUNNING) {
             //ToastUtils.showToast("上次的任务未执行完成")
             setTaskStatus(StatusTask.TASK_RUNNING)
-            taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, false, "上次的任务未执行完成"))
+            taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, mTaskBean, "上次的任务未执行完成"))
             return
         }
         /*if(taskBuilder.getCityName().isNullOrEmpty())
@@ -97,7 +98,9 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
 
         if (taskBuilder.getTaskInfoSwitch()) {
             mTaskStartCount++
-            mTaskExecutor?.getTaskInfo()
+            if (taskBuilder.getTaskBean() == null)
+                mTaskExecutor?.getTaskInfo()
+            else mTaskExecutor?.getTaskInfo(taskBuilder.getTaskBean()!!)
         }
 
         if (taskBuilder.getIpSwitch()) {
@@ -152,7 +155,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         L.d("根据IP获取的经纬度: latitude=$latitude longitude=$longitude")
         if (latitude.isEmpty() || longitude.isEmpty()) {
             dealError("获取经纬度失败")
-            taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, false, "获取经纬度失败"))
+            taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, mTaskBean, "获取经纬度失败"))
             return
         }
         mTaskBean.device_info.latitude = latitude
@@ -162,11 +165,17 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
     }
 
     override fun onChangeDeviceInfo(result: Result<Boolean>) {
+        val finalResult = Result<TaskBean>(StatusCode.FAILED, mTaskBean, result.msg)
+
         if (result.code == StatusCode.FAILED) {
             setTaskStatus(StatusTask.TASK_EXCEPTION)
-        } else setTaskStatus(StatusTask.TASK_FINISHED)
+        } else {
+            finalResult.code = StatusCode.SUCCEED
+            finalResult.msg = StatusMsg.SUCCEED.msg
+            setTaskStatus(StatusTask.TASK_FINISHED)
+        }
 
-        taskControllerView.onTaskPrepared(result)
+        taskControllerView.onTaskPrepared(finalResult)
 
         updateTaskToRealm(mTaskBean)
     }

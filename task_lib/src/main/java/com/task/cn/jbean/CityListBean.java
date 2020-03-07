@@ -1,12 +1,13 @@
 package com.task.cn.jbean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Description:
  * Created by Quinin on 2019-07-19.
  **/
-public class CityListBean {
+public class CityListBean implements Serializable {
 
     /**
      * code : 0

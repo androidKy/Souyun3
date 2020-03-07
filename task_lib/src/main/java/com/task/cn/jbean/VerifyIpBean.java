@@ -1,10 +1,12 @@
 package com.task.cn.jbean;
 
+import java.io.Serializable;
+
 /**
  * Description:
  * Created by Quinin on 2020-03-05.
  **/
-public class VerifyIpBean {
+public class VerifyIpBean implements Serializable {
 
     /**
      * cip : 58.62.203.108

@@ -51,6 +51,13 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
         }
     }
 
+    override fun getTaskInfo(taskBean: TaskBean) {
+        Result(StatusCode.SUCCEED, taskBean, StatusMsg.SUCCEED.msg).apply {
+            taskInfoView.onResponTaskInfo(this)
+        }
+
+    }
+
     override fun getAccountInfo() {
         Result(StatusCode.FAILED, AccountInfoBean(), StatusMsg.DEFAULT.msg).run {
 

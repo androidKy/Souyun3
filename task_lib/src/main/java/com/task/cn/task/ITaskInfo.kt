@@ -9,6 +9,7 @@ import com.task.cn.jbean.TaskBean
  **/
 interface ITaskInfo {
     fun getTaskInfo()
+    fun getTaskInfo(taskBean: TaskBean)
     fun getAccountInfo()
     fun getIpInfo(cityName:String)
     fun getDeviceInfo()

@@ -1,12 +1,14 @@
 package com.task.cn.jbean;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 
 /**
  * Description:
  * Created by Quinin on 2020-03-04.
  **/
-public class BackupInfoBean extends RealmObject {
+public class BackupInfoBean extends RealmObject implements Serializable {
     /**
      * id : 1002
      * account_id : 10001

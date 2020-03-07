@@ -36,7 +36,8 @@ class ProxyController : IProxy {
     override fun startProxy(proxyRequestListener: ProxyRequestListener, cityName: String) {
         this.proxyRequestListener = proxyRequestListener
 
-        getCityCode(cityName)
+        //getCityCode(cityName)
+        changeIpByCityCode("440000")    //todo
     }
 
     private fun getCityCode(cityName: String) {
@@ -52,27 +53,27 @@ class ProxyController : IProxy {
 
         Result(StatusCode.FAILED, IpInfoBean(), "获取代理IP失败").run {
             AndroidNetworking.get(proxyUrl)
-                    .build()
-                    .getAsString(object : StringRequestListener {
-                        override fun onResponse(response: String?) {
-                            L.d("请求更换接口: $response")
-                            if (!response.isNullOrEmpty() && response == "ok") {
-                                this@run.code = StatusCode.SUCCEED
-                                this@run.msg = StatusMsg.SUCCEED.msg
-                                this@run.r.city_code = cityCode.toLong()
-                            }
-
-                            setRequestResult(this@run)
+                .build()
+                .getAsString(object : StringRequestListener {
+                    override fun onResponse(response: String?) {
+                        L.d("请求更换接口: $response")
+                        if (!response.isNullOrEmpty() && response == "ok") {
+                            this@run.code = StatusCode.SUCCEED
+                            this@run.msg = StatusMsg.SUCCEED.msg
+                            this@run.r.city_code = cityCode.toLong()
                         }
 
-                        override fun onError(anError: ANError?) {
-                            val errorMsg = anError?.response?.message()
-                            if (!errorMsg.isNullOrEmpty())
-                                this@run.msg = errorMsg
+                        setRequestResult(this@run)
+                    }
 
-                            setRequestResult(this@run)
-                        }
-                    })
+                    override fun onError(anError: ANError?) {
+                        val errorMsg = anError?.response?.message()
+                        if (!errorMsg.isNullOrEmpty())
+                            this@run.msg = errorMsg
+
+                        setRequestResult(this@run)
+                    }
+                })
         }
     }
 
@@ -80,43 +81,55 @@ class ProxyController : IProxy {
      * 获取城市列表
      */
     private fun getCityList(cityName: String) {
-        val currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).run { format(Date()) }
+        val currentDate =
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).run { format(Date()) }
         L.i("currentDate: $currentDate")
         val lastGetCityDate = SPUtils.getInstance(SP_CITY_LIST).getString(KEY_CITY_GET_DATE)
 
-        if (lastGetCityDate.isNullOrEmpty() || TimeUtils.getDays(currentDate, lastGetCityDate) >= 1) { //对比当前时间与上次获取的时间
+        if (lastGetCityDate.isNullOrEmpty() || TimeUtils.getDays(
+                currentDate,
+                lastGetCityDate
+            ) >= 1
+        ) { //对比当前时间与上次获取的时间
             //重新获取
             L.d("重新获取城市ID")
             //getCityList()
             val imei = DevicesUtil.getIMEI(Utils.getApp())
             L.d("imei: $imei")
             AndroidNetworking.post(CITY_CODE_URL)
-                    .setContentType(DATA_TYPE)
-                    .addBodyParameter(POST_PARAM_METHOD, "getCity")
-                    .addBodyParameter(POST_PARAM_IMEI, imei)
-                    .addBodyParameter(POST_PARAM_PLATFORMID, "2")   //Android:2 IOS:1
-                    .build()
-                    .getAsJSONObject(object : JSONObjectRequestListener {
-                        override fun onResponse(response: JSONObject?) {
-                            response?.run {
-                                val strResult = toString()
-                                L.i("threadID = ${ThreadUtils.isMainThread()} \ngetCityList result: $strResult")
-                                //保存城市列表，隔一天再重新获取
-                                SPUtils.getInstance(SP_CITY_LIST).apply {
-                                    put(KEY_CITY_DATA, strResult)
-                                    put(KEY_CITY_GET_DATE,
-                                            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).run { format(Date()) })
-                                }
-                                getCityCodeFromCityList(cityName, strResult)
+                .setContentType(DATA_TYPE)
+                .addBodyParameter(POST_PARAM_METHOD, "getCity")
+                .addBodyParameter(POST_PARAM_IMEI, imei)
+                .addBodyParameter(POST_PARAM_PLATFORMID, "2")   //Android:2 IOS:1
+                .build()
+                .getAsJSONObject(object : JSONObjectRequestListener {
+                    override fun onResponse(response: JSONObject?) {
+                        response?.run {
+                            val strResult = toString()
+                            L.i("threadID = ${ThreadUtils.isMainThread()} \ngetCityList result: $strResult")
+                            //保存城市列表，隔一天再重新获取
+                            SPUtils.getInstance(SP_CITY_LIST).apply {
+                                put(KEY_CITY_DATA, strResult)
+                                put(KEY_CITY_GET_DATE,
+                                    SimpleDateFormat(
+                                        "yyyy-MM-dd HH:mm:ss",
+                                        Locale.CHINA
+                                    ).run { format(Date()) })
                             }
+                            getCityCodeFromCityList(cityName, strResult)
                         }
+                    }
 
-                        override fun onError(anError: ANError?) {
-                            L.d("getCityList error: ${anError?.errorDetail} result: ${anError?.response?.body()?.string()}")
-                            val result = Result(StatusCode.FAILED, IpInfoBean(), "getCityList error：${anError?.response?.body()?.string()}")
-                            setRequestResult(result)
-                        }
-                    })
+                    override fun onError(anError: ANError?) {
+                        L.d("getCityList error: ${anError?.errorDetail} result: ${anError?.response?.body()?.string()}")
+                        val result = Result(
+                            StatusCode.FAILED,
+                            IpInfoBean(),
+                            "getCityList error：${anError?.response?.body()?.string()}"
+                        )
+                        setRequestResult(result)
+                    }
+                })
         } else {
             val data = SPUtils.getInstance(SP_CITY_LIST).getString(KEY_CITY_DATA)
             getCityCodeFromCityList(cityName, data)

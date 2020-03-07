@@ -45,8 +45,9 @@ class ProxyManager {
                 if (result.code == StatusCode.FAILED)
                     mProxyRequestListener?.onProxyResult(result)
                 else {
+                    mProxyRequestListener?.onProxyResult(result)
                     //校验切换后的IP是否正确
-                    PingManager.verifyIP(mCityName!!, object : IpListener {
+                    /*PingManager.verifyIP(mCityName!!, object : IpListener {
                         override fun onIpResult(result: Boolean, verifyIpBean: VerifyIpBean?) {
                             if (result) {
                                 val ipBean = IpInfoBean()
@@ -57,7 +58,7 @@ class ProxyManager {
                                 mProxyRequestListener?.onProxyResult(Result(StatusCode.FAILED, IpInfoBean(), "校验IP失败"))
                             }
                         }
-                    })
+                    })*/
                 }
             }
         }, mCityName!!)
