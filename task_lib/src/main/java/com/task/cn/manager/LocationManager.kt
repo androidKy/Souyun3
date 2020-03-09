@@ -1,7 +1,5 @@
 package com.task.cn.manager
 
-import com.amap.api.location.AMapLocationListener
-import com.safframework.log.L
 import com.task.cn.location.ILocationController
 import com.task.cn.location.LocationController
 
@@ -21,23 +19,7 @@ class LocationManager : ILocationController {
     override fun startLocation(ip: String) {
         mLocationListener?.apply {
             LocationController.instance
-                .setLocationListener(AMapLocationListener {
-                    it?.apply {
-                        if (this.errorCode == 0) {
-                            val longitude = this.longitude
-                            val latitude = this.latitude
-
-                            mLocationListener?.onLocationResult(
-                                latitude.toString(),
-                                longitude.toString()
-                            )
-                        } else {
-                            L.d("定位失败: code:${this.errorCode} errorInfo:${this.errorInfo}")
-                            mLocationListener?.onLocationResult("0", "0")
-                        }
-                    }
-                    stopLocation()
-                })
+                .setLocationListener(this)
                 .startLocation(ip)
         }
     }

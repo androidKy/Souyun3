@@ -6,9 +6,9 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.androidnetworking.interfaces.StringRequestListener
 import com.google.gson.Gson
 import com.safframework.log.L
+import com.task.cn.ProxyConstant
 import com.task.cn.ProxyConstant.Companion.CITY_CODE_URL
 import com.task.cn.ProxyConstant.Companion.DATA_TYPE
-import com.task.cn.ProxyConstant.Companion.IP_URL
 import com.task.cn.ProxyConstant.Companion.KEY_CITY_DATA
 import com.task.cn.ProxyConstant.Companion.KEY_CITY_GET_DATE
 import com.task.cn.ProxyConstant.Companion.POST_PARAM_IMEI
@@ -37,7 +37,7 @@ class ProxyController : IProxy {
         this.proxyRequestListener = proxyRequestListener
 
         //getCityCode(cityName)
-        changeIpByCityCode("440000")    //todo
+        changeIpByCityCode(cityName)    //todo
     }
 
     private fun getCityCode(cityName: String) {
@@ -49,7 +49,8 @@ class ProxyController : IProxy {
      */
     private fun changeIpByCityCode(cityCode: String) {
         L.d("cityCode: $cityCode")
-        val proxyUrl = "$IP_URL$cityCode&ip=${DevicesUtil.getIPAddress(Utils.getApp())}"
+        //val proxyUrl ="$PROXY_IP_URL$cityCod e&ip=${DevicesUtil.getIPAddress(Utils.getApp())}"
+        val proxyUrl = "${ProxyConstant.PROXY_IP_URL}$cityCode"
 
         Result(StatusCode.FAILED, IpInfoBean(), "获取代理IP失败").run {
             AndroidNetworking.get(proxyUrl)

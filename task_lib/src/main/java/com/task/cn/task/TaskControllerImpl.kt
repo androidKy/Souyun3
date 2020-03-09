@@ -62,7 +62,10 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         updateTaskToRealm(mTaskBean)
         if (mTaskErrorCount == 0) {
             mTaskFinished = true
-            mTaskExecutor?.getLocationByIP("")
+
+            mHandler.postDelayed({
+                mTaskExecutor?.getLocationByIP("")
+            }, 3000)
         } else {
             mTaskFinished = true
             val errorMsg = mErrorStringBuilder.toString()
@@ -158,6 +161,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
             taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, mTaskBean, "获取经纬度失败"))
             return
         }
+
         mTaskBean.device_info.latitude = latitude
         mTaskBean.device_info.longitude = longitude
 

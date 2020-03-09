@@ -24,8 +24,15 @@ class URL {
     }
 }
 
-class DeviceConstant{
+class PkgConstant{
     companion object{
+        const val WECHAT_PKG = "com.tencent.mm"
+        const val TIKTOK_PKG = "com.ss.android.ugc.aweme"
+    }
+}
+
+class DeviceConstant {
+    companion object {
         const val BLUETOOTH_MACADDRESS_KEY = "android.bluetooth.BluetoothAdapter.MacAddress"
         const val BLUETOOTH_NAME_KEY = "android.bluetooth.BluetoothAdapter.name"
         const val DISPLAY_DPI = "android.content.res.display.dpi"
@@ -64,11 +71,13 @@ class ProxyConstant {
         /**
          * 获取IP
          */
-        const val IP_URL = "http://192.168.38.1:8096/open?api=acheqcie&close_time=300&area="  //440000
+        // const val PROXY_IP_URL = "http://192.168.38.1:8096/open?api=acheqcie&close_time=1200&area="  //440000
+        const val PROXY_IP_URL = "http://192.168.38.1:8096/open?api=uchdnwhc&close_time=3600&area="
         const val CITY_CODE_URL = "http://ip.25ios.com:8089/6796324d5300e5978673d71c50780067.php"
         const val PING_URL = "http://pv.sohu.com/cityjson?ie=utf-8"    //https://2020.ip138.com/
-        const val BAIDU_LOCATION_URL = "http://api.map.baidu.com/geocoder/v2/?ak=134db1b9cf1f1f2b4427210932b34dcb&location=23.125535,113.37&output=json"
-
+        // const val LOCATION_URL =
+        //     "http://api.map.baidu.com/geocoder/v2/?ak=134db1b9cf1f1f2b4427210932b34dcb&location=23.125535,113.37&output=json"
+        const val LOCATION_URL = "http://ip-api.com/json/"
         const val DATA_TYPE = "multipart/form-data"
         const val POST_PARAM_METHOD = "method"
         const val POST_PARAM_IMEI = "imei"

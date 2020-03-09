@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DeviceInfoActivity"></activity>
+        <activity android:name=".ProxyInfoActivity"></activity>
+        <activity android:name=".DeviceInfoActivity" />
         <activity android:name=".MainActivity">
 
             <!--

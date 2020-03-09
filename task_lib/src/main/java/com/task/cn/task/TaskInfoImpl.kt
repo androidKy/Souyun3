@@ -88,11 +88,6 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
 
     override fun getLocationByIP(ip: String) {
         L.d("current ip: $ip")
-        /* if(ip.isEmpty())
-         {
-             taskInfoView.onResponIPAddress("", "")
-             return
-         }*/
         LocationManager()
             .setLocationListener(object : LocationListener {
                 override fun onLocationResult(latitude: String, longitude: String) {
