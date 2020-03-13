@@ -18,10 +18,18 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>() {
         mViewModel = getViewModel(HomeViewModel::class.java)
             .apply {
                 text.observe(viewLifecycleOwner, Observer {
-                    text_home.text = it
+                    //text_home.text = it
                 })
             }
+
+        refreshData()
     }
 
-
+    private fun refreshData(){
+        refreshLayout.setOnRefreshListener {
+            it.finishRefresh(2000)
+        }
+        refreshLayout.setEnableLoadMore(false)
+        //refreshLayout.autoRefresh()
+    }
 }

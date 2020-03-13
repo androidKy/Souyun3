@@ -72,7 +72,7 @@ class ProxyConstant {
          * 获取IP
          */
         // const val PROXY_IP_URL = "http://192.168.38.1:8096/open?api=acheqcie&close_time=1200&area="  //440000
-        const val PROXY_IP_URL = "http://192.168.38.1:8096/open?api=uchdnwhc&close_time=3600&area="
+        const val PROXY_IP_URL = "http://192.168.38.1:8096/open?api=uchdnwhc&close_time=3600"
         const val CITY_CODE_URL = "http://ip.25ios.com:8089/6796324d5300e5978673d71c50780067.php"
         const val PING_URL = "http://pv.sohu.com/cityjson?ie=utf-8"    //https://2020.ip138.com/
         // const val LOCATION_URL =

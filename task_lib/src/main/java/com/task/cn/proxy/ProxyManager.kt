@@ -13,7 +13,13 @@ import com.task.cn.jbean.VerifyIpBean
  **/
 class ProxyManager {
     private var mCityName: String? = null
+    private var mCityCode: String? = null
     private var mProxyRequestListener: ProxyRequestListener? = null
+
+    fun setCityCode(cityCode: String?): ProxyManager {
+        mCityCode = cityCode
+        return this
+    }
 
     fun setCityName(cityName: String?): ProxyManager {
         mCityName = cityName
@@ -30,17 +36,32 @@ class ProxyManager {
         if (mCityName.isNullOrEmpty()) {
             L.d("cityName can not be null")
             //ToastUtils.showToast("城市名不能为空")
-            mProxyRequestListener?.onProxyResult(Result(StatusCode.FAILED, IpInfoBean(), "cityName can not be null"))
+            mProxyRequestListener?.onProxyResult(
+                Result(
+                    StatusCode.FAILED,
+                    IpInfoBean(),
+                    "cityName can not be null"
+                )
+            )
             return
         }
         if (mProxyRequestListener == null) {
             L.d("mProxyRequestListener can not be null")
             //ToastUtils.showToast("mProxyRequestListener不能为空")
-            mProxyRequestListener?.onProxyResult(Result(StatusCode.FAILED, IpInfoBean(), "mProxyRequestListener can not be null"))
+            mProxyRequestListener?.onProxyResult(
+                Result(
+                    StatusCode.FAILED,
+                    IpInfoBean(),
+                    "mProxyRequestListener can not be null"
+                )
+            )
             return
         }
 
-        ProxyController().startProxy(object : ProxyRequestListener {
+
+        ProxyController()
+            .setCityData(mCityCode,mCityName)
+            .startProxy(object : ProxyRequestListener {
             override fun onProxyResult(result: Result<IpInfoBean>) {
                 if (result.code == StatusCode.FAILED)
                     mProxyRequestListener?.onProxyResult(result)
@@ -61,6 +82,6 @@ class ProxyManager {
                     })*/
                 }
             }
-        }, mCityName!!)
+        })
     }
 }

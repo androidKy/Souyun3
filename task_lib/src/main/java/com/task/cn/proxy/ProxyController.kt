@@ -32,12 +32,25 @@ import java.util.*
 class ProxyController : IProxy {
 
     private var proxyRequestListener: ProxyRequestListener? = null
+    private var mCityCode: String? = ""
+    private var mCityName: String? = ""
 
-    override fun startProxy(proxyRequestListener: ProxyRequestListener, cityName: String) {
+    fun setCityData(cityCode: String?, cityName: String?): ProxyController {
+        mCityCode = cityCode
+        mCityName = cityName
+        return this
+    }
+
+    override fun startProxy(proxyRequestListener: ProxyRequestListener) {
         this.proxyRequestListener = proxyRequestListener
 
-        //getCityCode(cityName)
-        changeIpByCityCode(cityName)    //todo
+        if (mCityCode.isNullOrEmpty()) {
+            if (mCityName.isNullOrEmpty())
+                changeIpByCityCode("")
+            else getCityCode(mCityName!!)
+        } else {
+            changeIpByCityCode(mCityCode!!)
+        }
     }
 
     private fun getCityCode(cityName: String) {
@@ -50,7 +63,10 @@ class ProxyController : IProxy {
     private fun changeIpByCityCode(cityCode: String) {
         L.d("cityCode: $cityCode")
         //val proxyUrl ="$PROXY_IP_URL$cityCod e&ip=${DevicesUtil.getIPAddress(Utils.getApp())}"
-        val proxyUrl = "${ProxyConstant.PROXY_IP_URL}$cityCode"
+        var proxyUrl = ProxyConstant.PROXY_IP_URL
+        if (cityCode.isNotEmpty()) {
+            proxyUrl = "${ProxyConstant.PROXY_IP_URL}&area=$cityCode"
+        }
 
         Result(StatusCode.FAILED, IpInfoBean(), "获取代理IP失败").run {
             AndroidNetworking.get(proxyUrl)
@@ -167,10 +183,11 @@ class ProxyController : IProxy {
                 if (!result.isNullOrEmpty()) {
                     changeIpByCityCode(result)
                 } else {
-                    L.i("$cityName 该城市没有IP，重新获取地址")
-                    Result(StatusCode.FAILED, IpInfoBean(), "$cityName 该城市没有IP，重新获取地址").run {
-                        setRequestResult(this)
-                    }
+                    /*  L.i("$cityName 该城市没有IP，重新获取地址")
+                      Result(StatusCode.FAILED, IpInfoBean(), "$cityName 该城市没有IP，重新获取地址").run {
+                          setRequestResult(this)
+                      }*/
+                    changeIpByCityCode("")
                 }
             }
 

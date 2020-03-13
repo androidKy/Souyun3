@@ -12,16 +12,16 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.account.manager.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_add"
+        android:name="com.account.manager.ui.add.AddAccountFragment"
+        android:label="@string/menu_add_account"
+        tools:layout="@layout/fragment_add" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.account.manager.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_phone_setup"
+        android:name="com.account.manager.ui.phone.PhoneSetupFragment"
+        android:label="@string/menu_phone_setup"
+        tools:layout="@layout/fragment_phone_setup" />
 
     <fragment
         android:id="@+id/nav_tools"

@@ -44,6 +44,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
 
     implementation 'com.jakewharton:butterknife:10.2.1'
+    implementation 'androidx.annotation:annotation:1.1.0'
     kapt 'com.jakewharton:butterknife-compiler:10.2.1'
 
     implementation 'com.google.android.material:material:1.1.0'
@@ -60,6 +61,7 @@ dependencies {
     //UI
     implementation 'com.github.arcadefire:nice-spinner:1.4.4'
     implementation 'com.evrencoskun.library:tableview:0.8.9'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
 
     implementation project(':task_lib')
 

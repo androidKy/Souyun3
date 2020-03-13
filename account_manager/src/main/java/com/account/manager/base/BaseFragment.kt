@@ -29,7 +29,6 @@ abstract class BaseFragment : Fragment() {
         val view = inflater.inflate(getViewId(), container, false)
         unBinder = ButterKnife.bind(this, view)
 
-
         return view
     }
 

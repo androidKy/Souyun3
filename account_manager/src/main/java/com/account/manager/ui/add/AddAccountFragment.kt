@@ -1,4 +1,4 @@
-package com.account.manager.ui.slideshow
+package com.account.manager.ui.add
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.account.manager.R
 
-class SlideshowFragment : Fragment() {
+class AddAccountFragment : Fragment() {
 
-    private lateinit var slideshowViewModel: SlideshowViewModel
+    private lateinit var addAccountViewModel: AddAccountViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        slideshowViewModel =
-            ViewModelProviders.of(this).get(SlideshowViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
-        val textView: TextView = root.findViewById(R.id.text_slideshow)
-        slideshowViewModel.text.observe(this, Observer {
+        addAccountViewModel =
+            ViewModelProviders.of(this).get(AddAccountViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_add, container, false)
+        val textView: TextView = root.findViewById(R.id.text_gallery)
+        addAccountViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root
