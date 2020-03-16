@@ -37,7 +37,7 @@ class LoginDataSource {
                                 )
                             )
                         } else {
-                            loginListener.onLoginResult(Result.Error(IOException("登录失败")))
+                            loginListener.onLoginResult(Result.Error(IOException(loginData.msg)))
                         }
                     }
 

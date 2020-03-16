@@ -5,13 +5,11 @@ import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.StringRequestListener
 import com.google.gson.Gson
 import com.safframework.log.L
-import com.task.cn.Result
-import com.task.cn.StatusCode
-import com.task.cn.StatusMsg
+import com.task.cn.*
+import com.task.cn.SPConstant.Companion.SP_DEVICE_INFO
 import com.task.cn.URL.Companion.GET_DEVICE_INFO_URL
 import com.task.cn.device.DeviceInfoController
 import com.task.cn.device.DeviceInfoListener
-import com.task.cn.getPlatformPkg
 import com.task.cn.jbean.AccountInfoBean
 import com.task.cn.jbean.DeviceInfoBean
 import com.task.cn.jbean.IpInfoBean
@@ -22,6 +20,7 @@ import com.task.cn.model.DeviceModel
 import com.task.cn.proxy.ProxyManager
 import com.task.cn.proxy.ProxyRequestListener
 import com.task.cn.util.AppUtils
+import com.utils.common.SPUtils
 import com.utils.common.Utils
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -95,21 +94,28 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
                 .getAsString(object : StringRequestListener {
                     override fun onResponse(response: String?) {
                         L.d("服务器返回的设备信息: $response")
-                        if (!response.isNullOrEmpty()) {
-                            val deviceModel = Gson().fromJson(response, DeviceModel::class.java)
-                            if (deviceModel.ret == 200) {
-                                val deviceInfoBean = deviceModel.data.deviceInfoBean
-                                deviceInfoBean.id = deviceModel.data.id
+                        try {
+                            if (!response.isNullOrEmpty()) {
+                                val deviceModel = Gson().fromJson(response, DeviceModel::class.java)
+                                if (deviceModel.ret == 200) {
+                                    val deviceInfoBean = deviceModel.data.deviceInfoBean
+                                    deviceInfoBean.id = deviceModel.data.id
 
-                                this@run.r = deviceInfoBean
-                                this@run.code = StatusCode.SUCCEED
-                                this@run.msg = StatusMsg.SUCCEED.msg
-                            } else this@run.msg = deviceModel.msg
+                                    this@run.r = deviceInfoBean
+                                    this@run.code = StatusCode.SUCCEED
+                                    this@run.msg = StatusMsg.SUCCEED.msg
 
-                            taskInfoView.onResponDeviceInfo(this@run)
-                        } else {
-                            this@run.msg = "服务器返回数据为空"
+                                    SPUtils.getInstance(SP_DEVICE_INFO).put(SPConstant.KEY_DEVICE_ID,deviceModel.data.id.toString())
+                                } else this@run.msg = deviceModel.msg
 
+                                taskInfoView.onResponDeviceInfo(this@run)
+                            } else {
+                                this@run.msg = "服务器返回数据为空"
+
+                                taskInfoView.onResponDeviceInfo(this@run)
+                            }
+                        } catch (e: Exception) {
+                            this@run.msg = e.message!!
                             taskInfoView.onResponDeviceInfo(this@run)
                         }
                     }
@@ -126,7 +132,6 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
     }
 
     override fun getLocationByIP(ip: String) {
-        L.d("current ip: $ip")
         LocationManager()
             .setLocationListener(object : LocationListener {
                 override fun onLocationResult(latitude: String, longitude: String) {

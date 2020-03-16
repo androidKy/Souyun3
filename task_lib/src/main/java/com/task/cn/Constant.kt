@@ -40,6 +40,18 @@ class PkgConstant {
     }
 }
 
+class SPConstant{
+    companion object{
+        const val SP_DEVICE_INFO = "sp_device_info"
+        const val SP_IP_INFO = "sp_ip_info"
+
+        const val KEY_IP = "ip"
+        const val KEY_CITY_CODE = "city_code"
+        const val KEY_CITY_NAME = "city_name"
+        const val KEY_DEVICE_ID = "device_id"
+    }
+}
+
 fun getPlatformPkg(platform: Int): String {
     return when (platform) {
         1 -> WECHAT_PKG
@@ -48,6 +60,17 @@ fun getPlatformPkg(platform: Int): String {
         4 -> JD_PKG
         5 -> PDD_PKG
         else -> ""
+    }
+}
+
+fun getPlatformByAppName(name: String): Int {
+    return when (name) {
+        "微信" -> 1
+        "抖音" -> 2
+        "快手" -> 3
+        "京东" -> 4
+        "拼多多" -> 5
+        else -> -1
     }
 }
 

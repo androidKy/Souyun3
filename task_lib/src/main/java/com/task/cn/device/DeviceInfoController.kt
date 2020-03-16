@@ -74,7 +74,8 @@ class DeviceInfoController : IDeviceInfo {
         //先读取文件转成字符串
         ThreadUtils.executeByCached(object : ThreadUtils.Task<Boolean>() {
             override fun doInBackground(): Boolean {
-                CMDUtil().execCmd("chmod 777 $DEVICE_INFO_FILE_PATH")
+                var resultBoolean = false
+                val cmdResult = CMDUtil().execCmd("chmod 777 $DEVICE_INFO_FILE_PATH")
                 val result = FileIOUtils.readFile2String(DEVICE_INFO_FILE_PATH)
                 L.d("配置前文件信息: $result")
                 try {
@@ -93,13 +94,15 @@ class DeviceInfoController : IDeviceInfo {
                         }
                         val str = this.toString()
                         FileIOUtils.writeFileFromString(DEVICE_INFO_FILE_PATH, str)
+
+                        if(!cmdResult.contains("denied"))
+                            resultBoolean = true
                     }
                 } catch (e: Exception) {
                     L.d(e.message)
-                    return false
                 }
 
-                return true
+                return resultBoolean
             }
 
             override fun onSuccess(result: Boolean) {
@@ -134,6 +137,7 @@ class DeviceInfoController : IDeviceInfo {
             if (createResult) {
                 ThreadUtils.executeByCached(object : ThreadUtils.Task<Boolean>() {
                     override fun doInBackground(): Boolean {
+                        var result = false
                         try {
                             JSONObject().apply {
                                 for (pkgName in pkgList) {
@@ -145,13 +149,16 @@ class DeviceInfoController : IDeviceInfo {
                                 FileIOUtils.writeFileFromString(filePath, str)
                             }
 
-                            CMDUtil().execCmd("cp -ar $filePath /data/local/tmp/")
+                            val execCmd = CMDUtil().execCmd("cp -ar $filePath /data/local/tmp/")
+                            if (!execCmd.contains("denied")) {
+                                result = true
+                            }
+                            L.d("execCmd: $execCmd")
                         } catch (e: Exception) {
                             L.d(e.message)
-                            return false
                         }
 
-                        return true
+                        return result
                     }
 
                     override fun onSuccess(result: Boolean) {

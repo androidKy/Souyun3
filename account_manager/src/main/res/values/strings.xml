@@ -19,7 +19,7 @@
     <string name="title_activity_login">登录</string>
     <string name="prompt_email">手机号</string>
     <string name="prompt_password">密码</string>
-    <string name="action_sign_in">注册</string>
+    <string name="action_sign_in">登录</string>
     <string name="action_sign_in_short">登录</string>
     <string name="welcome">登录成功</string>
     <string name="invalid_username">不是一个有效的用户名</string>
@@ -38,4 +38,5 @@
     <string name="tv_use_scope">已生效的APP：</string>
     <string name="title_activity_multi_setup">MultiSetupActivity</string>
     <string name="app_list">默认所有用户已安装的程序</string>
+    <string name="bt_commit_account">提交</string>
 </resources>

@@ -6,7 +6,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.androidnetworking.interfaces.StringRequestListener
 import com.google.gson.Gson
 import com.safframework.log.L
-import com.task.cn.ProxyConstant
+import com.task.cn.*
 import com.task.cn.ProxyConstant.Companion.CITY_CODE_URL
 import com.task.cn.ProxyConstant.Companion.DATA_TYPE
 import com.task.cn.ProxyConstant.Companion.KEY_CITY_DATA
@@ -15,11 +15,9 @@ import com.task.cn.ProxyConstant.Companion.POST_PARAM_IMEI
 import com.task.cn.ProxyConstant.Companion.POST_PARAM_METHOD
 import com.task.cn.ProxyConstant.Companion.POST_PARAM_PLATFORMID
 import com.task.cn.ProxyConstant.Companion.SP_CITY_LIST
-import com.task.cn.Result
-import com.task.cn.StatusCode
-import com.task.cn.StatusMsg
 import com.task.cn.jbean.CityListBean
 import com.task.cn.jbean.IpInfoBean
+import com.task.cn.jbean.VerifyIpBean
 import com.utils.common.*
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -80,7 +78,7 @@ class ProxyController : IProxy {
                             this@run.r.city_code = cityCode.toLong()
                         }
 
-                        setRequestResult(this@run)
+                        checkIP(this@run)
                     }
 
                     override fun onError(anError: ANError?) {
@@ -91,6 +89,36 @@ class ProxyController : IProxy {
                         setRequestResult(this@run)
                     }
                 })
+        }
+    }
+
+    private fun checkIP(result: Result<IpInfoBean>) {
+        PingManager.getNetIP(object : IpListener {
+            override fun onIpResult(ipResult: Boolean, verifyIpBean: VerifyIpBean?) {
+                if (ipResult) {
+                    verifyIpBean?.apply {
+                        result.r.ip = this.cip
+                        result.r.city_code = this.cid.toLong()
+                        result.r.city = this.cname
+
+                        saveIpInfo(this.cip, this.cname, this.cid)
+                    }
+                } else {
+                    result.code = StatusCode.FAILED
+                    result.msg = "网络连接失败"
+                }
+
+                setRequestResult(result)
+            }
+
+        })
+    }
+
+    private fun saveIpInfo(ip: String, cityName: String, cityCode: String) {
+        SPUtils.getInstance(SPConstant.SP_IP_INFO).apply {
+            put(SPConstant.KEY_IP, ip)
+            put(SPConstant.KEY_CITY_NAME, cityName)
+            put(SPConstant.KEY_CITY_CODE, cityCode)
         }
     }
 
