@@ -39,4 +39,8 @@
     <string name="title_activity_multi_setup">MultiSetupActivity</string>
     <string name="app_list">默认所有用户已安装的程序</string>
     <string name="bt_commit_account">提交</string>
+    <string name="add_account_succeed">添加账号成功</string>
+    <string name="add_account_failed">添加账号失败</string>
+    <string name="unlogin_tip">请先登录</string>
+    <string name="unchanged_tip">未更改设备信息</string>
 </resources>

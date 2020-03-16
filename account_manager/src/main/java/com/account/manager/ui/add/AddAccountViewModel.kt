@@ -10,8 +10,6 @@ import com.account.manager.net.RequestListener
 
 class AddAccountViewModel : ViewModel() {
 
-    private val _platform = MutableLiveData<String>()
-    val platform: LiveData<String> = _platform
     private val _commitResult = MutableLiveData<Boolean>()
     val commitResult: LiveData<Boolean> = _commitResult
 
@@ -21,10 +19,11 @@ class AddAccountViewModel : ViewModel() {
             .setRequestListener(object : RequestListener {
                 override fun onSucceed(result: BaseData) {
                     val commitAccountResult = result as CommitAccountResult
-                    //todo 提交账号结果处理
+                    _commitResult.value = commitAccountResult.ret == 200
                 }
 
                 override fun onError(msg: String) {
+                    _commitResult.value = false
                 }
             })
             .commitAccount(platform, accountName, psw)

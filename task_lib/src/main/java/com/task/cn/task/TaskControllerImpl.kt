@@ -14,6 +14,8 @@ import com.task.cn.jbean.DeviceInfoBean
 import com.task.cn.jbean.IpInfoBean
 import com.task.cn.jbean.TaskBean
 import com.task.cn.manager.TaskManager
+import com.utils.common.ToastUtils
+import com.utils.common.Utils
 
 /**
  * Description:
@@ -81,8 +83,16 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
          */
         if (taskBuilder.getLastTaskStatus() == StatusTask.TASK_RUNNING) {
             //ToastUtils.showToast("上次的任务未执行完成")
-            setTaskStatus(StatusTask.TASK_RUNNING)
             taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, mTaskBean, "上次的任务未执行完成"))
+            return
+        }
+        /**
+         * 任务正在执行
+         */
+        if(mTaskStatus == StatusTask.TASK_RUNNING)
+        {
+            taskControllerView.onTaskPrepared(Result(StatusCode.FAILED,mTaskBean,"任务正在执行"))
+            ToastUtils.showToast(Utils.getApp(),"任务正在执行")
             return
         }
         /*if(taskBuilder.getCityName().isNullOrEmpty())

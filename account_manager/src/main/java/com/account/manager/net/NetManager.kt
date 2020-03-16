@@ -41,6 +41,7 @@ class NetManager {
             .build()
             .getAsString(object : StringRequestListener {
                 override fun onResponse(response: String?) {
+                    L.d("登录结果：$response")
                     val loginData = Gson().fromJson(response, LoginData::class.java)
                     requestListener?.onSucceed(loginData)
                 }

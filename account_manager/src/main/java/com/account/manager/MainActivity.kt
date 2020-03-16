@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -27,6 +28,7 @@ import com.utils.common.SPUtils
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var mNavController: NavController
     private lateinit var mLoginSP: SPUtils
     private var mLoginStatus: Boolean = false
 
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = this.findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+        mNavController = navController
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -101,7 +104,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-
+            R.id.action_search -> {
+                L.d("search")
+            }
+            R.id.action_add -> {
+                L.d("add")
+                mNavController.navigate(R.id.nav_add)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

@@ -39,7 +39,7 @@ class RealmHelper : DBHelper {
         mTaskRealm?.executeTransaction {
             val result = it.where(TaskBean::class.java).equalTo("task_id", taskBean.task_id).findFirst()
             if (result != null) {
-                L.d("只更新TaskBean")
+//                L.d("只更新TaskBean")
             } else {
                 var primaryKey = 0L
                 val tasks = it.where(TaskBean::class.java).findAll()
@@ -50,7 +50,7 @@ class RealmHelper : DBHelper {
                 }
                 taskBean.id = primaryKey
 
-                L.d("主键: $primaryKey")
+//                L.d("主键: $primaryKey")
             }
             it.copyToRealmOrUpdate(taskBean)
         }

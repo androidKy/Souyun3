@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.account.manager.base.BaseViewModel
+import com.safframework.log.L
 import com.task.cn.Result
 import com.task.cn.StatusCode
 import com.task.cn.jbean.TaskBean
@@ -47,12 +48,14 @@ class PhoneSetupViewModel : BaseViewModel() {
             .setPlatformList(arrayListOf(-1))
             .setTaskControllerView(object : ITaskControllerView {
                 override fun onTaskPrepared(result: Result<TaskBean>) {
+                    var msg = result.msg
                     if (result.code == StatusCode.SUCCEED) {
+                        L.d("改机成功")
                         settingPhoneInfo()
                         settingIPInfo()
+                        msg = "设备信息和IP已更改"
                     }
-
-                    _tipSetup.value = result.msg
+                    _tipSetup.value = msg
                 }
             })
             .build()
