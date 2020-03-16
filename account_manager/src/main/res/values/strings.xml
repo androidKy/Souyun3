@@ -37,4 +37,5 @@
     <string name="bt_multi_setup">选择性改机</string>
     <string name="tv_use_scope">已生效的APP：</string>
     <string name="title_activity_multi_setup">MultiSetupActivity</string>
+    <string name="app_list">默认所有用户已安装的程序</string>
 </resources>

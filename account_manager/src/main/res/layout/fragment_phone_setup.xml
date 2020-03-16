@@ -70,8 +70,7 @@
         <TextView
             android:id="@+id/tv_ip_value"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="192.168.3.58" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -88,8 +87,7 @@
         <TextView
             android:id="@+id/tv_ip_city"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="广州市" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <TextView
@@ -103,8 +101,8 @@
         android:id="@+id/tv_apps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:text="微信，抖音，拼多多" />
+        android:text="@string/app_list"
+        android:textColor="@color/colorPrimary" />
 
 
     <Button
@@ -121,11 +119,10 @@
 
     <TextView
         android:id="@+id/tv_setup_tip"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp"
-        android:text="改机提示"
-        android:textColor="@android:color/holo_red_light"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="18sp" />
 
 </LinearLayout>

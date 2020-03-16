@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import butterknife.ButterKnife
 import butterknife.Unbinder
+import com.account.manager.R
 
 /**
  * Description:
@@ -15,6 +17,7 @@ import butterknife.Unbinder
 abstract class BaseFragment : Fragment() {
 
     private lateinit var unBinder: Unbinder
+    private var mDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,5 +47,26 @@ abstract class BaseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         unBinder.unbind()
+    }
+
+    fun showDialog() {
+        activity?.apply {
+            mDialog = AlertDialog.Builder(this)
+                .setView(R.layout.dialog_setup_tip)
+                .create().apply {
+                    setCanceledOnTouchOutside(false)
+                    show()
+                    window?.setBackgroundDrawable(null)
+                }
+        }
+    }
+
+    fun hideDialog(){
+        activity?.apply{
+            mDialog?.let {
+                if(it.isShowing)
+                    it.dismiss()
+            }
+        }
     }
 }

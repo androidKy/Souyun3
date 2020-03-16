@@ -18,7 +18,7 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>() {
         mViewModel = getViewModel(HomeViewModel::class.java)
             .apply {
                 text.observe(viewLifecycleOwner, Observer {
-                    //text_home.text = it
+                    //text_home.tipSetup = it
                 })
             }
 

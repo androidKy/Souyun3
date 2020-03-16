@@ -27,14 +27,15 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         const val MSG_TASK_COUNT: Int = 1000
     }
 
+    private var mPlatformList:List<Int>? = null
 
-    private var mTaskStatus: StatusTask = StatusTask.TASK_UNSTART
+    private var mTaskStatus: StatusTask = StatusTask.TASK_UNSTART   //任务状态
     @Volatile
     private var mTaskStartCount: Int = 0    //已开始的任务数量
     @Volatile
     private var mTaskErrorCount: Int = 0  //错误的任务数量
     @Volatile
-    private var mTaskFinished: Boolean = false
+    private var mTaskFinished: Boolean = false  //切换任务是否完成
 
     private var mErrorStringBuilder: StringBuilder = StringBuilder()
 
@@ -65,7 +66,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
 
             mHandler.postDelayed({
                 mTaskExecutor?.getLocationByIP("")
-            }, 3000)
+            }, 2000)
         } else {
             mTaskFinished = true
             val errorMsg = mErrorStringBuilder.toString()
@@ -96,6 +97,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         mTaskStartCount = 0
         mTaskErrorCount = 0
         mTaskFinished = false
+        mPlatformList = taskBuilder.getPlatformList()
 
         mTaskExecutor = TaskInfoImpl(this)
 
@@ -108,7 +110,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
 
         if (taskBuilder.getIpSwitch()) {
             mTaskStartCount++
-            mTaskExecutor?.getIpInfo(taskBuilder.getCityName())
+            mTaskExecutor?.getIpInfo(taskBuilder.getCityCode(), taskBuilder.getCityName())
         }
 
         if (taskBuilder.getAccountSwitch()) {
@@ -118,7 +120,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
 
         if (taskBuilder.getDeviceSwitch()) {
             mTaskStartCount++
-            mTaskExecutor?.getDeviceInfo()
+            mTaskExecutor?.getDeviceInfo(taskBuilder.getPlatformList())
         }
     }
 
@@ -165,7 +167,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         mTaskBean.device_info.latitude = latitude
         mTaskBean.device_info.longitude = longitude
 
-        mTaskExecutor?.changeDeviceInfo(mTaskBean)
+        mTaskExecutor?.changeDeviceInfo(mTaskBean,mPlatformList)
     }
 
     override fun onChangeDeviceInfo(result: Result<Boolean>) {

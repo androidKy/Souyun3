@@ -33,7 +33,7 @@ class ProxyManager {
     }
 
     fun startProxy() {
-        if (mCityName.isNullOrEmpty()) {
+       /* if (mCityName.isNullOrEmpty()) {
             L.d("cityName can not be null")
             //ToastUtils.showToast("城市名不能为空")
             mProxyRequestListener?.onProxyResult(
@@ -44,7 +44,7 @@ class ProxyManager {
                 )
             )
             return
-        }
+        }*/
         if (mProxyRequestListener == null) {
             L.d("mProxyRequestListener can not be null")
             //ToastUtils.showToast("mProxyRequestListener不能为空")
@@ -57,7 +57,6 @@ class ProxyManager {
             )
             return
         }
-
 
         ProxyController()
             .setCityData(mCityCode,mCityName)

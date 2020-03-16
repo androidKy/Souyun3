@@ -7,6 +7,8 @@ import com.task.cn.jbean.DeviceInfoBean
  * Created by Quinin on 2020-03-06.
  **/
 interface IDeviceInfo {
-    fun addDeviceInfo(pkgName:String,deviceInfoBean: DeviceInfoBean)
+    fun addDeviceInfo(pkgName: String, deviceInfoBean: DeviceInfoBean)
+
+    fun addDeviceInfos(pkgNameList: ArrayList<String>, deviceInfoBean: DeviceInfoBean)
 
 }

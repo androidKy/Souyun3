@@ -11,10 +11,10 @@ interface ITaskInfo {
     fun getTaskInfo()
     fun getTaskInfo(taskBean: TaskBean)
     fun getAccountInfo()
-    fun getIpInfo(cityName:String)
-    fun getDeviceInfo()
+    fun getIpInfo(cityCode:String,cityName:String)
+    fun getDeviceInfo(platformList:List<Int>)
 
     fun getLocationByIP(ip:String)
 
-    fun changeDeviceInfo(taskBean: TaskBean)
+    fun changeDeviceInfo(taskBean: TaskBean,platformList: List<Int>?)
 }

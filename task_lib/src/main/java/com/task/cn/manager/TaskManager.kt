@@ -4,6 +4,8 @@ import com.task.cn.StatusTask
 import com.task.cn.jbean.TaskBean
 import com.task.cn.task.ITaskControllerView
 import com.task.cn.task.TaskControllerImpl
+import com.utils.common.ToastUtils
+import com.utils.common.Utils
 
 /**
  * Description:任务管理
@@ -14,6 +16,7 @@ class TaskManager private constructor(private val taskBuilder: TaskBuilder) {
     fun startTask() {
         if (taskBuilder.getTaskControllerView() == null) {
             //ToastUtils.showToast("ITaskControllerView must not be null")
+            ToastUtils.showToast(Utils.getApp(),"ITaskControllerView must not be null")
             return
         }
         taskBuilder.getTaskControllerView()?.run {
@@ -23,17 +26,23 @@ class TaskManager private constructor(private val taskBuilder: TaskBuilder) {
 
     companion object {
         class TaskBuilder : Builder<TaskManager> {
-            private var mTaskInfoSwitch: Boolean = true
+            private var mTaskInfoSwitch: Boolean = false
 
+            //开关控制
             private var mIpSwitch: Boolean = false
             private var mAccountSwitch: Boolean = false
             private var mDeviceSwitch: Boolean = false
-
+            //上次任务的状态
             private var mLastTaskStatus: StatusTask = StatusTask.TASK_FINISHED
-
+            //回调接口
             private var mITaskControllerVIew: ITaskControllerView? = null
-
+            //城市名称
             private var mCityName: String = ""
+            //城市代码
+            private var mCityCode: String = ""
+
+            //选择的平台，微信1;抖音2；快手3；京东4；拼多多5；-1表示没有选择某一平台
+            private var mPlatformList: List<Int>? = null
 
             private var mTaskBean: TaskBean? = null
 
@@ -53,6 +62,24 @@ class TaskManager private constructor(private val taskBuilder: TaskBuilder) {
 
             fun getCityName(): String {
                 return mCityName
+            }
+
+            fun setCityCode(cityCode: String): TaskBuilder {
+                this.mCityCode = cityCode
+                return this
+            }
+
+            fun getCityCode(): String {
+                return mCityCode
+            }
+
+            fun setPlatformList(platformList: List<Int>): TaskBuilder {
+                this.mPlatformList = platformList
+                return this
+            }
+
+            fun getPlatformList(): List<Int> {
+                return if (!mPlatformList.isNullOrEmpty()) mPlatformList!! else arrayListOf<Int>()
             }
 
             /**

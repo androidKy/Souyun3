@@ -1,5 +1,11 @@
 package com.task.cn
 
+import com.task.cn.PkgConstant.Companion.JD_PKG
+import com.task.cn.PkgConstant.Companion.KUAISHOU_PKG
+import com.task.cn.PkgConstant.Companion.PDD_PKG
+import com.task.cn.PkgConstant.Companion.TIKTOK_PKG
+import com.task.cn.PkgConstant.Companion.WECHAT_PKG
+
 /**
  * Description:
  * Created by Quinin on 2020-03-03.
@@ -9,7 +15,7 @@ class URL {
         /**
          * 获取设备信息
          */
-        const val GET_DEVICE_INFO_URL = ""
+        const val GET_DEVICE_INFO_URL = "http://www.10gbuy.com/?s=App.User.GetDevice&platform="
         /**
          * 上传任务信息
          * 1、账号信息
@@ -24,12 +30,27 @@ class URL {
     }
 }
 
-class PkgConstant{
-    companion object{
+class PkgConstant {
+    companion object {
         const val WECHAT_PKG = "com.tencent.mm"
         const val TIKTOK_PKG = "com.ss.android.ugc.aweme"
+        const val KUAISHOU_PKG = "com.smile.gifmaker"   //快手
+        const val JD_PKG = "com.jingdong.app.mall"  //京东的包名
+        const val PDD_PKG = "com.xunmeng.pinduoduo" //拼多多
     }
 }
+
+fun getPlatformPkg(platform: Int): String {
+    return when (platform) {
+        1 -> WECHAT_PKG
+        2 -> TIKTOK_PKG
+        3 -> KUAISHOU_PKG
+        4 -> JD_PKG
+        5 -> PDD_PKG
+        else -> ""
+    }
+}
+
 
 class DeviceConstant {
     companion object {

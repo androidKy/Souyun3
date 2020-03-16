@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             /* findViewById<TextView>(R.id.tv_user_name).let {
-                 it.text = "用户名"
+                 it.tipSetup = "用户名"
              }*/
 
             findViewById<TextView>(R.id.tv_user_phone).let {

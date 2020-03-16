@@ -28,6 +28,7 @@ class MultiSetupActivity : AppCompatActivity() {
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setHomeButtonEnabled(true)
+            title  = resources.getString(R.string.bt_multi_setup)
         }
     }
 
