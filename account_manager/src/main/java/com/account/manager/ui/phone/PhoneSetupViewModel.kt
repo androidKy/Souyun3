@@ -66,7 +66,7 @@ class PhoneSetupViewModel : BaseViewModel() {
      * 设置手机信息
      */
     private fun settingPhoneInfo() {
-        _phoneModel.value = "${DevicesUtil.getNAME()}-${DevicesUtil.getModel()}"
+        _phoneModel.value = "${DevicesUtil.getManufacture()}-${DevicesUtil.getModel()}"
         _phoneImei.value = DevicesUtil.getIMEI(Utils.getApp())
     }
 

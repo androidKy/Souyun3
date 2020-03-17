@@ -43,4 +43,14 @@
     <string name="add_account_failed">添加账号失败</string>
     <string name="unlogin_tip">请先登录</string>
     <string name="unchanged_tip">未更改设备信息</string>
+
+    <string name="sort_ascending">Sort Ascending</string>
+    <string name="sort_descending">Sort Descending</string>
+    <string name="hiding_row_sample">Hiding 3. Row Sample</string>
+    <string name="showing_row_sample">Showing 3. Row Sample</string>
+    <string name="scroll_to_column_position">Scroll to 15. column position</string>
+    <string name="scroll_to_row_position">Scroll to 5. row position</string>
+    <string name="show_hide_the_column">Showing / Hiding 1. column</string>
+    <string name="table_pagination_details">Page %s, showing items %s - %s.</string>
+    <string name="tv_account_tip">暂时没有更多数据，点击空白处刷新数据</string>
 </resources>

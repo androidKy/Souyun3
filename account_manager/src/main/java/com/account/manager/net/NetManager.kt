@@ -1,9 +1,11 @@
 package com.account.manager.net
 
 import com.account.manager.LoginConstant
+import com.account.manager.UrlConstant
 import com.account.manager.UrlConstant.Companion.CONTENT_TYPE
 import com.account.manager.UrlConstant.Companion.LOGIN_URL
 import com.account.manager.UrlConstant.Companion.POST_ACCOUNT_URL
+import com.account.manager.model.AccountsModel
 import com.account.manager.model.BaseData
 import com.account.manager.model.CommitAccountBean
 import com.account.manager.model.CommitAccountResult
@@ -42,7 +44,11 @@ class NetManager {
             .getAsString(object : StringRequestListener {
                 override fun onResponse(response: String?) {
                     L.d("登录结果：$response")
-                    val loginData = Gson().fromJson(response, LoginData::class.java)
+                    val loginData = try {
+                        Gson().fromJson(response, LoginData::class.java)
+                    } catch (e: Exception) {
+                        LoginData()
+                    }
                     requestListener?.onSucceed(loginData)
                 }
 
@@ -97,8 +103,11 @@ class NetManager {
             .getAsString(object : StringRequestListener {
                 override fun onResponse(response: String?) {
                     L.d("提交账号结果：$response")
-                    val commitAccountResult =
+                    val commitAccountResult = try {
                         Gson().fromJson(response, CommitAccountResult::class.java)
+                    } catch (e: Exception) {
+                        CommitAccountResult()
+                    }
                     requestListener?.onSucceed(commitAccountResult)
                 }
 
@@ -112,6 +121,33 @@ class NetManager {
         anError?.errorDetail?.let {
             requestListener?.onError(it)
         }
+    }
+
+    fun getAccountData() {
+        val uid =
+            SPUtils.getInstance(LoginConstant.SP_LOGIN_INFO).getString(LoginConstant.KEY_USER_ID)
+        val token =
+            SPUtils.getInstance(LoginConstant.SP_LOGIN_INFO).getString(LoginConstant.KEY_USER_TOKEN)
+        AndroidNetworking.post(UrlConstant.GET_ACCOUNTS_URL)
+            .addBodyParameter("uid", uid)
+            .addBodyParameter("token", token)
+            .build()
+            .getAsString(object : StringRequestListener {
+                override fun onResponse(response: String?) {
+                    L.d("获取账号数据: $response")
+                    val accountsModel = try {
+                        Gson().fromJson(response, AccountsModel::class.java)
+                    } catch (e: Exception) {
+                        AccountsModel()
+                    }
+
+                    requestListener?.onSucceed(accountsModel)
+                }
+
+                override fun onError(anError: ANError?) {
+                    error(anError)
+                }
+            })
     }
 }
 

@@ -6,6 +6,7 @@
         android:orderInCategory="100"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="@string/action_search"
+        android:visible="false"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_add"

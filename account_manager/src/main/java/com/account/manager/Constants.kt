@@ -23,11 +23,10 @@ class LoginConstant {
 class UrlConstant{
     companion object{
         const val LOGIN_URL = "http://www.10gbuy.com/?s=App.User.Login"//&phone=13269684931&password=1478473981
-        const val REGISTER_URL= ""
-        const val GET_ACCOUNTS_URL = ""
+        const val REGISTER_URL= "http://www.10gbuy.com/?s=App.User.Reg"
+        const val GET_ACCOUNTS_URL = "http://www.10gbuy.com/?s=App.User.GetList"
         const val POST_ACCOUNT_URL = "http://www.10gbuy.com/?s=App.User.SaveOne"
-        const val GET_DEVICE_INFO_URL = ""
-        const val UPDATE_DEVICE_INFO_URL = ""
+        const val UPDATE_DEVICE_INFO_URL = "http://www.10gbuy.com/?s=App.User.SetDevice"
 
         const val CONTENT_TYPE = "multipart/form-data"
     }

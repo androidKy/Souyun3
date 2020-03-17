@@ -40,8 +40,8 @@ class PkgConstant {
     }
 }
 
-class SPConstant{
-    companion object{
+class SPConstant {
+    companion object {
         const val SP_DEVICE_INFO = "sp_device_info"
         const val SP_IP_INFO = "sp_ip_info"
 
@@ -71,6 +71,17 @@ fun getPlatformByAppName(name: String): Int {
         "京东" -> 4
         "拼多多" -> 5
         else -> -1
+    }
+}
+
+fun getPlatformByInt(platform: Int): String {
+    return when (platform) {
+        1 -> "微信"
+        2 -> "抖音"
+        3 -> "快手"
+        4 -> "京东"
+        5 -> "拼多多"
+        else -> "其他平台"
     }
 }
 
