@@ -18,16 +18,22 @@
 package com.account.manager.tableview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.account.manager.model.Account;
-import com.account.manager.tableview.popup.RowHeaderLongPressPopup;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.listener.ITableViewListener;
+import com.safframework.log.L;
+import com.task.cn.ConstantKt;
+import com.task.cn.StatusCode;
+import com.task.cn.jbean.TaskBean;
+import com.task.cn.manager.TaskManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,7 +65,7 @@ public class TableViewListener implements ITableViewListener {
     public void onCellClicked(@NonNull RecyclerView.ViewHolder cellView, int column, int row) {
 
         // Do what you want.
-        showToast("Cell " + column + " " + row + " has been clicked.");
+        //showToast("Cell " + column + " " + row + " has been clicked.");
 
     }
 
@@ -74,7 +80,7 @@ public class TableViewListener implements ITableViewListener {
     public void onCellLongPressed(@NonNull RecyclerView.ViewHolder cellView, final int column,
                                   int row) {
         // Do What you want
-        showToast("Cell " + column + " " + row + " has been long pressed.");
+        //showToast("Cell " + column + " " + row + " has been long pressed.");
     }
 
     /**
@@ -87,7 +93,7 @@ public class TableViewListener implements ITableViewListener {
     public void onColumnHeaderClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int
             column) {
         // Do what you want.
-        showToast("Column header  " + column + " has been clicked.");
+        //showToast("Column header  " + column + " has been clicked.");
     }
 
 
@@ -118,9 +124,38 @@ public class TableViewListener implements ITableViewListener {
      */
     @Override
     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
-        // Do whatever you want.
-        showToast("Row header " + row + " has been clicked.");
+        //showToast("Row header " + row + " has been clicked.");
+        Account account = mTableViewModel.getAccountList().get(row);
 
+        TaskBean taskBean = new TaskBean();
+        taskBean.setDevice_info(account.getDeviceInfoBean());
+        List<Integer> platformList = new ArrayList<>();
+        platformList.add(Integer.valueOf(account.getPlatform()));
+
+        new TaskManager.Companion.TaskBuilder()
+                .setIpSwitch(true)
+                .setTaskInfoSwitch(true)
+                .setTaskBean(taskBean)
+                .setCityCode(account.getLogin_info().getCity_code())
+                .setPlatformList(platformList)
+                .setTaskControllerView(result -> {
+                    if (result.getCode() == StatusCode.SUCCEED) {
+                        showToast("改机成功，正在打开应用");
+                        String platformPkg = ConstantKt.getPlatformPkg(Integer.valueOf(account.getPlatform()));
+                        L.d("改机成功，正在打开应用: " + platformPkg);
+                        Intent launchIntent = mContext.getPackageManager().getLaunchIntentForPackage(platformPkg);
+                        if (launchIntent == null) {
+                            showToast("未安装" + ConstantKt.getPlatformByInt(Integer.valueOf(account.getPlatform())));
+                        } else {
+                            mContext.startActivity(launchIntent);
+                        }
+                    } else {
+                        L.d("改机失败：" + result.getMsg());
+                        showToast(result.getMsg());
+                    }
+                })
+                .build()
+                .startTask();
     }
 
 
@@ -134,9 +169,9 @@ public class TableViewListener implements ITableViewListener {
     public void onRowHeaderLongPressed(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
 
         // Create Long Press Popup
-        RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(rowHeaderView, mTableView);
+        //RowHeaderLongPressPopup popup = new RowHeaderLongPressPopup(rowHeaderView, mTableView);
         // Show
-        popup.show();
+        //popup.show();
     }
 
 

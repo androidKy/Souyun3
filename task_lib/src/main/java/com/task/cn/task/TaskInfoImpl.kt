@@ -105,7 +105,10 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
                                     this@run.code = StatusCode.SUCCEED
                                     this@run.msg = StatusMsg.SUCCEED.msg
 
-                                    SPUtils.getInstance(SP_DEVICE_INFO).put(SPConstant.KEY_DEVICE_ID,deviceModel.data.id.toString())
+                                    SPUtils.getInstance(SP_DEVICE_INFO).put(
+                                        SPConstant.KEY_DEVICE_ID,
+                                        deviceModel.data.id.toString()
+                                    )
                                 } else this@run.msg = deviceModel.msg
 
                                 taskInfoView.onResponDeviceInfo(this@run)
@@ -170,12 +173,15 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
                             this@run.r = true
                         } else this@run.msg = "修改设备信息失败"
 
-
-                        addSelfForDeviceInfo(object : DeviceInfoListener {
-                            override fun onChangeResult(result: Boolean) {
-                                taskInfoView.onChangeDeviceInfo(this@run)
-                            }
-                        }, deviceInfoBean)
+                        if (result) {
+                            addSelfForDeviceInfo(object : DeviceInfoListener {
+                                override fun onChangeResult(result: Boolean) {
+                                    taskInfoView.onChangeDeviceInfo(this@run)
+                                }
+                            }, deviceInfoBean)
+                        } else {
+                            taskInfoView.onChangeDeviceInfo(this@run)
+                        }
                     }
                 })
                 .addDeviceInfos(pkgNameList, deviceInfoBean)

@@ -186,7 +186,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
                         ThreadUtils.executeByCached(object : ThreadUtils.Task<Boolean>() {
                             override fun doInBackground(): Boolean {
-                                CmdListUtil.getInstance().execCmd("pm clear $mPkgName")
+                                CMDUtil().execCmd("pm clear $mPkgName")
                                 return true
                             }
 

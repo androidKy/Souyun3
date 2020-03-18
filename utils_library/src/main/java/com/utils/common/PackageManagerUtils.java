@@ -29,6 +29,33 @@ public class PackageManagerUtils {
         return mInstance;
     }
 
+    public void clearAppInfo(final String packageName) {
+        if (!TextUtils.isEmpty(packageName)) {
+            ThreadUtils.executeByCached(new ThreadUtils.Task<Boolean>() {
+                @Override
+                public Boolean doInBackground() throws Throwable {
+                    new CMDUtil().execCmd("pm clear " + packageName);
+                    return false;
+                }
+
+                @Override
+                public void onSuccess(Boolean result) {
+
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+
+                @Override
+                public void onFail(Throwable t) {
+
+                }
+            });
+        }
+    }
+
     public boolean killApplication(String packageName) {
         if (TextUtils.isEmpty(packageName)) {
             return false;

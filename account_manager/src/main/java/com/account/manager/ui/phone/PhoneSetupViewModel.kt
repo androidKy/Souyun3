@@ -43,7 +43,7 @@ class PhoneSetupViewModel : BaseViewModel() {
      */
     fun setupPhone() {
         TaskManager.Companion.TaskBuilder()
-            .setIpSwitch(false)     //todo 测试IP
+            .setIpSwitch(true)
             .setDeviceSwitch(true)
             .setPlatformList(arrayListOf(-1))
             .setTaskControllerView(object : ITaskControllerView {

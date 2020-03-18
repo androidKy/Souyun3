@@ -48,18 +48,15 @@ class DeviceInfoController : IDeviceInfo {
      */
     override fun addDeviceInfos(pkgNameList: ArrayList<String>, deviceInfoBean: DeviceInfoBean) {
         mDeviceInfoBean = deviceInfoBean
-        //批量添加应用程序相应的设备信息
-        //先删除源文件
-        File(DEVICE_INFO_FILE_PATH).delete()
-        createFile(pkgNameList)
-        /* if (pkgNameList.size == 1) {
-             addDeviceInfo(pkgNameList[0], deviceInfoBean)
-         } else {
-             //批量添加应用程序相应的设备信息
-             //先删除源文件
-             File(DEVICE_INFO_FILE_PATH).delete()
-             createFile(pkgNameList)
-         }*/
+        if (pkgNameList.size == 1) {
+            addDeviceInfo(pkgNameList[0], deviceInfoBean)
+        } else {
+            //批量添加应用程序相应的设备信息
+            //先删除源文件
+            val deleteResult = File(DEVICE_INFO_FILE_PATH).delete()
+            L.d("删除local/data/tmp/app.setting.json文件: $deleteResult")
+            createFile(pkgNameList)
+        }
     }
 
     private fun isSettingFileExist(): Boolean {
@@ -95,8 +92,12 @@ class DeviceInfoController : IDeviceInfo {
                         val str = this.toString()
                         FileIOUtils.writeFileFromString(DEVICE_INFO_FILE_PATH, str)
 
-                        if(!cmdResult.contains("denied"))
+                        if (!cmdResult.contains("denied"))
                             resultBoolean = true
+
+                        if (resultBoolean) {
+                            CMDUtil().execCmd("pm clear $pkgName")
+                        }
                     }
                 } catch (e: Exception) {
                     L.d(e.message)
@@ -154,6 +155,9 @@ class DeviceInfoController : IDeviceInfo {
                                 result = true
                             }
                             L.d("execCmd: $execCmd")
+                            if (result && pkgList.size == 1) {
+                                CMDUtil().execCmd("pm clear ${pkgList[0]}")
+                            }
                         } catch (e: Exception) {
                             L.d(e.message)
                         }
