@@ -24,6 +24,10 @@ object L {
         DEBUG {
             override val value: Int
                 get() = 3
+        },
+        UNLOG {
+            override val value: Int
+            get() = -1
         };
 
         abstract val value: Int
@@ -159,12 +163,11 @@ object L {
 
     @JvmStatic
     fun e(msg: String?, tr: Throwable) {
-        if (msg != null && msg.isNotEmpty()) {
-            Log.e(TAG, msg, tr)
+        if (LogLevel.ERROR.value <= logLevel.value) {
+            if (msg != null && msg.isNotEmpty()) {
+                Log.e(TAG, msg, tr)
+            }
         }
-        /*  if (LogLevel.ERROR.value <= logLevel.value) {
-
-          }*/
     }
 
     @JvmStatic

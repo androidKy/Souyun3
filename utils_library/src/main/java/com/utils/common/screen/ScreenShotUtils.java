@@ -206,7 +206,6 @@ public class ScreenShotUtils {
             }
 
             if (mOnShotListener != null) {
-                Log.d("Shotter path:", mLocalUrl + "");
                 mOnShotListener.onFinish();
             }
 

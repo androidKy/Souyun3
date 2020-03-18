@@ -169,7 +169,8 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             .setDeviceSwitch(false)
             .setIpSwitch(true)
             .setTaskInfoSwitch(true)
-            .setCityName(cityName)
+            .setCityCode(cityName)
+            //.setCityName(cityName)
             .setTaskBean(mTaskBean)
             .setTaskControllerView(object : ITaskControllerView {
                 override fun onTaskPrepared(result: Result<TaskBean>) {
@@ -230,7 +231,8 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun startProxy(cityName: String) {
         ProxyManager()
-            .setCityName(cityName)
+            .setCityCode(cityName)
+            //.setCityName(cityName)
             .setProxyRequestListener(object : ProxyRequestListener {
                 override fun onProxyResult(result: Result<IpInfoBean>) {
                     L.d("代理： $result")

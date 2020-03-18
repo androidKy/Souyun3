@@ -39,30 +39,33 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>() {
 
                     val tableViewAdapter = TableViewAdapter(it)
                     table_view.adapter = tableViewAdapter
-                    table_view.tableViewListener = TableViewListener(table_view)
+                    table_view.tableViewListener = TableViewListener(table_view, it)
 
                     tableViewAdapter.setAllItems(it.columnHeaderList, it.rowHeaderList, it.cellList)
 
-                    val tableViewFilter = Filter(table_view)
-                    et_search.addTextChangedListener(object : TextWatcher {
-                        override fun afterTextChanged(s: Editable?) {
-
-                        }
-
-                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                        }
-
-                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                            tableViewFilter.set(s.toString())
-                        }
-                    })
                 })
             }
 
         refreshData()
+
+        val tableViewFilter = Filter(table_view)
+        et_search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                tableViewFilter.set(s.toString())
+            }
+        })
     }
 
     private fun refreshData() {
+        mViewModel.getAccountData()
+
         refreshLayout.setOnRefreshListener {
             mViewModel.getAccountData()
             //it.finishRefresh(2000)
@@ -70,10 +73,6 @@ class HomeFragment : BaseViewModelFragment<HomeViewModel>() {
         refreshLayout.setEnableLoadMore(false)
         //refreshLayout.autoRefresh()
 
-        ll_account_tip.setOnClickListener(object:View.OnClickListener{
-            override fun onClick(v: View?) {
-                refreshLayout.autoRefresh()
-            }
-        })
+        ll_account_tip.setOnClickListener { refreshLayout.autoRefresh() }
     }
 }

@@ -1020,13 +1020,12 @@ public final class ThreadUtils {
 
         @Override
         public void onCancel() {
-            Log.e("ThreadUtils", "onCancel: " + Thread.currentThread());
         }
 
         @Override
         public void onFail(Throwable t) {
-            Log.e("ThreadUtils", "onFail: ", t);
         }
+
 
     }
 
@@ -1248,7 +1247,6 @@ public final class ThreadUtils {
                     try {
                         super.run();
                     } catch (Throwable t) {
-                        Log.e("ThreadUtils", "Request threw uncaught throwable", t);
                     }
                 }
             };

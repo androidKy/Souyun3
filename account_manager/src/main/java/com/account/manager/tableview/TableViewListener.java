@@ -23,9 +23,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.account.manager.model.Account;
 import com.account.manager.tableview.popup.RowHeaderLongPressPopup;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.listener.ITableViewListener;
+
+import java.util.List;
 
 /**
  * Created by evrencoskun on 21/09/2017.
@@ -36,10 +39,13 @@ public class TableViewListener implements ITableViewListener {
     private Context mContext;
     @NonNull
     private TableView mTableView;
+    @NonNull
+    private TableViewModel mTableViewModel;
 
-    public TableViewListener(@NonNull TableView tableView) {
+    public TableViewListener(@NonNull TableView tableView, @NonNull TableViewModel tableViewModel) {
         this.mContext = tableView.getContext();
         this.mTableView = tableView;
+        this.mTableViewModel = tableViewModel;
     }
 
     /**
@@ -83,7 +89,6 @@ public class TableViewListener implements ITableViewListener {
         // Do what you want.
         showToast("Column header  " + column + " has been clicked.");
     }
-
 
 
     /**

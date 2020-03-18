@@ -251,7 +251,6 @@ public final class NetworkUtils {
                 return (boolean) getMobileDataEnabledMethod.invoke(tm);
             }
         } catch (Exception e) {
-            Log.e("NetworkUtils", "getMobileDataEnabled: ", e);
         }
         return false;
     }

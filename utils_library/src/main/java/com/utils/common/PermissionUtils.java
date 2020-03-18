@@ -369,7 +369,6 @@ public final class PermissionUtils {
             if (byteExtra == TYPE_RUNTIME) {
                 if (sInstance == null) {
                     super.onCreate(savedInstanceState);
-                    Log.e("PermissionUtils", "request permissions failed");
                     finish();
                     return;
                 }

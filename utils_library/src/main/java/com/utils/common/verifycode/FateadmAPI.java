@@ -43,7 +43,6 @@ public class FateadmAPI {
         String sign     = Util.CalcSign( pd_id, pd_key, stm);
         String url      = this.pred_url + "/api/custval";
         String params   = "user_id="+this.pd_id + "&timestamp=" + stm + "&sign=" + sign;
-        Log.d("Debug","url: "+url+"param: "+params);
         String pres     = Util.HttpPost(url, params);
         Util.HttpResp resp = Util.ParseHttpResp( pres);
         return resp;

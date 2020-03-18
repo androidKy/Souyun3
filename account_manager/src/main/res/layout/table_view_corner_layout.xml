@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text=""
+        android:text="账号id"
         android:textColor="@color/table_view_default_text_color"
         android:textSize="@dimen/text_size"/>
 

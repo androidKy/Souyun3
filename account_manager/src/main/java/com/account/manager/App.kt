@@ -2,6 +2,7 @@ package com.account.manager
 
 import android.app.Application
 import android.content.Context
+import android.os.Build
 import androidx.multidex.MultiDex
 import com.safframework.log.L
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -36,6 +37,7 @@ class App : Application() {
         super.onCreate()
 
         L.init("AccountManager")
+        L.logLevel = if(BuildConfig.DEBUG) L.LogLevel.DEBUG else L.LogLevel.UNLOG
         AppUtils.init(this)
     }
 

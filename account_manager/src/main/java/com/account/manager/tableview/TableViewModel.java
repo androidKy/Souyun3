@@ -17,6 +17,7 @@
 
 package com.account.manager.tableview;
 
+import com.account.manager.model.Account;
 import com.account.manager.tableview.model.Cell;
 import com.account.manager.tableview.model.ColumnHeader;
 import com.account.manager.tableview.model.RowHeader;
@@ -56,7 +57,18 @@ public class TableViewModel {
         this.mCellList = mCellList;
     }
 
+
     private List<RowHeader> mRowHeaderList;
     private List<ColumnHeader> mColumnHeaderList;
     private List<List<Cell>> mCellList;
+
+    private List<Account> mAccountList;
+
+    public List<Account> getAccountList() {
+        return mAccountList;
+    }
+
+    public void setAccountList(List<Account> mAccountList) {
+        this.mAccountList = mAccountList;
+    }
 }

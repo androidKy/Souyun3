@@ -34,7 +34,7 @@ import com.account.manager.tableview.model.ColumnHeader;
 import com.account.manager.tableview.model.RowHeader;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableview.sort.SortState;
+
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -71,8 +71,6 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     @NonNull
     @Override
     public AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //TODO check
-        Log.e(LOG_TAG, " onCreateCellViewHolder has been called");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View layout;
 
@@ -149,7 +147,6 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     @NonNull
     @Override
     public AbstractViewHolder onCreateColumnHeaderViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //Log.e(LOG_TAG, " onCreateColumnHeaderViewHolder has been called");
         // Get Column Header xml Layout
         View layout = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.table_view_column_header_layout, parent, false);

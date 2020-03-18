@@ -220,7 +220,6 @@ public class Util {
     }
 
     public static HttpResp ParseHttpResp(String resl) {
-        Log.d("DEbug", "resl: " + resl);
         HttpResp resp = new HttpResp();
         resp.ret_code = -1;
         JsonHelper json = new JsonHelper(resl);

@@ -17,7 +17,6 @@
 
 package com.account.manager.tableview.holder;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -92,20 +91,12 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
 
     @Override
     public void onSortingStatusChanged(@NonNull SortState sortState) {
-        Log.e(LOG_TAG, " + onSortingStatusChanged : x:  " + getAdapterPosition() + " old state "
-                + getSortState() + " current state : " + sortState + " visiblity: " +
-                column_header_sortButton.getVisibility());
-
         super.onSortingStatusChanged(sortState);
 
         // It is necessary to remeasure itself.
         column_header_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
 
         controlSortState(sortState);
-
-        Log.e(LOG_TAG, " - onSortingStatusChanged : x:  " + getAdapterPosition() + " old state "
-                + getSortState() + " current state : " + sortState + " visiblity: " +
-                column_header_sortButton.getVisibility());
 
         column_header_textview.requestLayout();
         column_header_sortButton.requestLayout();
