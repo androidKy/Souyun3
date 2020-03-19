@@ -167,10 +167,10 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             .setLastTaskStatus(StatusTask.TASK_FINISHED)
             .setAccountSwitch(false)
             .setDeviceSwitch(false)
-            .setIpSwitch(true)
+            .setIpSwitch(false) //todo 测试设备信息修改
             .setTaskInfoSwitch(true)
+            //.setPlatformList(arrayListOf(1))
             .setCityCode(cityName)
-            //.setCityName(cityName)
             .setTaskBean(mTaskBean)
             .setTaskControllerView(object : ITaskControllerView {
                 override fun onTaskPrepared(result: Result<TaskBean>) {

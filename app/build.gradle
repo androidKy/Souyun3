@@ -4,6 +4,10 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -30,6 +34,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            //outputFileName = "fashionPro_${variant.name.replace("Release","")}_${releaseTime()}_${variant.versionName}.apk"
+            outputFileName = "一键改机_${variant.versionName}_${releaseTime()}.apk"
         }
     }
 }

@@ -2,6 +2,7 @@ package com.android.souyun.base
 
 import android.app.Application
 import com.task.cn.util.AppUtils
+import com.utils.common.crash.CrashHandler
 
 /**
  * Description:
@@ -13,5 +14,6 @@ class BaseApplication :Application(){
 
         AppUtils.init(this)
 
+        CrashHandler.getInstance().init(this,true)
     }
 }
