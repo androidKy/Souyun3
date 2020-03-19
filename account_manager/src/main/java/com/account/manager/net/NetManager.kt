@@ -16,8 +16,7 @@ import com.androidnetworking.interfaces.StringRequestListener
 import com.google.gson.Gson
 import com.safframework.log.L
 import com.task.cn.SPConstant
-import com.task.cn.database.RealmHelper
-import com.task.cn.getPlatformByAppName
+import com.task.cn.getPlatformIntByAppName
 import com.utils.common.SPUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -66,7 +65,7 @@ class NetManager {
      */
     fun commitAccount(platform: String, accountName: String, psw: String) {
         val commitAccountBean = CommitAccountBean().apply {
-            this.platform = getPlatformByAppName(platform).toString()
+            this.platform = getPlatformIntByAppName(platform).toString()
             this.account = accountName
             this.password = psw
             this.register_date =

@@ -7,6 +7,7 @@ import com.task.cn.jbean.DeviceInfoBean
 import com.utils.common.CMDUtil
 import com.utils.common.FileIOUtils
 import com.utils.common.ThreadUtils
+import com.utils.common.Utils
 import org.json.JSONObject
 import java.io.File
 
@@ -96,7 +97,8 @@ class DeviceInfoController : IDeviceInfo {
                             resultBoolean = true
 
                         if (resultBoolean) {
-                            CMDUtil().execCmd("pm clear $pkgName")
+                            if (pkgName != Utils.getApp().packageName)
+                                CMDUtil().execCmd("pm clear $pkgName")
                         }
                     }
                 } catch (e: Exception) {
@@ -156,7 +158,8 @@ class DeviceInfoController : IDeviceInfo {
                             }
                             L.d("execCmd: $execCmd")
                             if (result && pkgList.size == 1) {
-                                CMDUtil().execCmd("pm clear ${pkgList[0]}")
+                                if (pkgList[0] != Utils.getApp().packageName)
+                                    CMDUtil().execCmd("pm clear ${pkgList[0]}")
                             }
                         } catch (e: Exception) {
                             L.d(e.message)
@@ -219,6 +222,20 @@ class DeviceInfoController : IDeviceInfo {
             put(DeviceConstant.SIMSTATE_KEY, mDeviceInfoBean.simState)
             put(DeviceConstant.SUBSCRIBERID_KEY, mDeviceInfoBean.subscriberId)
             put(DeviceConstant.USERAGENT_KEY, mDeviceInfoBean.userAgent)
+            //新增的设备参数
+            put(DeviceConstant.BASEBAND_KEY, mDeviceInfoBean.baseBand)
+            put(DeviceConstant.VERSIONHOST_KEY, mDeviceInfoBean.versionHost)
+            put(DeviceConstant.CODENAME_KEY, mDeviceInfoBean.versionCodeName)
+            put(DeviceConstant.INCREMENTAL_KEY, mDeviceInfoBean.versionIncremental)
+            put(DeviceConstant.BOOTLOADER_KEY, mDeviceInfoBean.bootloader)
+            put(DeviceConstant.DISPLAYID_KEY, mDeviceInfoBean.displayId)
+            put(DeviceConstant.HARDWARE_KEY, mDeviceInfoBean.hardware)
+            put(DeviceConstant.BRAND_KEY, mDeviceInfoBean.brand)
+            put(DeviceConstant.DEVICE_KEY, mDeviceInfoBean.device)
+            put(DeviceConstant.NAME_KEY, mDeviceInfoBean.name)
+            put(DeviceConstant.UTCDATE_KEY, mDeviceInfoBean.utdDate)
+            put(DeviceConstant.CPUFILE_KEY, mDeviceInfoBean.cpuFile)
+            put(DeviceConstant.ISROOTCLOCK_KEY, mDeviceInfoBean.isRootClock)
         }
 
         return jsonObj

@@ -45,7 +45,6 @@ class PhoneSetupViewModel : BaseViewModel() {
         TaskManager.Companion.TaskBuilder()
             .setIpSwitch(true)
             .setDeviceSwitch(true)
-            .setPlatformList(arrayListOf(-1))
             .setTaskControllerView(object : ITaskControllerView {
                 override fun onTaskPrepared(result: Result<TaskBean>) {
                     var msg = result.msg

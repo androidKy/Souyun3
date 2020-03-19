@@ -20,6 +20,7 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
      * android.bluetooth.BluetoothAdapter.name : LeMobile
      * android.content.res.display.dpi :
      * android.content.res.language :
+     * android.gsm.version.baseband:5A95C3FE0027C4E4
      * android.location.Location.getLatitude : 0.0
      * android.location.Location.getLongitude : 0.0
      * android.net.NetworkInfo.getType : 3
@@ -28,6 +29,7 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
      * android.net.wifi.WifiInfo.getMacAddress : 00:1E:E1:51:41:16
      * android.net.wifi.WifiInfo.getSSID : HUAWEI_T4DDGD3
      * android.os.Build.ID : MDA89D
+     * android.os.Build.VERSION.Host:pal.236602ad78ce
      * android.os.Build.VERSION.RELEASE : 6.0
      * android.os.Build.VERSION.SDK : 23
      * android.os.Build.description : LeMobile-user 6.0 MDA89D ac3ef9367eb5 release-keys
@@ -107,7 +109,101 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
     @SerializedName("android.webview.WebSettings.setUserAgentString")
     private String userAgent;
 
+    //新增
+    @SerializedName("android.gsm.version.baseband")
+    private String baseBand;
+    @SerializedName("android.os.Build.VERSION.Host")
+    private String versionHost;
+    @SerializedName("android.os.Build.VERSION.codename")
+    private String versionCodeName;
+    @SerializedName("android.os.Build.VERSION.incremental")
+    private String versionIncremental;
+    @SerializedName("android.os.Build.bootloader")
+    private String bootloader;
+    @SerializedName("android.os.Build.display.id")
+    private String displayId;
+    @SerializedName("android.os.Build.ro.hardware")
+    private String hardware;
+    @SerializedName("android.os.Build.ro.product.brand")
+    private String brand;
+    @SerializedName("android.os.Build.ro.product.device")
+    private String device;
+    @SerializedName("android.os.Build.ro.product.name")
+    private String name;
+    @SerializedName("android.os.Build.utc.date")
+    private String utdDate;
+    @SerializedName("android.setting.cpufile")
+    private String cpuFile;
+    @SerializedName("android.setting.isrootclock")
+    private String isRootClock;
+
+
     private RealmList<AccountIdsBean> account_ids;
+
+    public String getDisplayId() {
+        return displayId;
+    }
+
+    public void setDisplayId(String displayId) {
+        this.displayId = displayId;
+    }
+
+    public String getHardware() {
+        return hardware;
+    }
+
+    public void setHardware(String hardware) {
+        this.hardware = hardware;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getDevice() {
+        return device;
+    }
+
+    public void setDevice(String device) {
+        this.device = device;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUtdDate() {
+        return utdDate;
+    }
+
+    public void setUtdDate(String utdDate) {
+        this.utdDate = utdDate;
+    }
+
+    public String getCpuFile() {
+        return cpuFile;
+    }
+
+    public void setCpuFile(String cpuFile) {
+        this.cpuFile = cpuFile;
+    }
+
+    public String getIsRootClock() {
+        return isRootClock;
+    }
+
+    public void setIsRootClock(String isRootClock) {
+        this.isRootClock = isRootClock;
+    }
+
 
     @Override
     public String toString() {
@@ -392,5 +488,45 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
 
     public void setAccount_ids(RealmList<AccountIdsBean> account_ids) {
         this.account_ids = account_ids;
+    }
+
+    public String getBaseBand() {
+        return baseBand;
+    }
+
+    public void setBaseBand(String baseBand) {
+        this.baseBand = baseBand;
+    }
+
+    public String getVersionHost() {
+        return versionHost;
+    }
+
+    public void setVersionHost(String versionHost) {
+        this.versionHost = versionHost;
+    }
+
+    public String getVersionCodeName() {
+        return versionCodeName;
+    }
+
+    public void setVersionCodeName(String versionCodeName) {
+        this.versionCodeName = versionCodeName;
+    }
+
+    public String getVersionIncremental() {
+        return versionIncremental;
+    }
+
+    public void setVersionIncremental(String versionIncremental) {
+        this.versionIncremental = versionIncremental;
+    }
+
+    public String getBootloader() {
+        return bootloader;
+    }
+
+    public void setBootloader(String bootloader) {
+        this.bootloader = bootloader;
     }
 }

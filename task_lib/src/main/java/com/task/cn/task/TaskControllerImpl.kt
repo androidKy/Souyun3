@@ -29,7 +29,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         const val MSG_TASK_COUNT: Int = 1000
     }
 
-    private var mPlatformList:List<Int>? = null
+    private var mPlatformList:List<String>? = null
 
     private var mTaskStatus: StatusTask = StatusTask.TASK_UNSTART   //任务状态
     @Volatile

@@ -12,9 +12,9 @@ interface ITaskInfo {
     fun getTaskInfo(taskBean: TaskBean)
     fun getAccountInfo()
     fun getIpInfo(cityCode:String,cityName:String)
-    fun getDeviceInfo(platformList:List<Int>)
+    fun getDeviceInfo(platformList:List<String>)
 
     fun getLocationByIP(ip:String)
 
-    fun changeDeviceInfo(taskBean: TaskBean,platformList: List<Int>?)
+    fun changeDeviceInfo(taskBean: TaskBean,platformList: List<String>?)
 }

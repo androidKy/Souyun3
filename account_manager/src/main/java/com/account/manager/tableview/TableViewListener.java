@@ -129,8 +129,8 @@ public class TableViewListener implements ITableViewListener {
 
         TaskBean taskBean = new TaskBean();
         taskBean.setDevice_info(account.getDeviceInfoBean());
-        List<Integer> platformList = new ArrayList<>();
-        platformList.add(Integer.valueOf(account.getPlatform()));
+        List<String> platformList = new ArrayList<>();
+        platformList.add(ConstantKt.getPlatformPkgByInt(Integer.valueOf(account.getPlatform())));
 
         new TaskManager.Companion.TaskBuilder()
                 .setIpSwitch(true)
@@ -141,11 +141,11 @@ public class TableViewListener implements ITableViewListener {
                 .setTaskControllerView(result -> {
                     if (result.getCode() == StatusCode.SUCCEED) {
                         showToast("改机成功，正在打开应用");
-                        String platformPkg = ConstantKt.getPlatformPkg(Integer.valueOf(account.getPlatform()));
+                        String platformPkg = ConstantKt.getPlatformPkgByInt(Integer.valueOf(account.getPlatform()));
                         L.d("改机成功，正在打开应用: " + platformPkg);
                         Intent launchIntent = mContext.getPackageManager().getLaunchIntentForPackage(platformPkg);
                         if (launchIntent == null) {
-                            showToast("未安装" + ConstantKt.getPlatformByInt(Integer.valueOf(account.getPlatform())));
+                            showToast("未安装" + ConstantKt.getPlatformNameByInt(Integer.valueOf(account.getPlatform())));
                         } else {
                             mContext.startActivity(launchIntent);
                         }

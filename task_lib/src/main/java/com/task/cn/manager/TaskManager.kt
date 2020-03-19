@@ -42,7 +42,7 @@ class TaskManager private constructor(private val taskBuilder: TaskBuilder) {
             private var mCityCode: String = ""
 
             //选择的平台，微信1;抖音2；快手3；京东4；拼多多5；-1表示没有选择某一平台
-            private var mPlatformList: List<Int>? = null
+            private var mPlatformList: List<String>? = null
 
             private var mTaskBean: TaskBean? = null
 
@@ -73,13 +73,13 @@ class TaskManager private constructor(private val taskBuilder: TaskBuilder) {
                 return mCityCode
             }
 
-            fun setPlatformList(platformList: List<Int>): TaskBuilder {
+            fun setPlatformList(platformList: List<String>): TaskBuilder {
                 this.mPlatformList = platformList
                 return this
             }
 
-            fun getPlatformList(): List<Int> {
-                return if (!mPlatformList.isNullOrEmpty()) mPlatformList!! else arrayListOf<Int>()
+            fun getPlatformList(): List<String> {
+                return if (!mPlatformList.isNullOrEmpty()) mPlatformList!! else arrayListOf<String>()
             }
 
             /**

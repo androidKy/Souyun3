@@ -167,9 +167,9 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             .setLastTaskStatus(StatusTask.TASK_FINISHED)
             .setAccountSwitch(false)
             .setDeviceSwitch(false)
-            .setIpSwitch(false) //todo 测试设备信息修改
+            .setIpSwitch(true)
             .setTaskInfoSwitch(true)
-            //.setPlatformList(arrayListOf(1))
+            .setPlatformList(arrayListOf(mPkgName))
             .setCityCode(cityName)
             .setTaskBean(mTaskBean)
             .setTaskControllerView(object : ITaskControllerView {
@@ -181,8 +181,8 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
                         tv_location.text =
                             "${result.r.device_info.latitude},${result.r.device_info.longitude}"
-                        tv_ip.text = result.r.ip_info.ip
-                        tv_address.text = result.r.ip_info.city
+                       /* tv_ip.text = result.r.ip_info.ip
+                        tv_address.text = result.r.ip_info.city*/
 
                         ThreadUtils.executeByCached(object : ThreadUtils.Task<Boolean>() {
                             override fun doInBackground(): Boolean {

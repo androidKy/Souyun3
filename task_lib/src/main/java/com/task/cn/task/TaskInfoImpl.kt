@@ -85,9 +85,10 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
     }
 
 
-    override fun getDeviceInfo(platformList: List<Int>) {
+    override fun getDeviceInfo(platformList: List<String>) {
         Result(StatusCode.FAILED, DeviceInfoBean(), StatusMsg.DEFAULT.msg).run {
-            val platform: Int = if (platformList.size == 1) platformList[0] else -1
+            val platform: Int =
+                if (platformList.size == 1) getPlatformIntByPkg(platformList[0]) else -1
 
             AndroidNetworking.get("${GET_DEVICE_INFO_URL}$platform")
                 .build()
@@ -144,23 +145,25 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
             .startLocation(ip)
     }
 
-    override fun changeDeviceInfo(taskBean: TaskBean, platformList: List<Int>?) {
+    override fun changeDeviceInfo(taskBean: TaskBean, platformList: List<String>?) {
         Result(StatusCode.FAILED, false, StatusMsg.DEFAULT.msg).run {
             val deviceInfoBean = taskBean.device_info
             val pkgNameList = ArrayList<String>()
 
             platformList?.let {
                 for (platform in it) {
-                    val pkg = getPlatformPkg(platform)
-                    if (pkg.isNotEmpty())
-                        pkgNameList.add(pkg)
+                    pkgNameList.add(platform)
                 }
             }
             if (pkgNameList.size == 0) {
                 //添加所有用户程序的包名
                 val userApps = AppUtils.getUserApps()
-                for (pkg in userApps) {
-                    pkgNameList.add(pkg.pkgName)
+                for (appInfo in userApps) {
+                    val appPkg = appInfo.pkgName
+                    //过滤系统适配器和地理适配器
+                    if (appPkg == PkgConstant.SYSTEM_GEO_MAP_PKG || appPkg == PkgConstant.SYSTEM_MANAGER_PKG)
+                        continue
+                    pkgNameList.add(appPkg)
                 }
             }
 
@@ -172,7 +175,7 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
                             this@run.msg = StatusMsg.SUCCEED.msg
                             this@run.r = true
                         } else this@run.msg = "修改设备信息失败"
-
+                        //taskInfoView.onChangeDeviceInfo(this@run)
                         if (result) {
                             addSelfForDeviceInfo(object : DeviceInfoListener {
                                 override fun onChangeResult(result: Boolean) {

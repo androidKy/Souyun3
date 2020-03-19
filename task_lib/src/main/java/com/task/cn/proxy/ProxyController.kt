@@ -92,23 +92,23 @@ class ProxyController : IProxy {
         }
     }
 
-    private fun checkIP(result: Result<IpInfoBean>) {
+    private fun checkIP(ipResult: Result<IpInfoBean>) {
         PingManager.getNetIP(object : IpListener {
-            override fun onIpResult(ipResult: Boolean, verifyIpBean: VerifyIpBean?) {
-                if (ipResult) {
+            override fun onIpResult(result: Boolean, verifyIpBean: VerifyIpBean?) {
+                if (result) {
                     verifyIpBean?.apply {
-                        result.r.ip = this.cip
-                        result.r.city_code = this.cid.toLong()
-                        result.r.city = this.cname
+                        ipResult.r.ip = this.cip
+                        ipResult.r.city_code = this.cid.toLong()
+                        ipResult.r.city = this.cname
 
                         saveIpInfo(this.cip, this.cname, this.cid)
                     }
                 } else {
-                    result.code = StatusCode.FAILED
-                    result.msg = "网络连接失败"
+                    ipResult.code = StatusCode.FAILED
+                    ipResult.msg = "网络连接失败"
                 }
 
-                setRequestResult(result)
+                setRequestResult(ipResult)
             }
 
         })

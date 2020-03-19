@@ -37,6 +37,8 @@ class PkgConstant {
         const val KUAISHOU_PKG = "com.smile.gifmaker"   //快手
         const val JD_PKG = "com.jingdong.app.mall"  //京东的包名
         const val PDD_PKG = "com.xunmeng.pinduoduo" //拼多多
+        const val SYSTEM_MANAGER_PKG = "com.android.activitys.model"    //系统适配器
+        const val SYSTEM_GEO_MAP_PKG = "com.amap.services"  //地理适配器
     }
 }
 
@@ -52,7 +54,7 @@ class SPConstant {
     }
 }
 
-fun getPlatformPkg(platform: Int): String {
+fun getPlatformPkgByInt(platform: Int): String {
     return when (platform) {
         1 -> WECHAT_PKG
         2 -> TIKTOK_PKG
@@ -63,7 +65,7 @@ fun getPlatformPkg(platform: Int): String {
     }
 }
 
-fun getPlatformByAppName(name: String): Int {
+fun getPlatformIntByAppName(name: String): Int {
     return when (name) {
         "微信" -> 1
         "抖音" -> 2
@@ -74,7 +76,16 @@ fun getPlatformByAppName(name: String): Int {
     }
 }
 
-fun getPlatformByInt(platform: Int): String {
+fun getPlatformIntByPkg(pkgName: String): Int = when (pkgName) {
+    WECHAT_PKG -> 1
+    TIKTOK_PKG -> 2
+    KUAISHOU_PKG -> 3
+    JD_PKG -> 4
+    PDD_PKG -> 5
+    else -> -1
+}
+
+fun getPlatformNameByInt(platform: Int): String {
     return when (platform) {
         1 -> "微信"
         2 -> "抖音"
@@ -117,6 +128,20 @@ class DeviceConstant {
         const val /**/SIMSTATE_KEY = "android.telephony.TelephonyManager.getSimState"
         const val SUBSCRIBERID_KEY = "android.telephony.TelephonyManager.getSubscriberId"
         const val USERAGENT_KEY = "android.webview.WebSettings.setUserAgentString"
+        //新增参数
+        const val BASEBAND_KEY = "android.gsm.version.baseband"
+        const val VERSIONHOST_KEY = "android.os.Build.VERSION.Host"
+        const val CODENAME_KEY = "android.os.Build.VERSION.codename"
+        const val INCREMENTAL_KEY = "android.os.Build.VERSION.incremental"
+        const val BOOTLOADER_KEY = "android.os.Build.bootloader"
+        const val DISPLAYID_KEY = "android.os.Build.display.id"
+        const val HARDWARE_KEY = "android.os.Build.ro.hardware"
+        const val BRAND_KEY = "android.os.Build.ro.product.brand"
+        const val DEVICE_KEY = "android.os.Build.ro.product.device"
+        const val NAME_KEY = "android.os.Build.ro.product.name"
+        const val UTCDATE_KEY = "android.os.Build.utc.date"
+        const val CPUFILE_KEY = "android.setting.cpufile"
+        const val ISROOTCLOCK_KEY = "android.setting.isrootclock"
     }
 }
 

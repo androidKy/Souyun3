@@ -3,7 +3,6 @@ package com.account.manager.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.account.manager.LoginConstant
 import com.account.manager.model.Account
 import com.account.manager.model.AccountsModel
 import com.account.manager.model.BaseData
@@ -13,9 +12,7 @@ import com.account.manager.tableview.TableViewModel
 import com.account.manager.tableview.model.Cell
 import com.account.manager.tableview.model.ColumnHeader
 import com.account.manager.tableview.model.RowHeader
-import com.task.cn.getPlatformByAppName
-import com.task.cn.getPlatformByInt
-import com.utils.common.SPUtils
+import com.task.cn.getPlatformNameByInt
 import com.utils.common.ThreadUtils
 
 class HomeViewModel : ViewModel() {
@@ -103,7 +100,7 @@ class HomeViewModel : ViewModel() {
                         0 -> cellList.add(
                             Cell(
                                 column.toString(),
-                                getPlatformByInt(account.platform.toInt())
+                                getPlatformNameByInt(account.platform.toInt())
                             )
                         )
                         1 -> cellList.add(Cell(column.toString(), account.account))
