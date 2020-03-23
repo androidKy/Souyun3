@@ -1,2 +1,2 @@
-include ':app', ':utils_library', ':task_lib', ':saf-log', ':account_manager'
+include ':app', ':utils_library', ':task_lib', ':saf-log', ':account_manager', ':ip_proxy'
 rootProject.name='SouyunApp3'

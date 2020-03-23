@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">ipProxy</string>
+    <string name="bt_login">确定</string>
+    <string name="et_login_hint">请输入密钥</string>
+    <string name="tv_ip_title">当前IP：</string>
+    <string name="ip_value">192.168.2.98</string>
+    <string name="address_title">当前线路：</string>
+    <string name="address_value">广东省广州市天河区</string>
+    <string name="ip_connect">连接</string>
+    <string name="address_choose">选择地区</string>
+    <string name="psw_change">更换密钥</string>
+    <string name="ip_refresh">刷新IP地址</string>
+    <string name="tv_welcome">深井IP</string>
+    <string name="tv_version">1.0.0</string>
+    <string name="ip_connecting">正在连接</string>
+    <string name="ip_connect_succeed">已连接</string>
+    <string name="ip_connect_failed">连接失败</string>
+</resources>
