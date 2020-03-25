@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+static def releaseTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
+}
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -11,15 +14,32 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            keyAlias "souyun3"
+            keyPassword "souyun2020"
+            storeFile file("../souyun3.keystore")
+            storePassword "souyun2020"
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            //outputFileName = "fashionPro_${variant.name.replace("Release","")}_${releaseTime()}_${variant.versionName}.apk"
+            outputFileName = "深度IP_${variant.versionName}_${releaseTime()}.apk"
         }
     }
 

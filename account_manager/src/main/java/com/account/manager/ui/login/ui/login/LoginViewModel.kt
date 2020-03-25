@@ -46,7 +46,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     // A placeholder username validation check
     private fun isUserNameValid(username: String): Boolean {
-        return regexPhone(username)
+        return true
     }
 
     private fun regexPhone(phone: String): Boolean {

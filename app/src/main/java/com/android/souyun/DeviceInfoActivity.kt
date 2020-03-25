@@ -35,7 +35,7 @@ class DeviceInfoActivity : AppCompatActivity() {
         ThreadUtils.executeByCached(object : ThreadUtils.Task<Boolean>() {
             override fun doInBackground(): Boolean {
                 try {
-                    val inputStream = assets.open("devices_info.json")
+                    val inputStream = assets.open("devices_info_new.json")
 
                     val content = BufferedReader(InputStreamReader(inputStream))
                         .lineSequence()

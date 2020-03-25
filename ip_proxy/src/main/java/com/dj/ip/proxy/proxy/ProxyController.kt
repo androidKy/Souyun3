@@ -32,7 +32,6 @@ class ProxyController {
         this.mCityCode = cityCode
         return this
     }
-
     fun startProxy() {
         val proxyUrl = "http://10.8.0.1:8096/open?api=$mPsw&close_time=7200&area=$mCityCode"
 
@@ -47,7 +46,7 @@ class ProxyController {
                                 PingManager.getNetIP(object : IpListener {
                                     override fun onIpResult(result: Boolean, ipBean: IpBean?) {
                                         if (result) {
-                                            ipBean?.cid = mCityName
+                                            ipBean?.cname = mCityName
                                             mProxyRequestListener?.onIpResult(true, ipBean)
                                         } else mProxyRequestListener?.onIpResult(false, null)
                                     }

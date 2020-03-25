@@ -57,7 +57,6 @@ android {
             outputFileName = "device24_${variant.versionName}_${releaseTime()}.apk"
         }
     }
-
 }
 
 dependencies {

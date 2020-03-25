@@ -157,9 +157,9 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        val backup_info = BackupInfoBean()
-        backup_info.pkg_name = mPkgName
-        mTaskBean.backup_info = backup_info
+        val backupInfo = BackupInfoBean()
+        backupInfo.pkg_name = mPkgName
+        mTaskBean.backup_info = backupInfo
 
         L.d("传入的TaskBean: $mTaskBean")
 
@@ -167,7 +167,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             .setLastTaskStatus(StatusTask.TASK_FINISHED)
             .setAccountSwitch(false)
             .setDeviceSwitch(false)
-            .setIpSwitch(true)
+            .setIpSwitch(false)
             .setTaskInfoSwitch(true)
             .setPlatformList(arrayListOf(mPkgName))
             .setCityCode(cityName)
@@ -181,28 +181,13 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
                         tv_location.text =
                             "${result.r.device_info.latitude},${result.r.device_info.longitude}"
-                       /* tv_ip.text = result.r.ip_info.ip
-                        tv_address.text = result.r.ip_info.city*/
+                        tv_ip.text = result.r?.ip_info?.ip
+                        tv_address.text = result.r?.ip_info?.city
 
-                        ThreadUtils.executeByCached(object : ThreadUtils.Task<Boolean>() {
-                            override fun doInBackground(): Boolean {
-                                CMDUtil().execCmd("pm clear $mPkgName")
-                                return true
-                            }
-
-                            override fun onSuccess(result: Boolean?) {
-                                val packageManager = this@TestActivity.getPackageManager()
-                                val intent =
-                                    packageManager.getLaunchIntentForPackage(mPkgName)
-                                startActivity(intent)
-                            }
-
-                            override fun onCancel() {
-                            }
-
-                            override fun onFail(t: Throwable?) {
-                            }
-                        })
+                        val packageManager = this@TestActivity.packageManager
+                        val intent =
+                            packageManager.getLaunchIntentForPackage(mPkgName)
+                        startActivity(intent)
                     } else {
                         tv_tip.text = "改机失败，请检查网络情况"
                     }

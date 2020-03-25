@@ -12,7 +12,7 @@ class Constants {
         const val CITY_NAME_KEY = "address_name"
         const val CITY_CODE_KEY = "city_code"
 
-        const val PROXY_IP_URL = "http://10.8.0.1:8096/open?api=uchdnwhc&close_time=3600"
+        const val PROXY_IP_URL = "http://10.8.0.1:8096/open?api=uchdnwhc&close_time=3600"   //odcskqcd  cakdckwn
         const val PING_URL = "http://pv.sohu.com/cityjson?ie=utf-8"    //https://2020.ip138.com/
     }
 }

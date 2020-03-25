@@ -18,14 +18,11 @@
         tools:replace="android:theme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.PswActivity"
-            android:launchMode="singleTask"></activity>
+            android:name=".ui.PswActivity"/>
         <activity
-            android:name=".ui.MainActivity"
-            android:launchMode="singleTask" />
+            android:name=".ui.MainActivity"/>
         <activity
-            android:name=".ui.SplashActivity"
-            android:launchMode="singleTask">
+            android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

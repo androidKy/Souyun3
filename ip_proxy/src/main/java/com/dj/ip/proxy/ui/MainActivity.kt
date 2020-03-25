@@ -2,6 +2,7 @@ package com.dj.ip.proxy.ui
 
 import android.animation.Animator
 import android.animation.AnimatorInflater
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -94,6 +95,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                     ToastUtils.showToast(this, "正在连接，请勿重复点击")
                     return
                 }
+                if (mCityCode.isEmpty()) {
+                    ToastUtils.showToast(this, "请选择地区")
+                    return
+                }
                 showConnectAnimation()
                 connectIP()
             }
@@ -120,8 +125,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 ) {
                     city?.apply {
                         mCityCode = this.id
-                        mCityName = this.name
                     }
+                    tv_address_choose.text = "${province?.name}${city?.name}"
+                    mCityName = "${province?.name}${city?.name}"
                 }
             })
     }
@@ -189,7 +195,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
      */
     private fun showIpInfo(ipBean: IpBean?) {
         tv_ip.text = ipBean?.cip ?: ""
-        tv_address_value.text = ipBean?.cid ?: ""
+        tv_address_value.text = ipBean?.cname ?: ""
     }
 
     /**
@@ -208,4 +214,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             put(Constants.CITY_NAME_KEY, mCityName)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mAnimator?.cancel()
+    }
+
 }
