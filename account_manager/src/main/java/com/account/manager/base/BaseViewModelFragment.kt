@@ -12,4 +12,8 @@ abstract class BaseViewModelFragment<VM : ViewModel> : BaseFragment() {
     fun getViewModel(vmClass: Class<VM>): VM {
         return ViewModelProvider(this).get(vmClass)
     }
+
+    override fun initListener() {
+
+    }
 }

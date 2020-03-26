@@ -1,7 +1,5 @@
 package com.account.manager.base
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,13 +32,13 @@ abstract class BaseFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(getViewId(), container, false)
         unBinder = ButterKnife.bind(this, view)
-
         return view
     }
 
     override fun onStart() {
         super.onStart()
         initData()
+        initListener()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -53,29 +51,46 @@ abstract class BaseFragment : Fragment() {
 
     abstract fun initData()
 
+    abstract fun initListener()
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         unBinder.unbind()
     }
 
     fun showDialog() {
-        activity?.apply {
-            mDialog = AlertDialog.Builder(this)
-                .setView(R.layout.dialog_setup_tip)
-                .create().apply {
-                    setCanceledOnTouchOutside(false)
-                    show()
-                    window?.setBackgroundDrawable(null)
+        L.d("展示弹框")
+        try {
+            activity?.apply {
+                if(mDialog != null && !mDialog!!.isShowing)
+                {
+                    mDialog?.dismiss()
+                    mDialog = null
                 }
+                mDialog = AlertDialog.Builder(this)
+                    .setView(R.layout.dialog_setup_tip)
+                    .create().apply {
+                        setCanceledOnTouchOutside(false)
+                        show()
+                        window?.setBackgroundDrawable(null)
+                    }
+            }
+        } catch (e: Exception) {
         }
     }
 
-    fun hideDialog(){
-        activity?.apply{
-            mDialog?.let {
-                if(it.isShowing)
+    fun hideDialog() {
+        L.d("隐藏弹框")
+        try {
+            activity?.apply {
+                mDialog?.let {
+                    it.hide()
                     it.dismiss()
+                    mDialog = null
+                }
             }
+        } catch (e: Exception) {
         }
     }
 }

@@ -135,6 +135,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
     }
 
     override fun onResponTaskInfo(result: Result<TaskBean>) {
+        L.d("任务信息获取结果：code=${result.code} ${result.r}")
         if (result.code == StatusCode.FAILED) {
             dealError(result.msg)
         } else
@@ -143,6 +144,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
     }
 
     override fun onResponIpInfo(result: Result<IpInfoBean>) {
+        L.d("IP切换结果：code=${result.code} ${result.r}")
         if (result.code == StatusCode.FAILED) {
             dealError(result.msg)
         } else
@@ -151,6 +153,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
     }
 
     override fun onResponDeviceInfo(result: Result<DeviceInfoBean>) {
+        L.d("设备信息获取结果：code=${result.code} ${result.r}")
         if (result.code == StatusCode.FAILED) {
             dealError(result.msg)
         } else
@@ -159,6 +162,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
     }
 
     override fun onResponAccountInfo(result: Result<AccountInfoBean>) {
+        L.d("账号信息获取结果: code=${result.code} ${result.r}")
         if (result.code == StatusCode.FAILED) {
             dealError(result.msg)
         } else
@@ -204,7 +208,6 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
     private fun sendTaskResult() {
         mTaskStartCount--
         sendTaskMsg(0)
-
     }
 
 

@@ -1,5 +1,7 @@
 package com.task.cn.proxy
 
+import android.os.Handler
+import android.os.Looper
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
@@ -43,9 +45,9 @@ class ProxyController : IProxy {
         this.proxyRequestListener = proxyRequestListener
 
         if (mCityCode.isNullOrEmpty()) {
-            if (mCityName.isNullOrEmpty())
+            if (mCityName.isNullOrEmpty()) {
                 changeIpByCityCode("")
-            else getCityCode(mCityName!!)
+            } else getCityCode(mCityName!!)
         } else {
             changeIpByCityCode(mCityCode!!)
         }
@@ -62,8 +64,11 @@ class ProxyController : IProxy {
         L.d("cityCode: $cityCode")
         //val proxyUrl ="$PROXY_IP_URL$cityCod e&ip=${DevicesUtil.getIPAddress(Utils.getApp())}"
         var proxyUrl = ProxyConstant.PROXY_IP_URL
-        if (cityCode.isNotEmpty()) {
-            proxyUrl = "${ProxyConstant.PROXY_IP_URL}&area=$cityCode"
+        try {
+            if (cityCode.isNotEmpty() && cityCode.toLong() != 0L) {
+                proxyUrl = "${ProxyConstant.PROXY_IP_URL}&area=$cityCode"
+            }
+        } catch (e: Exception) {
         }
 
         Result(StatusCode.FAILED, IpInfoBean(), "获取代理IP失败").run {
@@ -75,8 +80,13 @@ class ProxyController : IProxy {
                         if (!response.isNullOrEmpty() && response == "ok") {
                             this@run.code = StatusCode.SUCCEED
                             this@run.msg = StatusMsg.SUCCEED.msg
-                            this@run.r.city_code = cityCode.toLong()
+
+                                this@run.r.city_code = if (cityCode.isNotEmpty()) cityCode.toLong() else 0L
                         }
+                        ToastUtils.showToast(
+                            Utils.getApp(),
+                            "请求代理结果：$response"
+                        )
 
                         checkIP(this@run)
                     }
@@ -93,25 +103,31 @@ class ProxyController : IProxy {
     }
 
     private fun checkIP(ipResult: Result<IpInfoBean>) {
-        PingManager.getNetIP(object : IpListener {
-            override fun onIpResult(result: Boolean, verifyIpBean: VerifyIpBean?) {
-                if (result) {
-                    verifyIpBean?.apply {
-                        ipResult.r.ip = this.cip
-                        ipResult.r.city_code = this.cid.toLong()
-                        ipResult.r.city = this.cname
+        Handler(Looper.getMainLooper()).postDelayed({
+            //setRequestResult(ipResult)
+            ToastUtils.showToast(Utils.getApp(), "查询IP信息")
+            PingManager.getNetIP(object : IpListener {
+                override fun onIpResult(result: Boolean, verifyIpBean: VerifyIpBean?) {
+                    ToastUtils.showToast(Utils.getApp(), "查询IP结果：$verifyIpBean")
+                    if (result) {
+                        verifyIpBean?.apply {
+                            ipResult.r.ip = this.cip
+                            ipResult.r.city_code =
+                                if (this.cid.isNotEmpty()) this.cid.toLong() else 0L
+                            ipResult.r.city = this.cname
 
-                        saveIpInfo(this.cip, this.cname, this.cid)
+                            saveIpInfo(this.cip, this.cname, this.cid)
+                        }
+                    } else {
+                        ipResult.code = StatusCode.FAILED
+                        ipResult.msg = "网络连接失败"
                     }
-                } else {
-                    ipResult.code = StatusCode.FAILED
-                    ipResult.msg = "网络连接失败"
+
+                    setRequestResult(ipResult)
                 }
+            })
+        }, 5000)
 
-                setRequestResult(ipResult)
-            }
-
-        })
     }
 
     private fun saveIpInfo(ip: String, cityName: String, cityCode: String) {

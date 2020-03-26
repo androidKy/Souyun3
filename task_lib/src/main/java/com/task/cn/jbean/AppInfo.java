@@ -52,4 +52,14 @@ public class AppInfo {
     public void setIconDrawable(Drawable iconDrawable) {
         this.iconDrawable = iconDrawable;
     }
+
+    @Override
+    public String toString() {
+        return "AppInfo{" +
+                "appName='" + appName + '\'' +
+                ", pkgName='" + pkgName + '\'' +
+                ", versionName='" + versionName + '\'' +
+                ", versionCode='" + versionCode + '\'' +
+                '}';
+    }
 }

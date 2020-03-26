@@ -35,7 +35,7 @@
     <string name="tv_proxy_ip">IP：</string>
     <string name="bt_phone_setup">一键改机</string>
     <string name="bt_multi_setup">选择性改机</string>
-    <string name="tv_use_scope">已生效的APP：</string>
+    <string name="tv_use_scope">已选择的APP：</string>
     <string name="title_activity_multi_setup">MultiSetupActivity</string>
     <string name="app_list">默认所有用户已安装的程序</string>
     <string name="bt_commit_account">提交</string>
@@ -53,4 +53,10 @@
     <string name="show_hide_the_column">Showing / Hiding 1. column</string>
     <string name="table_pagination_details">Page %s, showing items %s - %s.</string>
     <string name="tv_account_tip">暂时没有更多数据，点击空白处刷新数据</string>
+    <string name="bt_start_setup">完成</string>
+    <string name="choose_ip">选择IP所属地区</string>
+    <string name="choose_apps">选择应用</string>
+    <string name="tv_setup_status">改机状态：</string>
+    <string name="tv_setup_unstart">未开始</string>
+    <string name="tv_cur_location">当前经纬度：</string>
 </resources>

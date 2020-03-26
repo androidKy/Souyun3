@@ -48,6 +48,9 @@ public class TableViewListener implements ITableViewListener {
     @NonNull
     private TableViewModel mTableViewModel;
 
+
+    private Account mAccount = null;
+
     public TableViewListener(@NonNull TableView tableView, @NonNull TableViewModel tableViewModel) {
         this.mContext = tableView.getContext();
         this.mTableView = tableView;
@@ -124,8 +127,14 @@ public class TableViewListener implements ITableViewListener {
      */
     @Override
     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
-        //showToast("Row header " + row + " has been clicked.");
+        L.d("row: " + row);
+        if (mAccount != null) {
+            showToast("正在读取账号(" + mAccount.getAccount() + ")改机");
+            return;
+        }
         Account account = mTableViewModel.getAccountList().get(row);
+        mAccount = account;
+        showToast("正在读取账号(" + account.getAccount() + ")改机");
 
         TaskBean taskBean = new TaskBean();
         taskBean.setDevice_info(account.getDeviceInfoBean());
@@ -153,6 +162,7 @@ public class TableViewListener implements ITableViewListener {
                         L.d("改机失败：" + result.getMsg());
                         showToast(result.getMsg());
                     }
+                    mAccount = null;
                 })
                 .build()
                 .startTask();

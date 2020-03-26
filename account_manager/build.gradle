@@ -88,4 +88,6 @@ dependencies {
     implementation project(':task_lib')
 
     implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'liji.library.dev:citypickerview:5.2.1'
 }

@@ -23,6 +23,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.safframework.log.L
+import com.task.cn.Result
+import com.task.cn.jbean.IpInfoBean
+import com.task.cn.proxy.ProxyManager
+import com.task.cn.proxy.ProxyRequestListener
 import com.utils.common.SPUtils
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -67,6 +71,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
+
+        connectNet()
+    }
+
+    /**
+     * 连上网络
+     */
+    private fun connectNet(){
+        ProxyManager()
+            .setCityCode("440100")
+            .setProxyRequestListener(object:ProxyRequestListener{
+                override fun onProxyResult(result: Result<IpInfoBean>) {
+
+                }
+            })
+            .startProxy()
     }
 
     private fun initLogin(navView: NavigationView) {

@@ -50,7 +50,7 @@ class HomeViewModel : ViewModel() {
         ThreadUtils.executeByCached(object : ThreadUtils.Task<TableViewModel>() {
             override fun doInBackground(): TableViewModel {
                 return TableViewModel().apply {
-                    this.accountList = accountList
+                    this.accountList = accountList.reversed()
                     columnHeaderList = this@HomeViewModel.getColumnHeaderList()
                     rowHeaderList = this@HomeViewModel.getRowHeaderList(accountList)
                     cellList = this@HomeViewModel.getCellList(accountList)

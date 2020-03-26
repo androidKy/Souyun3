@@ -155,9 +155,13 @@ class ProxyConstant {
         const val PROXY_IP_URL = "http://10.8.0.1:8096/open?api=uchdnwhc&close_time=3600"
         const val CITY_CODE_URL = "http://ip.25ios.com:8089/6796324d5300e5978673d71c50780067.php"
         const val PING_URL = "http://pv.sohu.com/cityjson?ie=utf-8"    //https://2020.ip138.com/
+        const val IPINFO_URL = "http://whois.pconline.com.cn/ipJson.jsp"    //https://2020.ip138.com/
         // const val LOCATION_URL =
         //     "http://api.map.baidu.com/geocoder/v2/?ak=134db1b9cf1f1f2b4427210932b34dcb&location=23.125535,113.37&output=json"
-        const val LOCATION_URL = "http://ip-api.com/json/"
+        //查询经纬度
+        //const val LOCATION_URL = "http://ip-api.com/json/"
+        //根据城市名称查找经纬度
+        const val CITY_LOCATION_URL = "http://api.map.baidu.com/geocoder?output=json&key=37492c0ee6f924cb5e934fa08c6b1676&address="
         const val DATA_TYPE = "multipart/form-data"
         const val POST_PARAM_METHOD = "method"
         const val POST_PARAM_IMEI = "imei"

@@ -30,7 +30,6 @@ class MultiSetupActivity : AppCompatActivity() {
             setHomeButtonEnabled(true)
             title  = resources.getString(R.string.bt_multi_setup)
         }
-        //todo 选择性改机
     }
 
 

@@ -127,6 +127,12 @@ class NetManager {
             SPUtils.getInstance(LoginConstant.SP_LOGIN_INFO).getString(LoginConstant.KEY_USER_ID)
         val token =
             SPUtils.getInstance(LoginConstant.SP_LOGIN_INFO).getString(LoginConstant.KEY_USER_TOKEN)
+        if(uid.isEmpty() || token.isEmpty())
+        {
+            requestListener?.onError("未登录")
+            return
+        }
+
         AndroidNetworking.post(UrlConstant.GET_ACCOUNTS_URL)
             .addBodyParameter("uid", uid)
             .addBodyParameter("token", token)

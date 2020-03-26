@@ -12,6 +12,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.task.cn.util.AppUtils
+import com.utils.common.crash.CrashHandler
 
 /**
  * Description:
@@ -37,8 +38,9 @@ class App : Application() {
         super.onCreate()
 
         L.init("AccountManager")
-        L.logLevel = if(BuildConfig.DEBUG) L.LogLevel.DEBUG else L.LogLevel.UNLOG
+       // L.logLevel = if(BuildConfig.DEBUG) L.LogLevel.DEBUG else L.LogLevel.UNLOG
         AppUtils.init(this)
+        CrashHandler.getInstance().init(this,true)
     }
 
     override fun attachBaseContext(base: Context?) {
