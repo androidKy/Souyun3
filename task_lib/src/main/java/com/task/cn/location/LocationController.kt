@@ -42,9 +42,10 @@ class LocationController private constructor() : ILocationController {
     }
 
     override fun startLocation(ip: String) {
-        val url = ProxyConstant.CITY_LOCATION_URL+SPUtils.getInstance(SP_IP_INFO).getString(KEY_CITY_NAME)
+        //val url = ProxyConstant.CITY_LOCATION_URL+SPUtils.getInstance(SP_IP_INFO).getString(KEY_CITY_NAME)
+        val url = ProxyConstant.CITY_LOCATION_URL + ip
 
-        ThreadUtils.executeByCached(object:ThreadUtils.Task<String>(){
+        ThreadUtils.executeByCached(object : ThreadUtils.Task<String>() {
             override fun doInBackground(): String? {
                 val request = Request.Builder().url(url).build()
                 val client = OkHttpClient.Builder().build()
@@ -79,30 +80,30 @@ class LocationController private constructor() : ILocationController {
             }
         })
 
-      /*  AndroidNetworking.get(url)
-            .build()
-            .getAsOkHttpResponse(object : OkHttpResponseListener {
-                override fun onResponse(response: Response?) {
-                    try {
-                        response?.body()?.string()?.apply {
-                            val locationBean = Gson().fromJson(this, IpLocationBean::class.java)
-                            if (locationBean != null) {
-                                mLocationListener?.onLocationResult(
-                                    locationBean.result.location.lat.toString(),
-                                    locationBean.result.location.lng.toString()
-                                )
-                            }
-                        }
-                    } catch (e: Exception) {
-                        L.d(e.message)
-                        mLocationListener?.onLocationResult("0.0", "0.0")
-                    }
-                }
+        /*  AndroidNetworking.get(url)
+              .build()
+              .getAsOkHttpResponse(object : OkHttpResponseListener {
+                  override fun onResponse(response: Response?) {
+                      try {
+                          response?.body()?.string()?.apply {
+                              val locationBean = Gson().fromJson(this, IpLocationBean::class.java)
+                              if (locationBean != null) {
+                                  mLocationListener?.onLocationResult(
+                                      locationBean.result.location.lat.toString(),
+                                      locationBean.result.location.lng.toString()
+                                  )
+                              }
+                          }
+                      } catch (e: Exception) {
+                          L.d(e.message)
+                          mLocationListener?.onLocationResult("0.0", "0.0")
+                      }
+                  }
 
-                override fun onError(anError: ANError?) {
-                    mLocationListener?.onLocationResult("0.0", "0.0")
-                }
-            })*/
+                  override fun onError(anError: ANError?) {
+                      mLocationListener?.onLocationResult("0.0", "0.0")
+                  }
+              })*/
         /* AMapLocationClient(Utils.getApp()).run {
 
              mLocationClient = this
