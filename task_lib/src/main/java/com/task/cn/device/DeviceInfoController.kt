@@ -4,12 +4,10 @@ import android.os.Environment
 import com.safframework.log.L
 import com.task.cn.DeviceConstant
 import com.task.cn.jbean.DeviceInfoBean
-import com.utils.common.CMDUtil
-import com.utils.common.FileIOUtils
-import com.utils.common.ThreadUtils
-import com.utils.common.Utils
+import com.utils.common.*
 import org.json.JSONObject
 import java.io.File
+import java.lang.StringBuilder
 
 /**
  * Description:
@@ -54,9 +52,49 @@ class DeviceInfoController : IDeviceInfo {
         } else {
             //批量添加应用程序相应的设备信息
             //先删除源文件
-            val deleteResult = File(DEVICE_INFO_FILE_PATH).delete()
-            L.d("删除local/data/tmp/app.setting.json文件: $deleteResult")
-            createFile(pkgNameList)
+            val appFile = File(DEVICE_INFO_FILE_PATH)
+            if (appFile.exists()) {
+                //val deleteResult = appFile.deleteRecursively()
+                ThreadUtils.executeByCached(object : ThreadUtils.Task<Boolean>() {
+                    override fun doInBackground(): Boolean {
+                        return !CMDUtil().execCmd("chmod 777 /data/local/tmp/*;rm -fr /data/local/tmp/app.*;")
+                            .contains(
+                                "denied"
+                            )
+                    }
+
+                    override fun onSuccess(result: Boolean) {
+                        L.d("删除local/data/tmp/app.setting.json文件: $result")
+                        if (result) {
+                            if (!isSettingFileExist())
+                                createFile(pkgNameList)
+                            else {
+                                ToastUtils.showToast(
+                                    Utils.getApp(),
+                                    "删除/data/local/tmp/app.setting.json文件失败"
+                                )
+                                responResult(false)
+                            }
+                        } else {
+                            ToastUtils.showToast(
+                                Utils.getApp(),
+                                "删除/data/local/tmp/app.setting.json文件失败"
+                            )
+                            responResult(false)
+                        }
+                    }
+
+                    override fun onCancel() {
+                    }
+
+                    override fun onFail(t: Throwable?) {
+                        responResult(false)
+                    }
+                })
+            } else {
+                createFile(pkgNameList)
+            }
+
         }
     }
 
@@ -73,7 +111,7 @@ class DeviceInfoController : IDeviceInfo {
         ThreadUtils.executeByCached(object : ThreadUtils.Task<Boolean>() {
             override fun doInBackground(): Boolean {
                 var resultBoolean = false
-                val cmdResult = CMDUtil().execCmd("chmod 777 $DEVICE_INFO_FILE_PATH")
+                val cmdResult = CMDUtil().execCmd("chmod 777 $DEVICE_INFO_FILE_PATH;")
                 val result = FileIOUtils.readFile2String(DEVICE_INFO_FILE_PATH)
                 L.d("配置前文件信息: $result")
                 try {
@@ -133,8 +171,14 @@ class DeviceInfoController : IDeviceInfo {
             L.d("filesDir: $filesDir")
             val filePath = "$filesDir${File.separator}app.setting.json"
             File(filePath).apply {
-                if (exists())
-                    delete()
+                if (exists()) {
+                    val deleteResult = delete()
+                    if (!deleteResult) {
+                        ToastUtils.showToast(Utils.getApp(), "删除sdcard/app.setting.json文件失败")
+                        responResult(false)
+                        return
+                    }
+                }
             }
             val createResult = File(filePath).createNewFile()
             if (createResult) {
@@ -152,14 +196,22 @@ class DeviceInfoController : IDeviceInfo {
                                 FileIOUtils.writeFileFromString(filePath, str)
                             }
 
-                            val execCmd = CMDUtil().execCmd("cp -ar $filePath /data/local/tmp/")
+                            val execCmd =
+                                CMDUtil().execCmd("cp -ar $filePath data/local/tmp/;")
                             if (!execCmd.contains("denied")) {
                                 result = true
                             }
-                            L.d("execCmd: $execCmd")
-                            if (result && pkgList.size == 1) {
-                                if (pkgList[0] != Utils.getApp().packageName)
-                                    CMDUtil().execCmd("pm clear ${pkgList[0]}")
+
+                            if (result) {
+                                val clearSB = StringBuilder()
+                                pkgList.forEach {
+                                    if (it != Utils.getApp().packageName) {
+                                        //CMDUtil().execCmd("pm clear ${pkgList[0]};")
+                                        clearSB.append("pm clear $it;")
+                                    }
+                                }
+                                L.d("clearCmd: ${clearSB.toString()}")
+                                CMDUtil().execCmd(clearSB.toString())
                             }
                         } catch (e: Exception) {
                             L.d(e.message)
@@ -183,6 +235,7 @@ class DeviceInfoController : IDeviceInfo {
                 })
             } else {
                 L.d("在目录 $filePath 下创建文件失败 ")
+                ToastUtils.showToast(Utils.getApp(), "在目录${filePath}下创建文件失败 ")
                 responResult(false)
             }
         } catch (e: Exception) {

@@ -24,6 +24,9 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.safframework.log.L
 import com.task.cn.Result
+import com.task.cn.SPConstant
+import com.task.cn.SPConstant.Companion.IS_CONNECT_NET_KEY
+import com.task.cn.StatusCode
 import com.task.cn.jbean.IpInfoBean
 import com.task.cn.proxy.ProxyManager
 import com.task.cn.proxy.ProxyRequestListener
@@ -78,15 +81,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 连上网络
      */
-    private fun connectNet(){
-        ProxyManager()
-            .setCityCode("440100")
-            .setProxyRequestListener(object:ProxyRequestListener{
-                override fun onProxyResult(result: Result<IpInfoBean>) {
-
-                }
-            })
-            .startProxy()
+    private fun connectNet() {
+        val isConnected =
+            SPUtils.getInstance(SPConstant.SP_IP_INFO).getBoolean(IS_CONNECT_NET_KEY, false)
+        if (!isConnected) {
+            ProxyManager()
+                .setCityCode("440100")
+                .setProxyRequestListener(object : ProxyRequestListener {
+                    override fun onProxyResult(result: Result<IpInfoBean>) {
+                        if (result.code == StatusCode.SUCCEED)
+                            SPUtils.getInstance(SPConstant.SP_IP_INFO).put(IS_CONNECT_NET_KEY, true)
+                    }
+                })
+                .startProxy()
+        }
     }
 
     private fun initLogin(navView: NavigationView) {

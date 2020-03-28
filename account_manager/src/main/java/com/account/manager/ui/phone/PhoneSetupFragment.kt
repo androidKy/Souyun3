@@ -42,7 +42,7 @@ class PhoneSetupFragment : BaseViewModelFragment<PhoneSetupViewModel>() {
             location.observe(this@PhoneSetupFragment,
                 Observer<String>{t -> tv_cur_location.text = t})
 
-            initPhoneInfo()
+            //initPhoneInfo()
         }
     }
 

@@ -126,7 +126,7 @@ class ProxyController : IProxy {
                     setRequestResult(ipResult)
                 }
             })
-        }, 5000)
+        }, 3000)
 
     }
 

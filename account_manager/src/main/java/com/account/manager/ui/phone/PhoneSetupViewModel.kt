@@ -3,7 +3,6 @@ package com.account.manager.ui.phone
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.account.manager.base.BaseViewModel
 import com.account.manager.view.AppPicker
 import com.account.manager.view.CityPicker
@@ -21,7 +20,6 @@ import com.task.cn.manager.TaskManager
 import com.task.cn.proxy.IpListener
 import com.task.cn.proxy.PingManager
 import com.task.cn.task.ITaskControllerView
-import com.task.cn.util.AppUtils
 import com.utils.common.DevicesUtil
 import com.utils.common.ToastUtils
 import com.utils.common.Utils
@@ -68,9 +66,8 @@ class PhoneSetupViewModel : BaseViewModel() {
      * 一键改机
      */
     fun setupPhone() {
-        if(mIsStarting)
-        {
-            ToastUtils.showToast(Utils.getApp(),"正在改机...")
+        if (mIsStarting) {
+            ToastUtils.showToast(Utils.getApp(), "正在改机...")
             return
         }
 
@@ -85,12 +82,10 @@ class PhoneSetupViewModel : BaseViewModel() {
                     if (result.code == StatusCode.SUCCEED) {
                         L.d("一键改机成功")
                         msg = "设备信息和IP已更改"
-                        settingDeviceInfo(result.r)
+                        initTaskInfo(result.r)
                     }
                     _tipSetup.value = msg
 
-                    settingIPInfo()
-                    initLocation()
 
                     mIsStarting = false
                 }
@@ -99,18 +94,13 @@ class PhoneSetupViewModel : BaseViewModel() {
             .startTask()
     }
 
-    private fun settingDeviceInfo(taskBean: TaskBean) {
-        _phoneModel.value = taskBean.device_info.model
-        _phoneImei.value = taskBean.device_info.android_id
-    }
 
     /**
      * 批量改机
      */
     fun multiSetupPhone() {
-        if(mIsStarting)
-        {
-            ToastUtils.showToast(Utils.getApp(),"正在改机...")
+        if (mIsStarting) {
+            ToastUtils.showToast(Utils.getApp(), "正在改机...")
             return
         }
 
@@ -139,18 +129,26 @@ class PhoneSetupViewModel : BaseViewModel() {
                     if (result.code == StatusCode.SUCCEED) {
                         L.d("批量改机成功")
                         msg = "设备信息和IP已更改"
-                        settingDeviceInfo(result.r)
+                        initTaskInfo(result.r)
                     }
                     _tipSetup.value = msg
-
-                    settingIPInfo()
-                    initLocation()
 
                     mIsStarting = false
                 }
             })
             .build()
             .startTask()
+    }
+
+
+    private fun initTaskInfo(taskBean: TaskBean) {
+        _phoneModel.value =
+            taskBean.device_info?.manufacturer ?: "" + "-" + taskBean.device_info?.model ?: ""
+        _phoneImei.value = taskBean.device_info?.android_id ?: ""
+        _ip.value = taskBean.ip_info?.ip ?: ""
+        _ipCity.value = taskBean.ip_info?.city ?: ""
+        _location.value =
+            "经度：${taskBean.device_info?.latitude ?: ""} 纬度：${taskBean.device_info?.longitude ?: ""}"
     }
 
     /**

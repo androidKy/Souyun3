@@ -28,7 +28,7 @@
             android:id="@+id/tv_phone_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="小米5c" />
+            android:text="" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,7 +46,7 @@
             android:id="@+id/tv_phone_imei"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="143089349843089099" />
+            android:text="" />
     </LinearLayout>
 
     <TextView

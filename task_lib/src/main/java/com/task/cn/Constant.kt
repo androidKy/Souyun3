@@ -47,6 +47,8 @@ class SPConstant {
         const val SP_DEVICE_INFO = "sp_device_info"
         const val SP_IP_INFO = "sp_ip_info"
 
+        const val IS_CONNECT_NET_KEY = "is_connect_net"
+
         const val KEY_IP = "ip"
         const val KEY_CITY_CODE = "city_code"
         const val KEY_CITY_NAME = "city_name"

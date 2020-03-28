@@ -12,6 +12,7 @@ import com.utils.common.ThreadUtils
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
+import okhttp3.Response
 
 /**
  * Description:
@@ -49,12 +50,18 @@ class PingManager {
 
             ThreadUtils.executeByCached(object : ThreadUtils.Task<String>() {
                 override fun doInBackground(): String? {
-                    val request = Request.Builder().url(ProxyConstant.IPINFO_URL).build()
-                    val client = OkHttpClient.Builder().build()
+                    var execute: Response? = null
+                    try {
+                        val request = Request.Builder().url(ProxyConstant.IPINFO_URL).build()
+                        val client = OkHttpClient.Builder().build()
 
-                    val execute = client.newCall(request).execute()
-
-                    return execute.body()?.string()
+                        execute = client.newCall(request).execute()
+                        return execute?.body()?.string()
+                    } catch (e: Exception) {
+                    } finally {
+                        execute?.close()
+                    }
+                    return ""
                 }
 
                 override fun onSuccess(response: String?) {
