@@ -1,21 +1,25 @@
 package com.task.cn.location
 
-import android.os.Looper
+import com.amap.api.location.AMapLocationClient
+import com.amap.api.location.AMapLocationListener
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.OkHttpResponseListener
 import com.google.gson.Gson
 import com.safframework.log.L
 import com.task.cn.ProxyConstant
 import com.task.cn.SPConstant.Companion.KEY_CITY_NAME
 import com.task.cn.SPConstant.Companion.SP_IP_INFO
+import com.task.cn.database.RealmHelper
 import com.task.cn.jbean.IpLocationBean
+import com.task.cn.jbean.LocationBean
 import com.task.cn.manager.LocationListener
 import com.utils.common.SPUtils
 import com.utils.common.ThreadUtils
-import com.utils.common.ToastUtils
 import com.utils.common.Utils
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import java.util.concurrent.TimeUnit
 
 /**
  * Description:
@@ -23,73 +27,35 @@ import java.util.concurrent.TimeUnit
  **/
 class LocationController private constructor() : ILocationController {
 
-    private var mConnectTimes: Int = 0
-
     companion object {
         val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             LocationController()
         }
     }
 
-    init {
-        mConnectTimes = 0
-    }
-
     private var mLocationListener: LocationListener? = null
     //private var mLocationClient: AMapLocationClient? = null
-
-    val mHandler:android.os.Handler = android.os.Handler(Looper.getMainLooper()){
-        if(it.what == 400)
-        {
-
-        }
-        false
-    }
 
     fun setLocationListener(locationListener: LocationListener): LocationController {
         mLocationListener = locationListener
         return this
     }
 
-    private fun getLocationInfo(url: String): String? {
-        var execute: Response? = null
-        try {
-            val request = Request.Builder().url(url).build()
-            val client = OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
-                .build()
-
-            execute = client.newCall(request).execute()
-            val response = execute.body()?.string()
-            /*if (response.isNullOrEmpty()) {
-                if (mConnectTimes <= 3) {
-                    return getLocationInfo(url)
-                }
-            }*/
-            return response
-        } catch (e: Exception) {
-        } finally {
-            execute?.close()
-        }
-
-        return ""
-    }
-
     override fun startLocation(ip: String) {
-        val url = ProxyConstant.CITY_LOCATION_URL + SPUtils.getInstance(SP_IP_INFO).getString(
-            KEY_CITY_NAME
-        )
+        //val url = ProxyConstant.CITY_LOCATION_URL+SPUtils.getInstance(SP_IP_INFO).getString(KEY_CITY_NAME)
+        val url = ProxyConstant.CITY_LOCATION_URL + ip
 
         ThreadUtils.executeByCached(object : ThreadUtils.Task<String>() {
             override fun doInBackground(): String? {
-                return getLocationInfo(url)
+                val request = Request.Builder().url(url).build()
+                val client = OkHttpClient.Builder().build()
+
+                val execute = client.newCall(request).execute()
+                return execute.body()?.string()
             }
 
             override fun onSuccess(result: String?) {
                 try {
-                    ToastUtils.showToast(Utils.getApp(), "获取经纬度: $result")
                     result.apply {
                         val locationBean = Gson().fromJson(this, IpLocationBean::class.java)
                         if (locationBean != null) {

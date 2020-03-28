@@ -1,6 +1,7 @@
 package com.task.cn.task
 
 import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.StringRequestListener
 import com.google.gson.Gson
@@ -10,6 +11,7 @@ import com.task.cn.SPConstant.Companion.SP_DEVICE_INFO
 import com.task.cn.URL.Companion.GET_DEVICE_INFO_URL
 import com.task.cn.device.DeviceInfoController
 import com.task.cn.device.DeviceInfoListener
+import com.task.cn.device.DeviceManager
 import com.task.cn.jbean.AccountInfoBean
 import com.task.cn.jbean.DeviceInfoBean
 import com.task.cn.jbean.IpInfoBean
@@ -89,10 +91,8 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
         Result(StatusCode.FAILED, DeviceInfoBean(), StatusMsg.DEFAULT.msg).run {
             val platform: Int =
                 if (platformList.size == 1) getPlatformIntByPkg(platformList[0]) else -1
-
-            AndroidNetworking.get("${GET_DEVICE_INFO_URL}$platform")
-                .build()
-                .getAsString(object : StringRequestListener {
+            DeviceManager()
+                .setRequestListener(object : StringRequestListener {
                     override fun onResponse(response: String?) {
                         L.d("服务器返回的设备信息: $response")
                         try {
@@ -126,12 +126,13 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
 
                     override fun onError(anError: ANError?) {
                         anError?.errorBody?.apply {
-                            this@run.msg = this
+                            this@run.msg = "从服务器获取设备信息失败：$this"
                         }
 
                         taskInfoView.onResponDeviceInfo(this@run)
                     }
                 })
+                .getDeviceInfo(platform)
         }
     }
 
