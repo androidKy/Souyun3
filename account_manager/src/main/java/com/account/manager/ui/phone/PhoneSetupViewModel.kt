@@ -67,12 +67,12 @@ class PhoneSetupViewModel : BaseViewModel() {
      */
     fun setupPhone() {
         if (mIsStarting) {
-            ToastUtils.showToast(Utils.getApp(), "正在改机...")
+            ToastUtils.showToast(Utils.getApp(), "正在改机和换IP...")
             return
         }
 
         mIsStarting = true
-        _tipSetup.value = "开始改机..."
+        _tipSetup.value = "正在改机和换IP..."
         TaskManager.Companion.TaskBuilder()
             .setIpSwitch(true)
             .setDeviceSwitch(true)
@@ -83,6 +83,8 @@ class PhoneSetupViewModel : BaseViewModel() {
                         L.d("一键改机成功")
                         msg = "设备信息和IP已更改"
                         initTaskInfo(result.r)
+                    }else{
+                        ToastUtils.showToast(Utils.getApp(),"改机和换IP失败")
                     }
                     _tipSetup.value = msg
 
@@ -100,7 +102,7 @@ class PhoneSetupViewModel : BaseViewModel() {
      */
     fun multiSetupPhone() {
         if (mIsStarting) {
-            ToastUtils.showToast(Utils.getApp(), "正在改机...")
+            ToastUtils.showToast(Utils.getApp(), "正在改机和换IP...")
             return
         }
 
@@ -115,7 +117,7 @@ class PhoneSetupViewModel : BaseViewModel() {
             ToastUtils.showToast(Utils.getApp(), "请至少选择一个应用")
             return
         }
-        _tipSetup.value = "开始改机..."
+        _tipSetup.value = "正在改机和换IP..."
         mIsStarting = true
 
         TaskManager.Companion.TaskBuilder()
@@ -130,6 +132,8 @@ class PhoneSetupViewModel : BaseViewModel() {
                         L.d("批量改机成功")
                         msg = "设备信息和IP已更改"
                         initTaskInfo(result.r)
+                    }else{
+                        ToastUtils.showToast(Utils.getApp(),"改机和换IP失败")
                     }
                     _tipSetup.value = msg
 
@@ -142,6 +146,8 @@ class PhoneSetupViewModel : BaseViewModel() {
 
 
     private fun initTaskInfo(taskBean: TaskBean) {
+        ToastUtils.showToast(Utils.getApp(),"改机和换IP成功")
+
         _phoneModel.value =
             taskBean.device_info?.manufacturer ?: "" + "-" + taskBean.device_info?.model ?: ""
         _phoneImei.value = taskBean.device_info?.android_id ?: ""

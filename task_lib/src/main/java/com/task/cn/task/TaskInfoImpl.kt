@@ -12,6 +12,7 @@ import com.task.cn.URL.Companion.GET_DEVICE_INFO_URL
 import com.task.cn.device.DeviceInfoController
 import com.task.cn.device.DeviceInfoListener
 import com.task.cn.device.DeviceManager
+import com.task.cn.device.MockDeviceController
 import com.task.cn.jbean.AccountInfoBean
 import com.task.cn.jbean.DeviceInfoBean
 import com.task.cn.jbean.IpInfoBean
@@ -88,7 +89,7 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
 
 
     override fun getDeviceInfo(platformList: List<String>) {
-        Result(StatusCode.FAILED, DeviceInfoBean(), StatusMsg.DEFAULT.msg).run {
+        Result(StatusCode.FAILED, DeviceInfoBean(), "get deviceInfo failed").run {
             val platform: Int =
                 if (platformList.size == 1) getPlatformIntByPkg(platformList[0]) else -1
             DeviceManager()
@@ -168,27 +169,41 @@ class TaskInfoImpl(private val taskInfoView: TaskInfoView) : ITaskInfo {
                 }
             }
 
-            DeviceInfoController()
-                .setDeviceInfoListener(object : DeviceInfoListener {
-                    override fun onChangeResult(result: Boolean) {
-                        if (result) {
+            DeviceManager()
+                .setOnMockedListener(object : MockDeviceController.OnMockedListener {
+                    override fun onMocked(status: Boolean, msg: String) {
+                        if (status) {
                             this@run.code = StatusCode.SUCCEED
                             this@run.msg = StatusMsg.SUCCEED.msg
                             this@run.r = true
-                        } else this@run.msg = "修改设备信息失败"
-                        //taskInfoView.onChangeDeviceInfo(this@run)
-                        if (result) {
-                            addSelfForDeviceInfo(object : DeviceInfoListener {
-                                override fun onChangeResult(result: Boolean) {
-                                    taskInfoView.onChangeDeviceInfo(this@run)
-                                }
-                            }, deviceInfoBean)
-                        } else {
-                            taskInfoView.onChangeDeviceInfo(this@run)
-                        }
+                        } else this@run.msg = msg
+
+                        taskInfoView.onChangeDeviceInfo(this@run)
                     }
                 })
-                .addDeviceInfos(pkgNameList, deviceInfoBean)
+                .mockDevice(pkgNameList, deviceInfoBean)
+
+            /* DeviceInfoController()
+                 .setDeviceInfoListener(object : DeviceInfoListener {
+                     override fun onChangeResult(result: Boolean) {
+                         if (result) {
+                             this@run.code = StatusCode.SUCCEED
+                             this@run.msg = StatusMsg.SUCCEED.msg
+                             this@run.r = true
+                         } else this@run.msg = "修改设备信息失败"
+                         //taskInfoView.onChangeDeviceInfo(this@run)
+                         if (result) {
+                             addSelfForDeviceInfo(object : DeviceInfoListener {
+                                 override fun onChangeResult(result: Boolean) {
+                                     taskInfoView.onChangeDeviceInfo(this@run)
+                                 }
+                             }, deviceInfoBean)
+                         } else {
+                             taskInfoView.onChangeDeviceInfo(this@run)
+                         }
+                     }
+                 })
+                 .addDeviceInfos(pkgNameList, deviceInfoBean)*/
 
         }
     }

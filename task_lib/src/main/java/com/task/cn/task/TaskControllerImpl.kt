@@ -29,7 +29,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         const val MSG_TASK_COUNT: Int = 1000
     }
 
-    private var mPlatformList:List<String>? = null
+    private var mPlatformList: List<String>? = null
 
     private var mTaskStatus: StatusTask = StatusTask.TASK_UNSTART   //任务状态
     @Volatile
@@ -38,6 +38,9 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
     private var mTaskErrorCount: Int = 0  //错误的任务数量
     @Volatile
     private var mTaskFinished: Boolean = false  //切换任务是否完成
+
+    private var mIpSwitch = false
+    private var mTaskBuilder: TaskManager.Companion.TaskBuilder? = null
 
     private var mErrorStringBuilder: StringBuilder = StringBuilder()
 
@@ -89,10 +92,9 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         /**
          * 任务正在执行
          */
-        if(mTaskStatus == StatusTask.TASK_RUNNING)
-        {
-            taskControllerView.onTaskPrepared(Result(StatusCode.FAILED,mTaskBean,"任务正在执行"))
-            ToastUtils.showToast(Utils.getApp(),"任务正在执行")
+        if (mTaskStatus == StatusTask.TASK_RUNNING) {
+            taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, mTaskBean, "任务正在执行"))
+            ToastUtils.showToast(Utils.getApp(), "任务正在执行")
             return
         }
         /*if(taskBuilder.getCityName().isNullOrEmpty())
@@ -111,16 +113,23 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
 
         mTaskExecutor = TaskInfoImpl(this)
 
+        mIpSwitch = taskBuilder.getIpSwitch()
+        if (mIpSwitch) {
+            mTaskBuilder = taskBuilder
+            mTaskStartCount++
+            mTaskExecutor?.getIpInfo(taskBuilder.getCityCode(), taskBuilder.getCityName())
+            return
+        }
+
+        getDataAfterIpChanged(taskBuilder)
+    }
+
+    private fun getDataAfterIpChanged(taskBuilder: TaskManager.Companion.TaskBuilder) {
         if (taskBuilder.getTaskInfoSwitch()) {
             mTaskStartCount++
             if (taskBuilder.getTaskBean() == null)
                 mTaskExecutor?.getTaskInfo()
             else mTaskExecutor?.getTaskInfo(taskBuilder.getTaskBean()!!)
-        }
-
-        if (taskBuilder.getIpSwitch()) {
-            mTaskStartCount++
-            mTaskExecutor?.getIpInfo(taskBuilder.getCityCode(), taskBuilder.getCityName())
         }
 
         if (taskBuilder.getAccountSwitch()) {
@@ -141,6 +150,8 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         } else
             mTaskBean = result.r
         sendTaskResult()
+
+        showToast("获取任务：${result.code}")
     }
 
     override fun onResponIpInfo(result: Result<IpInfoBean>) {
@@ -150,6 +161,14 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         } else
             mTaskBean.ip_info = result.r
         sendTaskResult()
+
+        showToast("更换IP:${result.code}")
+
+        if (mIpSwitch) {
+            mTaskBuilder?.also {
+                getDataAfterIpChanged(it)
+            }
+        }
     }
 
     override fun onResponDeviceInfo(result: Result<DeviceInfoBean>) {
@@ -159,6 +178,8 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         } else
             mTaskBean.device_info = result.r
         sendTaskResult()
+
+        showToast("获取设备信息:${result.code}")
     }
 
     override fun onResponAccountInfo(result: Result<AccountInfoBean>) {
@@ -168,11 +189,16 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         } else
             mTaskBean.account_info = result.r
         sendTaskResult()
+
+        showToast("获取账号:${result.code}")
     }
 
     override fun onResponIPAddress(latitude: String, longitude: String) {
         L.d("根据IP获取的经纬度: latitude=$latitude longitude=$longitude")
-        if (latitude.isEmpty() || longitude.isEmpty()) {
+
+        showToast("获取经纬度:$latitude,$longitude")
+
+        if (latitude.isEmpty() || latitude == "0.0") {
             dealError("获取经纬度失败")
             taskControllerView.onTaskPrepared(Result(StatusCode.FAILED, mTaskBean, "获取经纬度失败"))
             return
@@ -181,10 +207,12 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         mTaskBean.device_info.latitude = latitude
         mTaskBean.device_info.longitude = longitude
 
-        mTaskExecutor?.changeDeviceInfo(mTaskBean,mPlatformList)
+        mTaskExecutor?.changeDeviceInfo(mTaskBean, mPlatformList)
     }
 
     override fun onChangeDeviceInfo(result: Result<Boolean>) {
+        showToast("更改设备信息:${result.code}")
+
         val finalResult = Result<TaskBean>(StatusCode.FAILED, mTaskBean, result.msg)
 
         if (result.code == StatusCode.FAILED) {
@@ -231,6 +259,13 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
 
     private fun updateTaskToRealm(taskBean: TaskBean) {
         mRealmHelper?.insertTask(taskBean)
+    }
+
+    private fun showToast(msg: String) {
+        Handler(Looper.getMainLooper()).post {
+            ToastUtils.showToast(Utils.getApp(), msg)
+        }
+
     }
 
 }

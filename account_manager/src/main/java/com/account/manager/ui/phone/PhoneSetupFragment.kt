@@ -19,12 +19,12 @@ class PhoneSetupFragment : BaseViewModelFragment<PhoneSetupViewModel>() {
         mViewModel = getViewModel(PhoneSetupViewModel::class.java).apply {
             tipSetup.observe(this@PhoneSetupFragment,
                 Observer<String> { t ->
-                    if (t == "开始改机...") {
+                   /* if (t == "开始改机...") {
                         //弹框提示正在修改
                         showDialog()
                     } else {
                         hideDialog()
-                    }
+                    }*/
                     tv_setup_tip.text = t
                 })
             phoneModel.observe(this@PhoneSetupFragment,

@@ -30,13 +30,10 @@ class DeviceManager {
      */
     fun getDeviceInfo(platform: Int) {
         mStringRequestListener?.also {
-            val respon = AndroidNetworking.get("${URL.GET_DEVICE_INFO_URL}$platform")
-                .setPriority(Priority.IMMEDIATE)
+            AndroidNetworking.get("${URL.GET_DEVICE_INFO_URL}$platform")
+                .setPriority(Priority.HIGH)
                 .build()
-                .executeForString()
-
-            //todo
-            //.getAsString(it)
+                .getAsString(it)
         }
     }
 
