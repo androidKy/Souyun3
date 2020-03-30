@@ -1051,7 +1051,7 @@ public final class ThreadUtils {
 //
 //        public abstract T doInBackground() throws Throwable;
 //
-//        public abstract void onSuccess(T result);
+//        public abstract void onFinished(T result);
 //
 //        public abstract void onCancel();
 //
@@ -1068,7 +1068,7 @@ public final class ThreadUtils {
 //                        getDeliver().execute(new Runnable() {
 //                            @Override
 //                            public void run() {
-//                                onSuccess(result);
+//                                onFinished(result);
 //                                removeScheduleByTask(Task.this);
 //                            }
 //                        });

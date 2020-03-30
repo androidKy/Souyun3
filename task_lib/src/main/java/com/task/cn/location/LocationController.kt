@@ -38,9 +38,10 @@ class LocationController private constructor() : ILocationController {
     }
 
     override fun startLocation(ip: String) {
-        val url = ProxyConstant.CITY_LOCATION_URL + SPUtils.getInstance(SP_IP_INFO).getString(
-            KEY_CITY_NAME
-        )
+        /* val url = ProxyConstant.CITY_LOCATION_URL + SPUtils.getInstance(SP_IP_INFO).getString(
+             KEY_CITY_NAME
+         )*/
+        val url = ProxyConstant.CITY_LOCATION_URL + "广州市"
         //val url = ProxyConstant.CITY_LOCATION_URL + ip
         /* ThreadUtils.executeByCached(object : ThreadUtils.Task<String>() {
              override fun doInBackground(): String? {
@@ -51,7 +52,7 @@ class LocationController private constructor() : ILocationController {
                  return execute.body()?.string()
              }
 
-             override fun onSuccess(result: String?) {
+             override fun onFinished(result: String?) {
                  try {
                      result.apply {
                          val locationBean = Gson().fromJson(this, IpLocationBean::class.java)
@@ -84,14 +85,15 @@ class LocationController private constructor() : ILocationController {
                 .getAsString(object : StringRequestListener {
                     override fun onResponse(response: String?) {
                         try {
+                            L.d("获取经纬度：$response")
                             response?.apply {
                                 val locationBean = Gson().fromJson(this, IpLocationBean::class.java)
                                 if (locationBean != null) {
-                                    mFailedCount = 0
                                     mLocationListener?.onLocationResult(
-                                        locationBean.result.location.lat.toString(),
-                                        locationBean.result.location.lng.toString()
+                                        locationBean.result?.location?.lat?.toString()?:"0.0",
+                                        locationBean.result?.location?.lng?.toString()?:"0.0"
                                     )
+                                    mFailedCount = 0
                                 }
                             }
                         } catch (e: Exception) {
@@ -119,7 +121,7 @@ class LocationController private constructor() : ILocationController {
         if (mFailedCount > 3) {
             mLocationListener?.onLocationResult("0.0", "0.0")
         } else {
-            mFailedCount = 0
+            // mFailedCount = 0
             startLocation(ip)
         }
     }

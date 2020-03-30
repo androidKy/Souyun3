@@ -10,4 +10,10 @@
     <color name="header_line_color">@android:color/holo_red_light</color>
 
     <color name="table_view_default_text_color">#0a0a0a</color>
+
+
+    <color name="user_item_bg_color">#fbfbfb</color>
+    <color name="user_item_divider_color">#ececec</color>
+    <color name="setting_item_bg">@color/user_item_bg_color</color>
+    <color name="tv_user_item_title_color">#3e3e3e</color>
 </resources>

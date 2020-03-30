@@ -116,7 +116,7 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
         mIpSwitch = taskBuilder.getIpSwitch()
         if (mIpSwitch) {
             mTaskBuilder = taskBuilder
-            mTaskStartCount++
+            // mTaskStartCount++
             mTaskExecutor?.getIpInfo(taskBuilder.getCityCode(), taskBuilder.getCityName())
             return
         }
@@ -160,14 +160,11 @@ class TaskControllerImpl(private val taskControllerView: ITaskControllerView) : 
             dealError(result.msg)
         } else
             mTaskBean.ip_info = result.r
-        sendTaskResult()
 
         showToast("更换IP:${result.code}")
 
-        if (mIpSwitch) {
-            mTaskBuilder?.also {
-                getDataAfterIpChanged(it)
-            }
+        mTaskBuilder?.also {
+            getDataAfterIpChanged(it)
         }
     }
 

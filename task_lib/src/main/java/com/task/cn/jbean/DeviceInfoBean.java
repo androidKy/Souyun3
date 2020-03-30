@@ -3,7 +3,6 @@ package com.task.cn.jbean;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -33,7 +32,7 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
      * android.os.Build.VERSION.RELEASE : 6.0
      * android.os.Build.VERSION.SDK : 23
      * android.os.Build.description : LeMobile-user 6.0 MDA89D ac3ef9367eb5 release-keys
-     * android.os.Build.fingerprlong : LeMobile/LeMobile/LeMobile:6.0/MDA89D/ac3ef9367eb5:user/release-keys
+     * android.os.Build.fingerprint : LeMobile/LeMobile/LeMobile:6.0/MDA89D/ac3ef9367eb5:user/release-keys
      * android.os.Build.ro.product.manufacturer : LeMobile
      * android.os.Build.ro.product.model : Le X525
      * android.os.Build.ro.serialno : 7FC38C80C565B260
@@ -80,8 +79,8 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
     private String versionSDK;
     @SerializedName("android.os.Build.description")
     private String description;
-    @SerializedName("android.os.Build.fingerprlong")
-    private String fingerprlong;
+    @SerializedName("android.os.Build.fingerprint")
+    private String fingerprint;
     @SerializedName("android.os.Build.ro.product.manufacturer")
     private String manufacturer;
     @SerializedName("android.os.Build.ro.product.model")
@@ -126,6 +125,8 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
     private String hardware;
     @SerializedName("android.os.Build.ro.product.brand")
     private String brand;
+    @SerializedName("android.os.Build.ro.product.board")
+    private String board;
     @SerializedName("android.os.Build.ro.product.device")
     private String device;
     @SerializedName("android.os.Build.ro.product.name")
@@ -224,7 +225,7 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
                 ", versionRelease='" + versionRelease + '\'' +
                 ", versionSDK='" + versionSDK + '\'' +
                 ", description='" + description + '\'' +
-                ", fingerprlong='" + fingerprlong + '\'' +
+                ", fingerprint='" + fingerprint + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +
                 ", model='" + model + '\'' +
                 ", serialno='" + serialno + '\'' +
@@ -370,12 +371,12 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
         this.description = description;
     }
 
-    public String getFingerprlong() {
-        return fingerprlong;
+    public String getFingerprint() {
+        return fingerprint;
     }
 
-    public void setFingerprlong(String fingerprlong) {
-        this.fingerprlong = fingerprlong;
+    public void setFingerprint(String fingerprint) {
+        this.fingerprint = fingerprint;
     }
 
     public String getManufacturer() {
@@ -528,5 +529,13 @@ public class DeviceInfoBean extends RealmObject implements Serializable {
 
     public void setBootloader(String bootloader) {
         this.bootloader = bootloader;
+    }
+
+    public String getBoard() {
+        return board;
+    }
+
+    public void setBoard(String board) {
+        this.board = board;
     }
 }

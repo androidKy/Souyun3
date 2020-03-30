@@ -36,8 +36,8 @@
         tools:layout="@layout/fragment_share" />
 
     <fragment
-        android:id="@+id/nav_send"
-        android:name="com.account.manager.ui.send.SendFragment"
+        android:id="@+id/nav_setting"
+        android:name="com.account.manager.ui.setting.SettingFragment"
         android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
+        tools:layout="@layout/fragment_setting" />
 </navigation>

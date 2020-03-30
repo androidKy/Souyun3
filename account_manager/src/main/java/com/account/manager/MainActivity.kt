@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home, R.id.nav_add, R.id.nav_phone_setup,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send
+                R.id.nav_tools, R.id.nav_share, R.id.nav_setting
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
                 R.id.nav_home -> {
-                    L.d("home")
+                    //L.d("home")
                 }
             }
         }

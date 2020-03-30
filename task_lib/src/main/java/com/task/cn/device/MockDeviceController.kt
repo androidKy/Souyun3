@@ -4,10 +4,7 @@ import android.os.Environment
 import com.safframework.log.L
 import com.task.cn.DeviceConstant
 import com.task.cn.jbean.DeviceInfoBean
-import com.utils.common.CmdListUtil
-import com.utils.common.FileIOUtils
-import com.utils.common.ThreadUtils
-import com.utils.common.Utils
+import com.utils.common.*
 import com.utils.common.cmd.CommandUtil
 import org.json.JSONObject
 import java.io.File
@@ -83,15 +80,9 @@ class MockDeviceController {
                         val command =
                             "cp -ar $filePath /data/local/tmp/;chown root:root $DEVICE_INFO_FILE_PATH;chmod 777 $DEVICE_INFO_FILE_PATH;"
 
-                        CommandUtil.sendCommand(command, object : CommandUtil.OnResponListener {
-                            override fun onSuccess(responList: MutableList<String>?) {
-                                result = true
-                            }
-
-                            override fun onFailed(msg: String?) {
-                                result = false
-                            }
-                        })
+                        CommandUtil.sendCommand(
+                            command
+                        ) { result = true }
                         FileIOUtils.writeFileFromString(
                             DeviceInfoController.DEVICE_INFO_FILE_PATH,
                             "{}"
@@ -144,14 +135,16 @@ class MockDeviceController {
                                  }
                              }*/
                             if (pkg != Utils.getApp().packageName)
-                                clearCmd.append("pm clear $pkg;")
+                                clearCmd.append("am force-stop $pkg;pm clear $pkg;")
                         }
                         FileIOUtils.writeFileFromString(DEVICE_INFO_FILE_PATH, jsonObj.toString())
                         L.d("修改设备信息后：${FileIOUtils.readFile2String(DEVICE_INFO_FILE_PATH)}")
-                        L.d("清楚APP数据：${clearCmd.toString()}")
-                        CommandUtil.execute(clearCmd.toString())
+                        val cmd = clearCmd.toString()
+                        L.d("清楚APP数据：$cmd")
+                        CommandUtil.sendCommand(cmd)
                     }
                 } catch (e: Exception) {
+                    L.d(e.message)
                     return false
                 }
                 return true
@@ -201,7 +194,7 @@ class MockDeviceController {
             put(DeviceConstant.VERSION_RELEASE_KEY, mDeviceInfoBean?.versionRelease)
             put(DeviceConstant.VERSION_SDK_KEY, mDeviceInfoBean?.versionSDK)
             put(DeviceConstant.DESCRIPTION_KEY, mDeviceInfoBean?.description)
-            put(DeviceConstant.FINGERPRINT_KEY, mDeviceInfoBean?.fingerprlong)
+            put(DeviceConstant.FINGERPRINT_KEY, mDeviceInfoBean?.fingerprint)
             put(DeviceConstant.MANUFACTURER_KEY, mDeviceInfoBean?.manufacturer)
             put(DeviceConstant.MODEL_KEY, mDeviceInfoBean?.model)
             put(DeviceConstant.SERIALNO_KEY, mDeviceInfoBean?.serialno)
@@ -229,6 +222,7 @@ class MockDeviceController {
             put(DeviceConstant.UTCDATE_KEY, mDeviceInfoBean?.utdDate)
             put(DeviceConstant.CPUFILE_KEY, mDeviceInfoBean?.cpuFile)
             put(DeviceConstant.ISROOTCLOCK_KEY, mDeviceInfoBean?.isRootClock)
+            put(DeviceConstant.BOARD_KEY, mDeviceInfoBean?.board)
         }
 
         return jsonObj

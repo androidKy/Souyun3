@@ -261,7 +261,7 @@ class DeviceInfoController : IDeviceInfo {
             put(DeviceConstant.VERSION_RELEASE_KEY, mDeviceInfoBean.versionRelease)
             put(DeviceConstant.VERSION_SDK_KEY, mDeviceInfoBean.versionSDK)
             put(DeviceConstant.DESCRIPTION_KEY, mDeviceInfoBean.description)
-            put(DeviceConstant.FINGERPRINT_KEY, mDeviceInfoBean.fingerprlong)
+            put(DeviceConstant.FINGERPRINT_KEY, mDeviceInfoBean.fingerprint)
             put(DeviceConstant.MANUFACTURER_KEY, mDeviceInfoBean.manufacturer)
             put(DeviceConstant.MODEL_KEY, mDeviceInfoBean.model)
             put(DeviceConstant.SERIALNO_KEY, mDeviceInfoBean.serialno)

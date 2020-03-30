@@ -23,21 +23,26 @@ public class CommandUtil {
 
     public static void sendCommand(String command, OnResponListener responListener) {
         String result = execute(command);
+        if (responListener == null)
+            return;
         if (result != null) {
             if (result.contains("\n")) {
                 String[] splits = result.split("\n");
 
                 List<String> dataList = new ArrayList<>(splits.length);
                 dataList.addAll(Arrays.asList(splits));
-                responListener.onSuccess(dataList);
+
+
+                responListener.onFinished(dataList);
             } else {
                 List<String> dataList = new ArrayList<>(1);
                 dataList.add(result);
-                responListener.onSuccess(dataList);
+
+                responListener.onFinished(dataList);
             }
         } else {
             List<String> dataList = new ArrayList<>();
-            responListener.onSuccess(dataList);
+            responListener.onFinished(dataList);
         }
        /* List<String> dataList = new ArrayList<>();
         DataOutputStream dataOutputStream = null;
@@ -73,7 +78,7 @@ public class CommandUtil {
 
             if (responListener != null) {
                 if (dataList.size() > 0 || TextUtils.isEmpty(errorLine.toString())) {
-                    responListener.onSuccess(dataList);
+                    responListener.onFinished(dataList);
                 } else if (!TextUtils.isEmpty(errorLine.toString()))
                     responListener.onFailed(errorLine.toString());
             }
@@ -102,9 +107,8 @@ public class CommandUtil {
     }
 
     public interface OnResponListener {
-        void onSuccess(List<String> responList);
-
-        void onFailed(String msg);
+        void onFinished(List<String> responList);
+       // void onFailed(String msg);
     }
 
 
@@ -132,7 +136,7 @@ public class CommandUtil {
      *               <pre> eg: "/system/bin/ping", "-c", "4", "-s", "100","www.qiujuer.net"</pre>
      * @return 执行结果
      */
-    public static String execute(String params) {
+    private static String execute(String params) {
         Process process = null;
         StringBuilder sbReader = null;
 

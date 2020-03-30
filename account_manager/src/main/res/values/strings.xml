@@ -12,7 +12,7 @@
     <string name="menu_phone_setup">一键改机(IP)</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
+    <string name="menu_send">设置</string>
     <string name="action_search">搜索</string>
     <string name="menu_add_account">添加账号</string>
     <string name="action_add">添加账号</string>
@@ -59,4 +59,11 @@
     <string name="tv_setup_status">改机状态：</string>
     <string name="tv_setup_unstart">未开始</string>
     <string name="tv_cur_location">当前经纬度：</string>
+    <string name="menu_setting">设置</string>
+    <string name="tv_wx_login">微信自动登录</string>
+    <string name="tiktok_setting">抖音自动登录</string>
+    <string name="ks_setting">快手自动登录</string>
+    <string name="jd_setting">京东自动登录</string>
+    <string name="tv_login_switch">退出登录</string>
+    <string name="pdd_setting">拼多多自动登录</string>
 </resources>

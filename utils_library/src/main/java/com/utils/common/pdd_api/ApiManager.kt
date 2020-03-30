@@ -416,7 +416,7 @@ class ApiManager {
                  return anError?.errorDetail
              }
 
-             override fun onSuccess(result: String?) {
+             override fun onFinished(result: String?) {
                  result?.let {
                      L.e("$log：$it")
                      mDataListener?.onFailed(it)
