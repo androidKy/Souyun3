@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.account.manager.model.Account;
+import com.android.xplugin.util.XSPUtils;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.safframework.log.L;
@@ -32,6 +33,7 @@ import com.task.cn.ConstantKt;
 import com.task.cn.StatusCode;
 import com.task.cn.jbean.TaskBean;
 import com.task.cn.manager.TaskManager;
+import com.utils.common.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,13 +130,20 @@ public class TableViewListener implements ITableViewListener {
     @Override
     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row) {
         L.d("row: " + row);
+        //todo 把这里的逻辑放到ViewModel
         if (mAccount != null) {
             showToast("正在读取账号(" + mAccount.getAccount() + ")改机");
             return;
         }
+
         Account account = mTableViewModel.getAccountList().get(row);
         mAccount = account;
         showToast("正在读取账号(" + account.getAccount() + ")改机");
+
+        //保存账号数据到SP文件，供xposed跨进程使用
+        SPUtils spUtils = SPUtils.getInstance(XSPUtils.DATA_HOOK_SP);
+        spUtils.put(XSPUtils.WECHAT_ACCOUNT_KEY, account.getAccount());
+        spUtils.put(XSPUtils.WECHAT_PSW_KEY, account.getPassword());
 
         TaskBean taskBean = new TaskBean();
         taskBean.setDevice_info(account.getDeviceInfoBean());
