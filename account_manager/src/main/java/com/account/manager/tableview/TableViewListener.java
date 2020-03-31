@@ -142,8 +142,8 @@ public class TableViewListener implements ITableViewListener {
 
         //保存账号数据到SP文件，供xposed跨进程使用
         SPUtils spUtils = SPUtils.getInstance(XSPUtils.DATA_HOOK_SP);
-        spUtils.put(XSPUtils.WECHAT_ACCOUNT_KEY, account.getAccount());
-        spUtils.put(XSPUtils.WECHAT_PSW_KEY, account.getPassword());
+        spUtils.put(XSPUtils.ACCOUNT_KEY, account.getAccount());
+        spUtils.put(XSPUtils.PSW_KEY, account.getPassword());
 
         TaskBean taskBean = new TaskBean();
         taskBean.setDevice_info(account.getDeviceInfoBean());

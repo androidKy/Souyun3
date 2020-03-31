@@ -26,9 +26,13 @@ class SettingFragment : BaseViewModelFragment<SettingViewModel>(),
     }
 
     private fun initView() {
-        val wxSetting =
-            SPUtils.getInstance(XSPUtils.DATA_HOOK_SP).getBoolean(XSPUtils.LOGIN_WECHAT_KEY)
-        sw_wx_setting.isChecked = wxSetting
+        SPUtils.getInstance(XSPUtils.DATA_HOOK_SP).apply {
+            sw_wx_setting.isChecked = getBoolean(XSPUtils.LOGIN_WECHAT_KEY)
+            sw_tiktok_setting.isChecked = getBoolean(XSPUtils.LOGIN_TIKTOK_SWITCH_KEY)
+            sw_ks_setting.isChecked = getBoolean(XSPUtils.LOGIN_KS_SWTICH_KEY)
+        }
+
+
     }
 
     override fun initListener() {

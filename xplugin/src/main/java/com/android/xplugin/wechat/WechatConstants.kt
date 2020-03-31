@@ -5,7 +5,7 @@ package com.android.xplugin.wechat
  * Created by Quinin on 2020-03-21.
  **/
 
-class ClassConstants {
+class WechatClass {
     companion object {
         const val WELCOME_ACTIVITY = "com.tencent.mm.plugin.account.ui.WelcomeActivity"
         const val WELCOME_VIEW = "com.tencent.mm.plugin.account.ui.WelcomeSelectView"
@@ -14,7 +14,7 @@ class ClassConstants {
     }
 }
 
-class MethodConstants{
+class WechatMethod{
     companion object{
         const val ONCREATE = "onCreate"
         const val ONRESUME = "onResume"

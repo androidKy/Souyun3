@@ -20,9 +20,15 @@ class XSPUtils private constructor() {
 
     companion object {
         const val DATA_HOOK_SP = "data_hook_sp"
+
+        const val ACCOUNT_KEY = "account"
+        const val PSW_KEY = "psw"
+        //wechat
         const val LOGIN_WECHAT_KEY = "login_wechat"
-        const val WECHAT_ACCOUNT_KEY = "wechat_account"
-        const val WECHAT_PSW_KEY = "wechat_psw"
+        //tiktok
+        const val LOGIN_TIKTOK_SWITCH_KEY = "login_tiktok_switch"
+        //kuaishou
+        const val LOGIN_KS_SWTICH_KEY = "login_ks_switch"
 
         const val SP_AUTHORITY = "com.android.xplugin.preferences"
 
@@ -32,7 +38,7 @@ class XSPUtils private constructor() {
 
     }
 
-    fun setContext(context: Context?):XSPUtils {
+    fun setContext(context: Context?): XSPUtils {
         mContext = context
 
         return this

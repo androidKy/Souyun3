@@ -9,16 +9,16 @@ import android.widget.EditText
 import com.android.xplugin.PLUGIN_TAG
 import com.android.xplugin.util.XSPUtils
 import com.android.xplugin.util.XSPUtils.Companion.LOGIN_WECHAT_KEY
-import com.android.xplugin.wechat.ClassConstants.Companion.LoginUI_Activity
-import com.android.xplugin.wechat.ClassConstants.Companion.MOBILEINPUTUI_ACTIVITY
-import com.android.xplugin.wechat.ClassConstants.Companion.WELCOME_VIEW
+import com.android.xplugin.wechat.WechatClass.Companion.LoginUI_Activity
+import com.android.xplugin.wechat.WechatClass.Companion.MOBILEINPUTUI_ACTIVITY
+import com.android.xplugin.wechat.WechatClass.Companion.WELCOME_VIEW
 
 /**
  * Description:
  * Created by Quinin on 2020-03-21.
  **/
 class WechatPlugin(
-    private val XSPUtils: XSPUtils,
+    private val xspUtils: XSPUtils,
     private val lpparam: ActivitysLoadPackage.LoadPackageParam
 ) {
 
@@ -29,12 +29,12 @@ class WechatPlugin(
 
 
     fun login() {
-        mIsAutoLogin = XSPUtils.getBoolean(LOGIN_WECHAT_KEY)
-        Log.d(PLUGIN_TAG,"mIsAutoLogin:$mIsAutoLogin")
+        mIsAutoLogin = xspUtils.getBoolean(LOGIN_WECHAT_KEY)
+        Log.d(PLUGIN_TAG, "mIsAutoLogin:$mIsAutoLogin")
         val welcomeActivityClass =
-            ActivitysHelpers.findClassIfExists(ClassConstants.WELCOME_ACTIVITY, lpparam.classLoader)
+            ActivitysHelpers.findClassIfExists(WechatClass.WELCOME_ACTIVITY, lpparam.classLoader)
 
-        ActivitysHelpers.findAndHookMethod(welcomeActivityClass, MethodConstants.ONRESUME,
+        ActivitysHelpers.findAndHookMethod(welcomeActivityClass, WechatMethod.ONRESUME,
             object : ActivitysMethod() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     if (mIsLogining || !mIsAutoLogin) {
@@ -64,7 +64,7 @@ class WechatPlugin(
 
         val mobileInputUIClass =
             ActivitysHelpers.findClassIfExists(MOBILEINPUTUI_ACTIVITY, lpparam.classLoader)
-        ActivitysHelpers.findAndHookMethod(mobileInputUIClass, MethodConstants.ONRESUME,
+        ActivitysHelpers.findAndHookMethod(mobileInputUIClass, WechatMethod.ONRESUME,
             object : ActivitysMethod() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     if (!mIsAutoLogin)
@@ -110,8 +110,11 @@ class WechatPlugin(
                     val igYedit =
                         ActivitysHelpers.getObjectField(loginUIObj, "igy") as EditText
 
-                    ActivitysHelpers.callMethod(igXedit, "setText", "13825110563")
-                    ActivitysHelpers.callMethod(igYedit, "setText", "lqy12020119")
+                    val account = xspUtils.getString(XSPUtils.ACCOUNT_KEY)
+                    val psw = xspUtils.getString(XSPUtils.PSW_KEY)
+                    Log.d(PLUGIN_TAG, "account=$account psw=$psw")
+                    ActivitysHelpers.callMethod(igXedit, "setText", account)
+                    ActivitysHelpers.callMethod(igYedit, "setText", psw)
 
                     /*   val fObj = ActivitysHelpers.getObjectField(param.thisObject, "ifd")
                        ActivitysHelpers.setObjectField(fObj, "account", "13825110563")

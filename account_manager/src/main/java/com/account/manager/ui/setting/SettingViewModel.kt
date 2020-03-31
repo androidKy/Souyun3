@@ -23,7 +23,8 @@ class SettingViewModel : ViewModel() {
 
             }
             else -> {
-
+                SPUtils.getInstance(com.android.xplugin.util.XSPUtils.DATA_HOOK_SP)
+                    .put(com.android.xplugin.util.XSPUtils.LOGIN_TIKTOK_SWITCH_KEY, checked)
             }
         }
     }
