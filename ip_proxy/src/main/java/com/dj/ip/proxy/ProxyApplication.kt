@@ -1,6 +1,7 @@
 package com.dj.ip.proxy
 
 import android.app.Application
+import com.dj.ip.proxy.network.NetworkDetector
 import com.safframework.log.L
 import com.utils.common.Utils
 
@@ -16,5 +17,13 @@ class ProxyApplication : Application() {
 
         L.init("Proxy_IP")
         L.logLevel = if (BuildConfig.DEBUG) L.LogLevel.DEBUG else L.LogLevel.UNLOG
+
+        NetworkDetector.getInstance().init(this)
     }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        NetworkDetector.getInstance().deInit(this)
+    }
+
 }
