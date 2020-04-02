@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils
 import com.dj.ip.proxy.Constants
 import com.dj.ip.proxy.R
 import com.dj.ip.proxy.base.BaseActivity
+import com.dj.ip.proxy.bean.CityListBean
 import com.dj.ip.proxy.bean.IpBean
 import com.dj.ip.proxy.network.NetStateObserver
 import com.dj.ip.proxy.network.NetworkDetector
@@ -20,6 +21,7 @@ import com.dj.ip.proxy.proxy.PingManager
 import com.dj.ip.proxy.proxy.ProxyController
 import com.dj.ip.proxy.proxy.ProxyRequestListener
 import com.dj.ip.proxy.view.CityPicker
+import com.google.gson.Gson
 import com.lljjcoder.Interface.OnCityItemClickListener
 import com.lljjcoder.Interface.OnCustomCityPickerItemClickListener
 import com.lljjcoder.bean.CityBean
@@ -29,9 +31,13 @@ import com.lljjcoder.bean.ProvinceBean
 import com.lljjcoder.style.cityjd.JDCityConfig
 import com.lljjcoder.style.cityjd.JDCityPicker
 import com.safframework.log.L
+import com.utils.common.FileUtils
 import com.utils.common.SPUtils
+import com.utils.common.ThreadUtils
 import com.utils.common.ToastUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.BufferedInputStream
+import java.io.Closeable
 
 /**
  * description:
@@ -43,6 +49,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private var mPsw: String = ""
     private var mCityCode: String = ""
     private var mCityName: String = ""
+
+    private var mCityData: ArrayList<CustomCityData> = arrayListOf()
 
     private var mAnimator: Animator? = null
 
@@ -100,6 +108,59 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private fun initCity() {
         if (mCityName.isNotEmpty())
             tv_address_choose.text = mCityName
+
+        ThreadUtils.executeByCached(object : ThreadUtils.Task<ArrayList<CustomCityData>>() {
+            override fun doInBackground(): ArrayList<CustomCityData> {
+                val cityData = arrayListOf<CustomCityData>()
+                val inputStream = this@MainActivity.assets.open("cityList_final.json")
+                var bufferedInputStream: BufferedInputStream? = null
+                try {
+                    bufferedInputStream = BufferedInputStream(inputStream)
+                    bufferedInputStream.readBytes().run {
+                        val cityLissetBean = Gson().fromJson(String(this), CityListBean::class.java)
+                        for (province in cityLissetBean.data.cityList) {
+                            val provinceCustom = CustomCityData("", province.name)
+                            val customCityList = arrayListOf<CustomCityData>()
+                            for (city in province.data) {
+                                if (city.name != "0") {
+                                    val customCityData = CustomCityData(city.cityid, city.name)
+                                    customCityList.add(customCityData)
+                                }
+                            }
+                            provinceCustom.list = customCityList
+                            cityData.add(provinceCustom)
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    L.e(e.message, e)
+                } finally {
+                    closeStream(inputStream)
+                }
+
+                return cityData
+            }
+
+            override fun onSuccess(result: ArrayList<CustomCityData>) {
+                mCityData.clear()
+                mCityData.addAll(result)
+            }
+
+            override fun onCancel() {
+            }
+
+            override fun onFail(t: Throwable?) {
+
+            }
+
+            private fun closeStream(closeable: Closeable?) {
+                try {
+                    closeable?.close()
+                } catch (e: Exception) {
+                    L.e(e.message, e)
+                }
+            }
+        })
     }
 
     override fun onClick(v: View?) {
@@ -140,7 +201,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     private fun chooseAddress() {
         CityPicker()
-            .showCityPicker(this, object : OnCustomCityPickerItemClickListener() {
+            .showCityPicker(this, mCityData, object : OnCustomCityPickerItemClickListener() {
                 override fun onSelected(
                     province: CustomCityData?,
                     city: CustomCityData?,

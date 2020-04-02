@@ -14,7 +14,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
-        versionName "1.1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,7 +39,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             //outputFileName = "fashionPro_${variant.name.replace("Release","")}_${releaseTime()}_${variant.versionName}.apk"
-            outputFileName = "深度IP_${variant.versionName}_${releaseTime()}.apk"
+            outputFileName = "宽度IP_${variant.versionName}_${releaseTime()}.apk"
         }
     }
 

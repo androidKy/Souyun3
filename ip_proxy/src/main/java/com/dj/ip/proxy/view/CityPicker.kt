@@ -32,6 +32,13 @@ class CityPicker {
             add(hsCity)
             add(laCity)
             add(szCity)
+            add(CustomCityData("340800", "安庆市"))
+            add(CustomCityData("341100", "滁州市"))//滁州市
+            add(CustomCityData("340400", "淮南市")) //淮南市
+            add(CustomCityData("340100", "合肥市")) //合肥市
+            add(CustomCityData("340200", "芜湖市")) //芜湖市
+            add(CustomCityData("341800", "宣城市"))  //
+            add(CustomCityData("340500", "马鞍山市"))    //马鞍山市
         }
 
         val fjProvince = CustomCityData("", "福建省")
@@ -44,12 +51,18 @@ class CityPicker {
             add(lyCity)
             add(smCity)
             add(zzCity)
+            add(CustomCityData("350700", "南平市"))
+            add(CustomCityData("350200", "厦门市"))
+            add(CustomCityData("350500", "泉州市"))
+            add(CustomCityData("350900", "宁德市"))
+            add(CustomCityData("350300", "莆田市"))
         }
 
         val gdProvince = CustomCityData("", "广东省")
+        val gzCity = CustomCityData("440100", "广州市")
+        val shenzhenCity = CustomCityData("440300", "深圳市")
         val dgCity = CustomCityData("441900", "东莞市")
         val fsCity = CustomCityData("440600", "佛山市")
-        val gzCity = CustomCityData("440100", "广州市")
         val huizhouCity = CustomCityData("441300", "惠州市")
         val jmCity = CustomCityData("440700", "江门市")
         val jyCity = CustomCityData("445200", "揭阳市")
@@ -57,7 +70,6 @@ class CityPicker {
         val stCity = CustomCityData("440500", "汕头市")
         val swCity = CustomCityData("441500", "汕尾市")
         val sgCity = CustomCityData("440200", "韶关市")
-        val shenzhenCity = CustomCityData("440300", "深圳市")
         val zjCity = CustomCityData("440800", "湛江市")
         val zsCity = CustomCityData("442000", "中山市")
         gdProvince.list = arrayListOf<CustomCityData>().apply {
@@ -75,6 +87,15 @@ class CityPicker {
             add(shenzhenCity)
             add(zjCity)
             add(zsCity)
+            add(CustomCityData("441600", "河源市"))
+            add(CustomCityData("441200", "肇庆市"))
+            add(CustomCityData("445300", "云浮市"))
+            add(CustomCityData("440400", "珠海市"))
+            add(CustomCityData("445100", "潮州市"))
+            add(CustomCityData("440900", "茂名市"))
+            add(CustomCityData("441700", "阳江市"))
+            add(CustomCityData("441800", "清远市"))
+
         }
 
         val gzProvince = CustomCityData("", "贵州省")
@@ -83,12 +104,21 @@ class CityPicker {
         gzProvince.list = arrayListOf<CustomCityData>().apply {
             add(bjCity)
             add(zyCity)
+            add(CustomCityData("520400", "安顺市"))
+            add(CustomCityData("520100", "贵阳市"))
+            add(CustomCityData("520600", "铜仁市"))
+            add(CustomCityData("522600", "黔东南市"))
+            add(CustomCityData("522300", "黔西南市"))
+            add(CustomCityData("520200", "六盘水市"))
+            add(CustomCityData("522700", "黔南市"))
         }
 
         val hkProvince = CustomCityData("", "海南省")
         val hkCity = CustomCityData("460100", "海口市")
         hkProvince.list = arrayListOf<CustomCityData>().apply {
             add(hkCity)
+            add(CustomCityData("460400", "儋州市"))
+            add(CustomCityData("460200", "三亚市"))
         }
 
         val hbProvince = CustomCityData("", "河北省")
@@ -109,9 +139,12 @@ class CityPicker {
             add(sjzCity)
             add(tsCity)
             add(xtCity)
+            add(CustomCityData("131100", "衡水市"))
+            add(CustomCityData("130800", "承德市"))
+            add(CustomCityData("130700", "张家口市"))
         }
 
-        val hnProvince = CustomCityData("", "河南省")
+            val hnProvince = CustomCityData("", "河南省")
         val ayCity = CustomCityData("410500", "安阳市")
         val luoyangCity = CustomCityData("410300", "洛阳市")
         val pdsCity = CustomCityData("410400", "平顶山市")
@@ -129,6 +162,15 @@ class CityPicker {
             add(xcCity)
             add(zkCity)
             add(zmdCity)
+            add(CustomCityData("410800", "焦作市"))
+            add(CustomCityData("410900", "濮阳市"))
+            add(CustomCityData("410100", "郑州市"))
+            add(CustomCityData("411300", "南阳市"))
+            add(CustomCityData("411100", "漯河市"))
+            add(CustomCityData("410700", "新乡市"))
+            add(CustomCityData("410200", "开封市"))
+            add(CustomCityData("411200", "三门峡市"))
+            add(CustomCityData("410600", "鹤壁市"))
         }
 
         val hljProvince = CustomCityData("", "黑龙江省")
@@ -139,6 +181,17 @@ class CityPicker {
             add(dqCity)
             add(hebCity)
             add(jmsCity)
+            add(CustomCityData("231200", "绥化市"))
+            add(CustomCityData("230200", "齐齐哈尔市"))
+            add(CustomCityData("231000", "牡丹江市"))
+            add(CustomCityData("230500", "双鸭山市"))
+            add(CustomCityData("230300", "鸡西市"))
+            add(CustomCityData("231100", "黑河市"))
+            add(CustomCityData("230900", "七台河市"))
+            add(CustomCityData("230400", "鹤岗市"))
+            add(CustomCityData("230700", "伊春市"))
+            add(CustomCityData("232700", "大兴安岭"))
+
         }
 
         val hubeiProvince = CustomCityData("", "湖北省")
@@ -149,6 +202,7 @@ class CityPicker {
             add(esCity)
             add(jzCity)
             add(whCity)
+           // add()
         }
 
         val hunanProvince = CustomCityData("", "湖南省")
@@ -277,25 +331,77 @@ class CityPicker {
             }
         }
 
+        val aomen = CustomCityData("820000", "澳门").apply {
+            list = arrayListOf<CustomCityData>().run {
+                add(CustomCityData("820000", "澳门"))
+                this
+            }
+        }
+
+        val beijing = CustomCityData("110000", "北京市").apply {
+            list = arrayListOf<CustomCityData>().run {
+                add(CustomCityData("110000", "北京市"))
+                this
+            }
+        }
+
+        val gansuProvince = CustomCityData("", "甘肃省").apply {
+            list = arrayListOf<CustomCityData>().run {
+                add(CustomCityData("620100", "兰州市"))
+                add(CustomCityData("620600", "武威市"))
+                add(CustomCityData("620400", "白银市"))
+                add(CustomCityData("620500", "天水市"))
+                add(CustomCityData("620700", "张掖市"))
+                add(CustomCityData("622900", "临夏市"))
+                add(CustomCityData("621000", "庆阳市"))
+                add(CustomCityData("621100", "定西市"))
+                add(CustomCityData("621200", "陇南市"))
+                add(CustomCityData("620800", "平凉市"))
+                add(CustomCityData("620900", "酒泉市"))
+                this
+            }
+        }
+
+        val gxProvince = CustomCityData("", "广西省").apply {
+            list = arrayListOf<CustomCityData>().run {
+                add(CustomCityData("450100", "南宁市"))
+                add(CustomCityData("450200", "柳州市"))
+                add(CustomCityData("450900", "玉林市"))
+                add(CustomCityData("451300", "来宾市"))
+                add(CustomCityData("450800", "贵港市"))
+                add(CustomCityData("450400", "梧州市"))
+                add(CustomCityData("450300", "桂林市"))
+                add(CustomCityData("451200", "河池市"))
+                add(CustomCityData("450700", "钦州市"))
+                this
+            }
+        }
+
+
         mCityData.apply {
+            add(beijing)
+            add(aomen)
+            add(cqProvince)
+            add(shProvince)
+            add(tjProvince)
+            add(gdProvince)
+            add(gxProvince)
             add(jxProvince)
             add(llProvince)
             add(jlProvince)
+            add(gansuProvince)
             add(hunanProvince)
             add(hubeiProvince)
             add(ahProvince)
             add(fjProvince)
-            add(gdProvince)
             add(gzProvince)
             add(hbProvince)
             add(hkProvince)
             add(hljProvince)
             add(hnProvince)
-            add(cqProvince)
             add(zjProvince)
-            add(tjProvince)
+
             add(scProvince)
-            add(shProvince)
             add(sxProvince)
             add(shanxiProvince)
             add(sdProvince)
@@ -308,6 +414,24 @@ class CityPicker {
             .title("选择城市")
             .visibleItemsCount(5)
             .setCityData(mCityData)
+            .provinceCyclic(false)
+            .cityCyclic(false)
+            .districtCyclic(false)
+            .drawShadows(true)
+            .setCityWheelType(mWheelType)
+            .build()
+        CustomCityPicker(context).apply {
+            setCustomConfig(config)
+            setOnCustomCityPickerItemClickListener(itemClickListener)
+            showCityPicker()
+        }
+    }
+
+    fun showCityPicker(context: Context,cityData: ArrayList<CustomCityData>, itemClickListener: OnCustomCityPickerItemClickListener) {
+        val config = CustomConfig.Builder()
+            .title("选择城市")
+            .visibleItemsCount(8)
+            .setCityData(cityData)
             .provinceCyclic(false)
             .cityCyclic(false)
             .districtCyclic(false)

@@ -17,7 +17,7 @@ public class CityListBean implements Serializable {
 
     private int code;
     private String msg;
-    private CityListTop data;
+    private CityData data;
 
     public int getCode() {
         return code;
@@ -35,22 +35,22 @@ public class CityListBean implements Serializable {
         this.msg = msg;
     }
 
-    public CityListTop getData() {
+    public CityData getData() {
         return data;
     }
 
-    public void setData(CityListTop data) {
+    public void setData(CityData data) {
         this.data = data;
     }
 
-    public static class CityListTop {
+    public static class CityData {
         /**
          * count : 24
          * cityList : [{"name":"安徽","data":[{"value":15613,"name":"宿州市","cityid":"341300"},{"value":8486,"name":"阜阳市","cityid":"341200"}]},{"name":"广东","data":[{"value":17495,"name":"佛山市","cityid":"440600"},{"value":7426,"name":"汕头市","cityid":"440500"}]}]
          */
 
         private int count;
-        private List<CityList> cityList;
+        private List<ProvinceList> cityList;
 
         public int getCount() {
             return count;
@@ -60,22 +60,22 @@ public class CityListBean implements Serializable {
             this.count = count;
         }
 
-        public List<CityList> getCityList() {
+        public List<ProvinceList> getCityList() {
             return cityList;
         }
 
-        public void setCityList(List<CityList> cityList) {
-            this.cityList = cityList;
+        public void setCityList(List<ProvinceList> provinceList) {
+            this.cityList = provinceList;
         }
 
-        public static class CityList {
+        public static class ProvinceList {
             /**
              * name : 安徽
              * data : [{"value":15613,"name":"宿州市","cityid":"341300"},{"value":8486,"name":"阜阳市","cityid":"341200"}]
              */
 
             private String name;
-            private List<City> data;
+            private List<CityList> data;
 
             public String getName() {
                 return name;
@@ -85,15 +85,15 @@ public class CityListBean implements Serializable {
                 this.name = name;
             }
 
-            public List<City> getData() {
+            public List<CityList> getData() {
                 return data;
             }
 
-            public void setData(List<City> data) {
+            public void setData(List<CityList> data) {
                 this.data = data;
             }
 
-            public static class City {
+            public static class CityList {
                 /**
                  * value : 15613
                  * name : 宿州市
