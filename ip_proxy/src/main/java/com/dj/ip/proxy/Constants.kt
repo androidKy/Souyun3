@@ -14,5 +14,6 @@ class Constants {
 
         const val PROXY_IP_URL = "http://10.8.0.1:8096/open?api=uchdnwhc&close_time=3600"   //odcskqcd  cakdckwn
         const val PING_URL = "http://pv.sohu.com/cityjson?ie=utf-8"    //https://2020.ip138.com/
+        const val IPINFO_URL = "http://whois.pconline.com.cn/ipJson.jsp"
     }
 }

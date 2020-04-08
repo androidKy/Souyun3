@@ -12,6 +12,9 @@ import com.dj.ip.proxy.Constants
 import com.dj.ip.proxy.R
 import com.dj.ip.proxy.base.BaseActivity
 import com.dj.ip.proxy.bean.IpBean
+import com.dj.ip.proxy.network.NetStateObserver
+import com.dj.ip.proxy.network.NetworkDetector
+import com.dj.ip.proxy.network.NetworkType
 import com.dj.ip.proxy.proxy.IpListener
 import com.dj.ip.proxy.proxy.PingManager
 import com.dj.ip.proxy.proxy.ProxyController
@@ -43,6 +46,20 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     private var mAnimator: Animator? = null
 
+    private val mNetStateObserver: NetStateObserver = object : NetStateObserver {
+        override fun onDisconnected() {
+            tv_net_error.visibility = View.VISIBLE
+            tv_ip.text = ""
+            tv_address_value.text = ""
+        }
+
+        override fun onConnected(networkType: NetworkType?) {
+            tv_net_error.visibility = View.GONE
+
+            getIpInfo()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -72,6 +89,12 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         initCity()
 
         getIpInfo()
+
+        initNetWork()
+    }
+
+    private fun initNetWork() {
+        NetworkDetector.getInstance().addObserver(mNetStateObserver)
     }
 
     private fun initCity() {
@@ -218,6 +241,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         mAnimator?.cancel()
+        NetworkDetector.getInstance().removeObserver(mNetStateObserver)
+        NetworkDetector.getInstance().deInit(this)
     }
 
 }

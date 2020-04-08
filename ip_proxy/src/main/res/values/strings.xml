@@ -15,4 +15,5 @@
     <string name="ip_connecting">正在连接</string>
     <string name="ip_connect_succeed">已连接</string>
     <string name="ip_connect_failed">连接失败</string>
+    <string name="net_error">网络连接不可用</string>
 </resources>
