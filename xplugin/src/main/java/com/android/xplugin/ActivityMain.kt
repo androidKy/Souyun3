@@ -29,7 +29,7 @@ class ActivityMain : IActivitysLoadPackage {
                         val spUtils = XSPUtils.instance.setContext(context)
                         WechatPlugin(spUtils, packageParam).login()
                     } else if (context != null && context.packageName == PKG_TIKTOK) {
-                        TiktokPlugin(XSPUtils.instance.setContext(context), packageParam).init()
+                       // TiktokPlugin(XSPUtils.instance.setContext(context), packageParam).init()
                     }
                 }
             })
