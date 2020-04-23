@@ -2,36 +2,30 @@ package com.dj.ip.proxy.ui
 
 import android.animation.Animator
 import android.animation.AnimatorInflater
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AnimationUtils
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.dj.ip.proxy.Constants
 import com.dj.ip.proxy.R
 import com.dj.ip.proxy.base.BaseActivity
 import com.dj.ip.proxy.bean.CityListBean
 import com.dj.ip.proxy.bean.IpBean
-import com.dj.ip.proxy.network.NetStateObserver
-import com.dj.ip.proxy.network.NetworkDetector
-import com.dj.ip.proxy.network.NetworkType
+import com.dj.ip.proxy.network.NetworkMonitor
+import com.dj.ip.proxy.notification.NotificationStarter
 import com.dj.ip.proxy.proxy.IpListener
 import com.dj.ip.proxy.proxy.PingManager
 import com.dj.ip.proxy.proxy.ProxyController
 import com.dj.ip.proxy.proxy.ProxyRequestListener
 import com.dj.ip.proxy.view.CityPicker
 import com.google.gson.Gson
-import com.lljjcoder.Interface.OnCityItemClickListener
 import com.lljjcoder.Interface.OnCustomCityPickerItemClickListener
-import com.lljjcoder.bean.CityBean
 import com.lljjcoder.bean.CustomCityData
-import com.lljjcoder.bean.DistrictBean
-import com.lljjcoder.bean.ProvinceBean
-import com.lljjcoder.style.cityjd.JDCityConfig
-import com.lljjcoder.style.cityjd.JDCityPicker
 import com.safframework.log.L
-import com.utils.common.FileUtils
 import com.utils.common.SPUtils
 import com.utils.common.ThreadUtils
 import com.utils.common.ToastUtils
@@ -54,26 +48,20 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     private var mAnimator: Animator? = null
 
-    private val mNetStateObserver: NetStateObserver = object : NetStateObserver {
-        override fun onDisconnected() {
-            tv_net_error.visibility = View.VISIBLE
-            tv_ip.text = ""
-            tv_address_value.text = ""
-        }
-
-        override fun onConnected(networkType: NetworkType?) {
-            tv_net_error.visibility = View.GONE
-
-            getIpInfo()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        L.d("onCreate")
         initListener()
         initData()
+
+        LocalBroadcastManager.getInstance(this.applicationContext).registerReceiver(
+            mReceiver,
+            IntentFilter(NetworkMonitor.ACTION_LOCAL_BROADCAST)
+        )
+        NetworkMonitor.instance.register(this)
     }
 
 
@@ -81,6 +69,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         tv_address_choose.setOnClickListener(this)
         tv_psw_change.setOnClickListener(this)
         rl_ip_connect.setOnClickListener(this)
+        tv_auto_refresh.setOnClickListener(this)
     }
 
     private fun initData() {
@@ -98,11 +87,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         getIpInfo()
 
-        initNetWork()
-    }
-
-    private fun initNetWork() {
-        NetworkDetector.getInstance().addObserver(mNetStateObserver)
     }
 
     private fun initCity() {
@@ -175,18 +159,28 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 startActivityForResult(intent, 2000)
             }
             R.id.rl_ip_connect -> {
-                if (mAnimator != null && mAnimator?.isRunning!!) {
-                    ToastUtils.showToast(this, "正在连接，请勿重复点击")
-                    return
-                }
-                if (mCityCode.isEmpty()) {
-                    ToastUtils.showToast(this, "请选择地区")
-                    return
-                }
-                showConnectAnimation()
-                connectIP()
+                startConnectIp()
+            }
+            R.id.tv_auto_refresh -> {
+                val curText = tv_auto_refresh.text.toString()
+                if (curText == resources.getString(R.string.auto_refresh)) {
+                    tv_auto_refresh.text = resources.getString(R.string.close_auto_refresh)
+                } else tv_auto_refresh.text = resources.getString(R.string.auto_refresh)
             }
         }
+    }
+
+    private fun startConnectIp() {
+        if (mAnimator != null && mAnimator?.isRunning!!) {
+            ToastUtils.showToast(this, "正在连接，请勿重复点击")
+            return
+        }
+        if (mCityCode.isEmpty()) {
+            ToastUtils.showToast(this, "请选择地区")
+            return
+        }
+        showConnectAnimation()
+        connectIP()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -212,6 +206,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                     }
                     tv_address_choose.text = "${province?.name}${city?.name}"
                     mCityName = "${province?.name}${city?.name}"
+
+                    saveIpInfo()
                 }
             })
     }
@@ -223,15 +219,19 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         ProxyController().setData(mPsw, mCityName, mCityCode)
             .setProxyRequestListener(object : ProxyRequestListener {
                 override fun onIpResult(result: Boolean, ipBean: IpBean?) {
+                    var tip = resources.getString(R.string.ip_connect_failed)
                     if (result) {
                         L.d("IP连接成功")
                         showIpInfo(ipBean)
-                        setIpStatus(resources.getString(R.string.ip_connect_succeed))
+                        setIpStatus(resources.getString(R.string.ip_connect_succeed_refresh))
                         saveIpInfo()
+                        tip = resources.getString(R.string.ip_connect_succeed)
                     } else {
                         ToastUtils.showToast(this@MainActivity, "IP连接失败")
                         setIpStatus(resources.getString(R.string.ip_connect_failed))
                     }
+                    ToastUtils.showToast(this@MainActivity, tip)
+                    NotificationStarter.startNotification(tip)
                     mAnimator?.cancel()
                 }
             })
@@ -301,9 +301,21 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        L.d("onDestroy")
         mAnimator?.cancel()
-        NetworkDetector.getInstance().removeObserver(mNetStateObserver)
-        NetworkDetector.getInstance().deInit(this)
+        NetworkMonitor.instance.unregister(this)
+        LocalBroadcastManager.getInstance(this.applicationContext).unregisterReceiver(mReceiver)
     }
 
+    private val mReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == NetworkMonitor.ACTION_LOCAL_BROADCAST) {
+                val netState = intent.getBooleanExtra(NetworkMonitor.KEY_NET_STATE, false)
+                L.d("netState:$netState")
+                val curConnectSetting = tv_auto_refresh.text.toString()
+                if (!netState && curConnectSetting != resources.getString(R.string.auto_refresh))
+                    startConnectIp()
+            }
+        }
+    }
 }

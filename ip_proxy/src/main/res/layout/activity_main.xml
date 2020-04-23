@@ -34,6 +34,19 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_address_choose" />
 
     <TextView
+        android:id="@+id/tv_auto_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/shape_address_choose"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/auto_refresh"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_psw_change" />
+
+    <TextView
         android:id="@+id/tv_ip_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,7 +58,7 @@
         android:textColor="@android:color/white"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_psw_change" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_auto_refresh" />
 
     <LinearLayout
         android:layout_width="wrap_content"

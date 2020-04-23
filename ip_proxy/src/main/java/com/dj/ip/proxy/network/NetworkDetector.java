@@ -8,6 +8,8 @@ import android.net.ConnectivityManager;
 
 import androidx.annotation.NonNull;
 
+import com.dj.ip.proxy.notification.NotificationStarter;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -16,15 +18,19 @@ public final class NetworkDetector {
     private List<NetStateObserver> observers;
 
     private NetworkDetector() {
-        broadcastReceiver = new BroadcastReceiver() {
+      /*  broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
                     NetworkType networkType = NetworkUtils.getNetworkType(context);
                     notifyObservers(networkType);
+
+                    boolean isConnected = NetworkUtils.isDefaultNetworkActive(context);
+                    //通知
+                    NotificationStarter.Companion.startNotification(isConnected);
                 }
             }
-        };
+        };*/
 
         observers = new CopyOnWriteArrayList<>();
     }
@@ -45,7 +51,7 @@ public final class NetworkDetector {
      * 注销网络监听
      */
     public void deInit(@NonNull Context context) {
-        context.unregisterReceiver(broadcastReceiver);
+        //context.getApplicationContext().unregisterReceiver(broadcastReceiver);
     }
 
     /**
@@ -84,11 +90,11 @@ public final class NetworkDetector {
      */
     private void notifyObservers(NetworkType networkType) {
         if (networkType == NetworkType.NETWORK_NO) {
-            for(NetStateObserver observer : observers) {
+            for (NetStateObserver observer : observers) {
                 observer.onDisconnected();
             }
         } else {
-            for(NetStateObserver observer : observers) {
+            for (NetStateObserver observer : observers) {
                 observer.onConnected(networkType);
             }
         }

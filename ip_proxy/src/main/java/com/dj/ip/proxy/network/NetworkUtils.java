@@ -3,9 +3,12 @@ package com.dj.ip.proxy.network;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 
 import androidx.annotation.RequiresPermission;
+
+import static com.dj.ip.proxy.network.NetworkType.NETWORK_NO;
 
 /**
  * 网络状态相关工具类
@@ -28,6 +31,18 @@ public final class NetworkUtils {
         return cm.getActiveNetworkInfo();
     }
 
+    static boolean isDefaultNetworkActive(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null)
+            return false;
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return cm.isDefaultNetworkActive();
+        } else {*/
+            NetworkType networkType = getNetworkType(context);
+            return networkType != NETWORK_NO;
+      //  }
+    }
+
     /**
      * 获取当前网络类型
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>}</p>
@@ -44,8 +59,8 @@ public final class NetworkUtils {
      */
     @RequiresPermission("android.permission.ACCESS_NETWORK_STATE")
     public static NetworkType getNetworkType(Context context) {
-        NetworkType netType = NetworkType.NETWORK_NO;
-        NetworkInfo info    = getActiveNetworkInfo(context);
+        NetworkType netType = NETWORK_NO;
+        NetworkInfo info = getActiveNetworkInfo(context);
         if (info != null && info.isAvailable()) {
 
             if (info.getType() == ConnectivityManager.TYPE_WIFI) {

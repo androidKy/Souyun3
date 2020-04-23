@@ -21,6 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.dj.ip.proxy.bean.** {*;}
+-keep class com.dj.ip.proxy.network.NetworkMonitor{*;}
 
 # Gson
 -keepattributes Signature
@@ -43,3 +44,4 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
+

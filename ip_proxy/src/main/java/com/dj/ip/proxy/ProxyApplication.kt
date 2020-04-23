@@ -16,14 +16,12 @@ class ProxyApplication : Application() {
         Utils.init(this)
 
         L.init("Proxy_IP")
-        L.logLevel = if (BuildConfig.DEBUG) L.LogLevel.DEBUG else L.LogLevel.UNLOG
+       // L.logLevel = if (BuildConfig.DEBUG) L.LogLevel.DEBUG else L.LogLevel.UNLOG
 
-        NetworkDetector.getInstance().init(this)
     }
 
     override fun onTerminate() {
         super.onTerminate()
-        NetworkDetector.getInstance().deInit(this)
     }
 
 }
