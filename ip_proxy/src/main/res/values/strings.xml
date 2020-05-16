@@ -19,4 +19,5 @@
     <string name="net_error">网络连接不可用</string>
     <string name="auto_refresh">开启断线重连</string>
     <string name="close_auto_refresh">关闭断线重连</string>
+    <string name="tv_ip_sp">运营商：随机</string>
 </resources>

@@ -18,11 +18,20 @@ class ProxyController {
     private var mPsw: String = ""
     private var mCityCode: String = ""
     private var mCityName: String = ""
+    private var mIspFlag: Int = 0
 
     private var mProxyRequestListener: ProxyRequestListener? = null
 
     fun setProxyRequestListener(proxyRequestListener: ProxyRequestListener): ProxyController {
         this.mProxyRequestListener = proxyRequestListener
+        return this
+    }
+
+    fun setData(psw: String, cityName: String, cityCode: String, ispFlag: Int): ProxyController {
+        this.mPsw = psw
+        this.mCityName = cityName
+        this.mCityCode = cityCode
+        this.mIspFlag = ispFlag
         return this
     }
 
@@ -32,9 +41,11 @@ class ProxyController {
         this.mCityCode = cityCode
         return this
     }
-    fun startProxy() {
-        val proxyUrl = "http://10.8.0.1:8096/open?api=$mPsw&close_time=7200&area=$mCityCode"
 
+    fun startProxy() {
+        val proxyUrl =
+            "http://10.8.0.1:8096/open?api=$mPsw&close_time=1080&area=$mCityCode&isp=$mIspFlag"
+        L.d("proxyUrl:$proxyUrl")
         AndroidNetworking.get(proxyUrl)
             .build()
             .getAsString(object : StringRequestListener {

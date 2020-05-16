@@ -8,13 +8,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.widget.PopupWindow
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.dj.ip.proxy.Constants
 import com.dj.ip.proxy.R
 import com.dj.ip.proxy.base.BaseActivity
 import com.dj.ip.proxy.bean.CityListBean
 import com.dj.ip.proxy.bean.IpBean
+import com.dj.ip.proxy.bean.IspBean
 import com.dj.ip.proxy.network.NetworkMonitor
 import com.dj.ip.proxy.notification.NotificationStarter
 import com.dj.ip.proxy.proxy.IpListener
@@ -22,6 +25,7 @@ import com.dj.ip.proxy.proxy.PingManager
 import com.dj.ip.proxy.proxy.ProxyController
 import com.dj.ip.proxy.proxy.ProxyRequestListener
 import com.dj.ip.proxy.view.CityPicker
+import com.dj.ip.proxy.view.IspPopWindow
 import com.google.gson.Gson
 import com.lljjcoder.Interface.OnCustomCityPickerItemClickListener
 import com.lljjcoder.bean.CustomCityData
@@ -38,7 +42,8 @@ import java.io.Closeable
  * author:kyXiao
  * date:2020/3/23
  */
-class MainActivity : BaseActivity(), View.OnClickListener {
+class MainActivity : BaseActivity(), View.OnClickListener, IspPopWindow.OnItemClickListener {
+
 
     private var mPsw: String = ""
     private var mCityCode: String = ""
@@ -48,12 +53,17 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     private var mAnimator: Animator? = null
 
+    private lateinit var mPopupIsp: IspPopWindow
+
+    private var mCurIspBean: IspBean = IspBean("随机", 0, 1)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         L.d("onCreate")
+        initView()
         initListener()
         initData()
 
@@ -64,12 +74,27 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         NetworkMonitor.instance.register(this)
     }
 
+    private fun initView() {
+        mPopupIsp = IspPopWindow(this)
+        mPopupIsp.setOnItemClickListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Debug.stopMethodTracing()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+    }
+
 
     private fun initListener() {
         tv_address_choose.setOnClickListener(this)
         tv_psw_change.setOnClickListener(this)
         rl_ip_connect.setOnClickListener(this)
         tv_auto_refresh.setOnClickListener(this)
+        tv_ip_isp.setOnClickListener(this)
     }
 
     private fun initData() {
@@ -167,12 +192,20 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                     tv_auto_refresh.text = resources.getString(R.string.close_auto_refresh)
                 } else tv_auto_refresh.text = resources.getString(R.string.auto_refresh)
             }
+            R.id.tv_ip_isp -> {
+               mPopupIsp.show()
+            }
         }
+    }
+
+    override fun onItemClick(ispBean: IspBean) {
+        tv_ip_isp.text = String.format("运营商：%s", ispBean.ispName)
+        mCurIspBean = ispBean
     }
 
     private fun startConnectIp() {
         if (mAnimator != null && mAnimator?.isRunning!!) {
-            ToastUtils.showToast(this, "正在连接，请勿重复点击")
+            ToastUtils.showToast(this, "正在连接...")
             return
         }
         if (mCityCode.isEmpty()) {
@@ -216,7 +249,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
      * 连接IP
      */
     private fun connectIP() {
-        ProxyController().setData(mPsw, mCityName, mCityCode)
+        ProxyController().setData(mPsw, mCityName, mCityCode, mCurIspBean.ispFlag)
             .setProxyRequestListener(object : ProxyRequestListener {
                 override fun onIpResult(result: Boolean, ipBean: IpBean?) {
                     var tip = resources.getString(R.string.ip_connect_failed)
@@ -305,6 +338,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mAnimator?.cancel()
         NetworkMonitor.instance.unregister(this)
         LocalBroadcastManager.getInstance(this.applicationContext).unregisterReceiver(mReceiver)
+        mPopupIsp?.let {
+            it.dismiss()
+        }
     }
 
     private val mReceiver = object : BroadcastReceiver() {

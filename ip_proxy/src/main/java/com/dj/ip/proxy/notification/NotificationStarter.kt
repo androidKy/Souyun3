@@ -32,7 +32,7 @@ class NotificationStarter {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val name = "网络状态"
                 val descriptionText = "网络切换通知"
-                val importance = android.app.NotificationManager.IMPORTANCE_DEFAULT
+                val importance = android.app.NotificationManager.IMPORTANCE_HIGH
                 val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                     description = descriptionText
                 }
@@ -45,19 +45,20 @@ class NotificationStarter {
             val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
             val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(com.dj.ip.proxy.R.drawable.ic_stat_name)
-                .setContentTitle(context.resources.getString(com.dj.ip.proxy.R.string.app_name))
+                // .setContentTitle(context.resources.getString(com.dj.ip.proxy.R.string.app_name))
                 .setContentText(msg)
                 .setStyle(
                     NotificationCompat.BigTextStyle()
                         .bigText(msg)
                 )
+               // .setFullScreenIntent(pendingIntent, true)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 //.addAction(R.drawable.ip_connect, "打开", pendingIntent)
                 .build()
 
-           // notification.flags = Notification.FLAG_ONGOING_EVENT
+            // notification.flags = Notification.FLAG_ONGOING_EVENT
 
 
             notificationManager.notify(1000, notification)

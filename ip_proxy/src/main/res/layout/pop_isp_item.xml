@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:gravity="center_vertical"
+    android:paddingBottom="15dp">
+
+
+    <TextView
+        android:id="@+id/tv_isp_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/text_color_02"
+        android:layout_centerInParent="true"
+        android:textSize="18sp"
+        tools:text="电信" />
+
+    <ImageView
+        android:id="@+id/iv_check_status"
+        android:layout_width="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_check_black_24dp" />
+
+</RelativeLayout>
