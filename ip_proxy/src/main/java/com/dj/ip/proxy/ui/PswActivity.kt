@@ -32,7 +32,7 @@ class PswActivity : BaseActivity(), View.OnClickListener {
                 mPsw = this
                 et_psw.setText(this)
             }
-        }
+        }?:et_psw.setText(SPUtils.getInstance(Constants.IP_PROXY_SP).getString(Constants.PSW_KEY))
 
         et_psw.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {

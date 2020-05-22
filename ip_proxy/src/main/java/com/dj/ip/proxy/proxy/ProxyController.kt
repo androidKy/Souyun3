@@ -19,6 +19,7 @@ class ProxyController {
     private var mCityCode: String = ""
     private var mCityName: String = ""
     private var mIspFlag: Int = 0
+    private var mCloseTime:Int = 1080
 
     private var mProxyRequestListener: ProxyRequestListener? = null
 
@@ -27,7 +28,17 @@ class ProxyController {
         return this
     }
 
-    fun setData(psw: String, cityName: String, cityCode: String, ispFlag: Int): ProxyController {
+    fun setData(psw: String, cityName: String="", cityCode: String="0",closeTime:Int=1080, ispFlag: Int=0): ProxyController {
+        this.mPsw = psw
+        this.mCityName = cityName
+        this.mCityCode = cityCode
+        this.mIspFlag = ispFlag
+        this.mCloseTime = closeTime
+        return this
+    }
+
+
+    fun setData(psw: String, cityName: String="", cityCode: String="0", ispFlag: Int=0): ProxyController {
         this.mPsw = psw
         this.mCityName = cityName
         this.mCityCode = cityCode
@@ -44,7 +55,7 @@ class ProxyController {
 
     fun startProxy() {
         val proxyUrl =
-            "http://10.8.0.1:8096/open?api=$mPsw&close_time=1080&area=$mCityCode&isp=$mIspFlag"
+            "http://10.8.0.1:8096/open?api=$mPsw&close_time=$mCloseTime&area=$mCityCode&isp=$mIspFlag"
         L.d("proxyUrl:$proxyUrl")
         AndroidNetworking.get(proxyUrl)
             .build()

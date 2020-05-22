@@ -10,11 +10,11 @@ android {
 
 
     defaultConfig {
-        applicationId "com.dj.ip.proxy"
+        applicationId "com.dj.handsome"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 10
-        versionName "1.1.1"
+        versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,7 +40,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             //outputFileName = "fashionPro_${variant.name.replace("Release","")}_${releaseTime()}_${variant.versionName}.apk"
-            outputFileName = "宽度IP_${variant.versionName}_${releaseTime()}.apk"
+            outputFileName = "宽度_${variant.versionName}_${releaseTime()}.apk"
         }
     }
 

@@ -24,6 +24,7 @@ import com.dj.ip.proxy.proxy.IpListener
 import com.dj.ip.proxy.proxy.PingManager
 import com.dj.ip.proxy.proxy.ProxyController
 import com.dj.ip.proxy.proxy.ProxyRequestListener
+import com.dj.ip.proxy.receiver.IpActionReceiver
 import com.dj.ip.proxy.view.CityPicker
 import com.dj.ip.proxy.view.IspPopWindow
 import com.google.gson.Gson
@@ -72,6 +73,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, IspPopWindow.OnItemCl
             IntentFilter(NetworkMonitor.ACTION_LOCAL_BROADCAST)
         )
         NetworkMonitor.instance.register(this)
+
+        registerReceiver(IpActionReceiver(),IntentFilter("com.dj.handsome.receiver"))
     }
 
     private fun initView() {

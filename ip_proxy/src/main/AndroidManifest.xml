@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dj.ip.proxy">
 
+    <permission android:name="com.dj.handsome.receiver"
+        android:protectionLevel="signature"/>
+
+    <uses-permission android:name="com.dj.handsome"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -33,6 +37,16 @@
       <!--  <receiver android:name=".receiver.NetStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>-->
+        <service android:name=".service.IpBgService"/>
+
+       <!-- <receiver android:name=".receiver.IpActionReceiver"
+            android:permission="com.dj.handsome.receiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.dj.handsome.receiver"/>
+                <category android:name="com.dj.handsome"/>
             </intent-filter>
         </receiver>-->
     </application>
