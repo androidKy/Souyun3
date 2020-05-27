@@ -13,11 +13,13 @@ import android.view.View
 import android.widget.PopupWindow
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.dj.ip.proxy.Constants
+import com.dj.ip.proxy.ProxyApplication
 import com.dj.ip.proxy.R
 import com.dj.ip.proxy.base.BaseActivity
 import com.dj.ip.proxy.bean.CityListBean
 import com.dj.ip.proxy.bean.IpBean
 import com.dj.ip.proxy.bean.IspBean
+import com.dj.ip.proxy.network.NetworkLog
 import com.dj.ip.proxy.network.NetworkMonitor
 import com.dj.ip.proxy.notification.NotificationStarter
 import com.dj.ip.proxy.proxy.IpListener
@@ -30,6 +32,9 @@ import com.dj.ip.proxy.view.IspPopWindow
 import com.google.gson.Gson
 import com.lljjcoder.Interface.OnCustomCityPickerItemClickListener
 import com.lljjcoder.bean.CustomCityData
+import com.orhanobut.logger.CsvFormatStrategy
+import com.orhanobut.logger.DiskLogAdapter
+import com.orhanobut.logger.Logger
 import com.safframework.log.L
 import com.utils.common.SPUtils
 import com.utils.common.ThreadUtils
@@ -74,8 +79,19 @@ class MainActivity : BaseActivity(), View.OnClickListener, IspPopWindow.OnItemCl
         )
         NetworkMonitor.instance.register(this)
 
-        registerReceiver(IpActionReceiver(),IntentFilter("com.dj.handsome.receiver"))
+        registerReceiver(IpActionReceiver(), IntentFilter("com.dj.handsome.receiver"))
     }
+
+
+    private fun startLog() {
+        val formatStrategy = CsvFormatStrategy.newBuilder()
+            .tag(ProxyApplication.DJ_WIDE_LOG)
+            .build()
+        Logger.addLogAdapter(DiskLogAdapter(formatStrategy))
+
+        NetworkLog.startLog()
+    }
+
 
     private fun initView() {
         mPopupIsp = IspPopWindow(this)
@@ -101,6 +117,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, IspPopWindow.OnItemCl
     }
 
     private fun initData() {
+        startLog()
+
         SPUtils.getInstance(Constants.IP_PROXY_SP).apply {
             mPsw = getString(Constants.PSW_KEY)
             mCityName = getString(Constants.CITY_NAME_KEY)
@@ -196,7 +214,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, IspPopWindow.OnItemCl
                 } else tv_auto_refresh.text = resources.getString(R.string.auto_refresh)
             }
             R.id.tv_ip_isp -> {
-               mPopupIsp.show()
+                mPopupIsp.show()
             }
         }
     }
@@ -344,6 +362,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, IspPopWindow.OnItemCl
         mPopupIsp?.let {
             it.dismiss()
         }
+
+        NetworkLog.stopLog()
     }
 
     private val mReceiver = object : BroadcastReceiver() {

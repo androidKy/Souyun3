@@ -65,7 +65,7 @@ class PingManager {
                 }
 
                 override fun onSuccess(response: String?) {
-                    L.d("ip result: $response")
+                   // L.d("ip result: $response")
                     try {
                         /*val jsonData = response?.split("=")?.get(1)!!.replace(";", "")
                         val verifyIpBean = Gson().fromJson(jsonData, VerifyIpBean::class.java)
@@ -86,7 +86,7 @@ class PingManager {
                             }
                             ipListener.onIpResult(true, ipBean)
                         }
-                        L.d("ip json result: $jsonData")
+                        //L.d("ip json result: $jsonData")
                     } catch (e: Exception) {
                         L.d("解析IP数据失败：${e.message}")
                         ipListener.onIpResult(false, null)

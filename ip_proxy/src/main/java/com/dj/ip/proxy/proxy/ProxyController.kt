@@ -19,7 +19,7 @@ class ProxyController {
     private var mCityCode: String = ""
     private var mCityName: String = ""
     private var mIspFlag: Int = 0
-    private var mCloseTime:Int = 1080
+    private var mCloseTime:Int = 600
 
     private var mProxyRequestListener: ProxyRequestListener? = null
 

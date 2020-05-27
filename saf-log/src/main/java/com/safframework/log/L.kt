@@ -1,6 +1,6 @@
 package com.safframework.log
 
-import android.util.Log
+import com.orhanobut.logger.Logger
 import com.safframework.log.handler.*
 
 /**
@@ -27,7 +27,7 @@ object L {
         },
         UNLOG {
             override val value: Int
-            get() = -1
+                get() = -1
         };
 
         abstract val value: Int
@@ -127,14 +127,14 @@ object L {
         if (LogLevel.ERROR.value <= logLevel.value) {
 
             if (msg != null && msg.isNotEmpty()) {
+                Logger.e(msg)
+                /* val s = getMethodNames()
 
-                val s = getMethodNames()
-
-                if (msg.contains("\n")) {
-                    Log.e(TAG, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
-                } else {
-                    Log.e(TAG, String.format(s, msg))
-                }
+                 if (msg.contains("\n")) {
+                     Log.e(TAG, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
+                 } else {
+                     Log.e(TAG, String.format(s, msg))
+                 }*/
             }
         }
     }
@@ -149,14 +149,14 @@ object L {
         if (LogLevel.ERROR.value <= logLevel.value) {
 
             if (tag != null && tag.isNotEmpty() && msg != null && msg.isNotEmpty()) {
+                Logger.e(msg)
+                /* val s = getMethodNames()
 
-                val s = getMethodNames()
-
-                if (msg.contains("\n")) {
-                    Log.e(tag, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
-                } else {
-                    Log.e(tag, String.format(s, msg))
-                }
+                 if (msg.contains("\n")) {
+                     Log.e(tag, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
+                 } else {
+                     Log.e(tag, String.format(s, msg))
+                 }*/
             }
         }
     }
@@ -165,7 +165,8 @@ object L {
     fun e(msg: String?, tr: Throwable) {
         if (LogLevel.ERROR.value <= logLevel.value) {
             if (msg != null && msg.isNotEmpty()) {
-                Log.e(TAG, msg, tr)
+                //Log.e(TAG, msg, tr)
+                Logger.e(msg)
             }
         }
     }
@@ -175,14 +176,14 @@ object L {
         if (LogLevel.WARN.value <= logLevel.value) {
 
             if (msg != null && msg.isNotEmpty()) {
+                Logger.w(msg)
+                /*  val s = getMethodNames()
 
-                val s = getMethodNames()
-
-                if (msg.contains("\n")) {
-                    Log.w(TAG, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
-                } else {
-                    Log.w(TAG, String.format(s, msg))
-                }
+                  if (msg.contains("\n")) {
+                      Log.w(TAG, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
+                  } else {
+                      Log.w(TAG, String.format(s, msg))
+                  }*/
             }
         }
     }
@@ -197,14 +198,14 @@ object L {
         if (LogLevel.WARN.value <= logLevel.value) {
 
             if (tag != null && tag.isNotEmpty() && msg != null && msg.isNotEmpty()) {
-
-                val s = getMethodNames()
+                Logger.w(msg)
+                /*val s = getMethodNames()
 
                 if (msg.contains("\n")) {
                     Log.w(tag, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
                 } else {
                     Log.w(tag, String.format(s, msg))
-                }
+                }*/
             }
         }
     }
@@ -214,7 +215,8 @@ object L {
         if (LogLevel.WARN.value <= logLevel.value) {
 
             if (msg != null && msg.isNotEmpty()) {
-                Log.w(TAG, msg, tr)
+                // Log.w(TAG, msg, tr)
+                Logger.w(msg)
             }
         }
     }
@@ -224,14 +226,14 @@ object L {
         if (LogLevel.INFO.value <= logLevel.value) {
 
             if (msg != null && msg.isNotEmpty()) {
-
-                val s = getMethodNames()
+                Logger.i(msg)
+                /*val s = getMethodNames()
 
                 if (msg.contains("\n")) {
                     Log.i(TAG, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
                 } else {
                     Log.i(TAG, String.format(s, msg))
-                }
+                }*/
             }
 
         }
@@ -247,14 +249,14 @@ object L {
         if (LogLevel.INFO.value <= logLevel.value) {
 
             if (tag != null && tag.isNotEmpty() && msg != null && msg.isNotEmpty()) {
-
-                val s = getMethodNames()
+                Logger.i(msg)
+                /*val s = getMethodNames()
 
                 if (msg.contains("\n")) {
                     Log.i(tag, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
                 } else {
                     Log.i(tag, String.format(s, msg))
-                }
+                }*/
             }
         }
     }
@@ -264,7 +266,8 @@ object L {
         if (LogLevel.INFO.value <= logLevel.value) {
 
             if (msg != null && msg.isNotEmpty()) {
-                Log.i(TAG, msg, tr)
+                //Log.i(TAG, msg, tr)
+                Logger.i(msg)
             }
         }
     }
@@ -274,14 +277,14 @@ object L {
         if (LogLevel.DEBUG.value <= logLevel.value) {
 
             if (msg != null && msg.isNotEmpty()) {
+                Logger.d(msg)
+                /* val s = getMethodNames()
 
-                val s = getMethodNames()
-
-                if (msg.contains("\n")) {
-                    Log.d(TAG, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
-                } else {
-                    Log.d(TAG, String.format(s, msg))
-                }
+                 if (msg.contains("\n")) {
+                     Log.d(TAG, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
+                 } else {
+                     Log.d(TAG, String.format(s, msg))
+                 }*/
             }
         }
     }
@@ -296,14 +299,14 @@ object L {
         if (LogLevel.DEBUG.value <= logLevel.value) {
 
             if (tag != null && tag.isNotEmpty() && msg != null && msg.isNotEmpty()) {
+                Logger.d(msg)
+                /* val s = getMethodNames()
 
-                val s = getMethodNames()
-
-                if (msg.contains("\n")) {
-                    Log.d(tag, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
-                } else {
-                    Log.d(tag, String.format(s, msg))
-                }
+                 if (msg.contains("\n")) {
+                     Log.d(tag, String.format(s, msg.replace("\n".toRegex(), "\n║ ")))
+                 } else {
+                     Log.d(tag, String.format(s, msg))
+                 }*/
             }
         }
     }
@@ -313,7 +316,8 @@ object L {
         if (LogLevel.DEBUG.value <= logLevel.value) {
 
             if (msg != null && msg.isNotEmpty()) {
-                Log.d(TAG, msg, tr)
+                // Log.d(TAG, msg, tr)
+                Logger.d(msg)
             }
         }
     }
@@ -341,7 +345,8 @@ object L {
         stackOffset++
         val builder = StringBuilder()
 
-        builder.append("  ").append(LoggerPrinter.BR).append(LoggerPrinter.TOP_BORDER).append(LoggerPrinter.BR)
+        builder.append("  ").append(LoggerPrinter.BR).append(LoggerPrinter.TOP_BORDER)
+            .append(LoggerPrinter.BR)
         if (header != null && header!!.isNotEmpty()) {
             // 添加Header
             builder.append("║ " + "Header: " + header).append(LoggerPrinter.BR)

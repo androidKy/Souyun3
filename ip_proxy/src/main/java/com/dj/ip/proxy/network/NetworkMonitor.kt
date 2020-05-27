@@ -59,7 +59,7 @@ class NetworkMonitor {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mNetworkCallbackImpl = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    L.d("onAvailable")
+                    //L.d("onAvailable")
                     sendNetState(true)
                 }
 
@@ -67,15 +67,15 @@ class NetworkMonitor {
                     network: Network,
                     networkCapabilities: NetworkCapabilities
                 ) {
-                    L.d("onCapabilitiesChanged")
+                   // L.d("onCapabilitiesChanged")
                 }
 
                 override fun onUnavailable() {
-                    L.d("onUnavailable")
+                    //L.d("onUnavailable")
                 }
 
                 override fun onLost(network: Network) {
-                    L.d("onLost")
+                   // L.d("onLost")
                     sendNetState(false)
                 }
 
@@ -83,7 +83,7 @@ class NetworkMonitor {
                     network: Network,
                     linkProperties: LinkProperties
                 ) {
-                    L.d("onLinkPropertiesChanged")
+                   // L.d("onLinkPropertiesChanged")
                 }
             }
         }
